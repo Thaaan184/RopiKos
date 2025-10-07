@@ -44,44 +44,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <!-- Item Kamar 1 -->
-                <include layout="@layout/item_kamar" />
-
-                <!-- Item Kamar 2 -->
-                <include layout="@layout/item_kamar">
-                    <TextView
-                        android:id="@+id/tv_nama_kamar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Kamar B2"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/tv_nomor_kamar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Nomor: B2"
-                        android:textSize="14sp" />
-                </include>
-
-                <!-- Item Kamar 3 -->
-                <include layout="@layout/item_kamar">
-                    <TextView
-                        android:id="@+id/tv_nama_kamar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Kamar C1"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/tv_nomor_kamar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Nomor: C1"
-                        android:textSize="14sp" />
-                </include>
-
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
+                <include layout="@layout/item_kamar"/>
             </LinearLayout>
 
         </RelativeLayout>

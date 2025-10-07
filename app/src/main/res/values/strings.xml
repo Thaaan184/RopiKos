@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Navigation Tab Titles -->
     <string name="tab_dashboard">Dashboard</string>
     <string name="tab_kamar">Kamar</string>
     <string name="tab_penyewa">Penyewa</string>
-    <string name="tab_keuangan">Keuangan</string>
+    <string name="tab_keuangan">Pendapatan</string>
+
+    <!-- Icon Descriptions -->
     <string name="door_icon">Icon Pintu</string>
+    <string name="person_icon">Icon Orang</string>
+
+    <!-- Kamar Related Strings -->
     <string name="sample_nama_kamar">Nama Kamar</string>
     <string name="sample_nomor_kamar">Nomor Kamar</string>
     <string name="add_penyewa">+ Penyewa</string>
@@ -21,7 +27,8 @@
     <string name="hint_detail">Detail</string>
     <string name="hint_max_penyewa">Max Penyewa</string>
     <string name="simpan">Simpan</string>
-    <string name="person_icon">Icon Orang</string>
+
+    <!-- Penyewa Related Strings -->
     <string name="sample_nama_penyewa">Nama Penyewa</string>
     <string name="sample_harga_sewa">Rp 1.000.000</string>
     <string name="detail_penyewa_title">Detail Penyewa</string>
@@ -41,13 +48,18 @@
     <string name="sample_detail_unit">Nama + Nomor Unit</string>
     <string name="sample_harga">Harga: Rp 1.000.000</string>
     <string name="hint_tanggal_masuk">Tanggal Masuk</string>
+
+    <!-- Additional Features -->
     <string name="lain_lain">Lain-lain</string>
     <string name="hint_diskon">Diskon</string>
     <string name="hint_bayar_dp">Bayar DP</string>
     <string name="hint_nama_layanan">Nama Layanan Tambahan</string>
     <string name="hint_harga_layanan">Harga Layanan</string>
+
+    <!-- Keuangan Section -->
     <string name="keuangan_title">Keuangan</string>
-    <!-- ... Dashboard ... -->
+
+    <!-- Dashboard Specific Strings -->
     <string name="dashboard_title">RopiKos</string>
     <string name="welcome_message">Selamat Datang!</string>
     <string name="welcome_submessage">Kelola kamar dan penyewa Anda dengan mudah hari ini.</string>

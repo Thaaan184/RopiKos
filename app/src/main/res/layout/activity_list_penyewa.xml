@@ -44,45 +44,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <!-- Item Penyewa 1 -->
-                <include layout="@layout/item_penyewa" />
-
-                <!-- Item Penyewa 2 -->
-                <include layout="@layout/item_penyewa">
-                    <TextView
-                        android:id="@+id/tv_nama_penyewa"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Penyewa Budi"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/tv_harga_sewa"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Rp 1.200.000"
-                        android:textSize="16sp"
-                        android:textColor="@color/green_color" />
-                </include>
-
-                <!-- Item Penyewa 3 -->
-                <include layout="@layout/item_penyewa">
-                    <TextView
-                        android:id="@+id/tv_nama_penyewa"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Penyewa Ani"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/tv_harga_sewa"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Rp 900.000"
-                        android:textSize="16sp"
-                        android:textColor="@color/green_color" />
-                </include>
+                <include layout="@layout/item_penyewa"/>
+                <include layout="@layout/item_penyewa"/>
+                <include layout="@layout/item_penyewa"/>
+                <include layout="@layout/item_penyewa"/>
+                <include layout="@layout/item_penyewa"/>
+                <include layout="@layout/item_penyewa"/>
+                <include layout="@layout/item_penyewa"/>
+                <include layout="@layout/item_penyewa"/>
+                <include layout="@layout/item_penyewa"/>
+                <include layout="@layout/item_penyewa"/>
+                <include layout="@layout/item_penyewa"/>
+                <include layout="@layout/item_penyewa"/>
 
             </LinearLayout>
 
