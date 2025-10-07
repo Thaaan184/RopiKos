@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Manajemen Kos</string>
+    <string name="dashboard_title">Dashboard</string>
+    <string name="menu_penyewa">Penyewa</string>
+    <string name="menu_kamar">Kamar</string>
+    <string name="menu_keuangan">Keuangan</string>
+
+    <string name="welcome_hello">Halo, Patan</string>
+    <string name="welcome_message">Selamat datang di Manajemen Kos</string>
+
+    <string name="stat_occupied">Terisi</string>
+    <string name="stat_vacant">Kosong</string>
+    <string name="stat_income">Pendapatan</string>
+
+    <string name="add_button">Tambah</string>
+</resources>
