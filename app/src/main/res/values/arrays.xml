@@ -4,4 +4,32 @@
         <item>Laki-laki</item>
         <item>Perempuan</item>
     </string-array>
+    <!-- String Spinner Bulan + Tahun -->
+    <string-array name="months_years">
+        <item>Januari 2025</item>
+        <item>Februari 2025</item>
+        <item>Maret 2025</item>
+        <item>April 2025</item>
+        <item>Mei 2025</item>
+        <item>Juni 2025</item>
+        <item>Juli 2025</item>
+        <item>Agustus 2025</item>
+        <item>September 2025</item>
+        <item>Oktober 2025</item>
+        <item>November 2025</item>
+        <item>Desember 2025</item>
+        <item>Januari 2026</item>
+        <item>Februari 2026</item>
+        <item>Maret 2026</item>
+        <item>April 2026</item>
+        <item>Mei 2026</item>
+        <item>Juni 2026</item>
+        <item>Juli 2026</item>
+        <item>Agustus 2026</item>
+        <item>September 2026</item>
+        <item>Oktober 2026</item>
+        <item>November 2026</item>
+        <item>Desember 2026</item>
+    </string-array>
+
 </resources>

@@ -12,9 +12,9 @@
         android:layout_height="64dp"
         android:background="@color/primary_color"
         android:gravity="center_vertical"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:layout_marginBottom="1dp">
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
         <TextView
             android:id="@+id/tv_penyewa_title"

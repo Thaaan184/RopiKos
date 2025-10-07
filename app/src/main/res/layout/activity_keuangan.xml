@@ -12,10 +12,9 @@
         android:layout_height="64dp"
         android:background="@color/primary_color"
         android:gravity="center_vertical"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:layout_marginBottom="16dp">
-
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
         <TextView
             android:id="@+id/tv_keuangan_title"
             android:layout_width="wrap_content"
@@ -121,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:entries="@array/months_years"
                     android:padding="8dp"
-                    android:background="@drawable/spinner_background" />
+                    android:background="@color/divider_color" />
             </LinearLayout>
 
             <!-- List / transaksi statis -->
