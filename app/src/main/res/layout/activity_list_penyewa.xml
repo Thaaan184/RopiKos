@@ -5,44 +5,102 @@
     android:layout_height="match_parent"
     android:background="@color/background_color">
 
-    <!-- List of Penyewa -->
-    <ListView
-        android:id="@+id/list_penyewa"
+    <!-- Header Penyewa dengan background biru full layar dan padding kecil -->
+    <LinearLayout
+        android:id="@+id/header_penyewa"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_navigation"
-        android:divider="@color/divider_color"
-        android:dividerHeight="1dp" />
+        android:layout_height="64dp"
+        android:background="@color/primary_color"
+        android:gravity="center_vertical"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:layout_marginBottom="1dp">
 
-    <!-- Floating Add Button -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation">
-
-        <Button
-            android:id="@+id/fab_add_penyewa"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            android:background="@drawable/fab_background"
-            android:text="+"
+        <TextView
+            android:id="@+id/tv_penyewa_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_penyewa"
             android:textColor="@android:color/white"
-            android:textSize="24sp" />
-    </FrameLayout>
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_navigation"
+        android:padding="16dp"
+        android:layout_below="@id/header_penyewa">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Dummy List of Penyewa -->
+            <LinearLayout
+                android:id="@+id/list_penyewa_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Item Penyewa 1 -->
+                <include layout="@layout/item_penyewa" />
+
+                <!-- Item Penyewa 2 -->
+                <include layout="@layout/item_penyewa">
+                    <TextView
+                        android:id="@+id/tv_nama_penyewa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Penyewa Budi"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tv_harga_sewa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rp 1.200.000"
+                        android:textSize="16sp"
+                        android:textColor="@color/green_color" />
+                </include>
+
+                <!-- Item Penyewa 3 -->
+                <include layout="@layout/item_penyewa">
+                    <TextView
+                        android:id="@+id/tv_nama_penyewa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Penyewa Ani"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tv_harga_sewa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rp 900.000"
+                        android:textSize="16sp"
+                        android:textColor="@color/green_color" />
+                </include>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
 
     <!-- Bottom Navigation Bar -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
-        style="@style/BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/primary_color"
+        style="@style/BottomNavigationView"
+        android:background="@android:color/white"
         app:menu="@menu/bottom_nav_menu"
         app:labelVisibilityMode="labeled"
         app:itemIconSize="24dp"
-        app:itemIconTint="@color/nav_item_color"
-        app:itemTextColor="@color/nav_item_color" />
+        app:itemIconTint="@android:color/black"
+        app:itemTextColor="@android:color/black" />
+
 </RelativeLayout>
