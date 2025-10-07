@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_dashboard"
+        android:icon="@drawable/ic_dashboard"
+        android:title="@string/tab_dashboard"
+        android:enabled="true" />
+    <item
+        android:id="@+id/nav_kamar"
+        android:icon="@drawable/ic_door"
+        android:title="@string/tab_kamar"
+        android:enabled="true" />
+    <item
+        android:id="@+id/nav_penyewa"
+        android:icon="@drawable/ic_person"
+        android:title="@string/tab_penyewa"
+        android:enabled="true" />
+    <item
+        android:id="@+id/nav_keuangan"
+        android:icon="@drawable/ic_wallet"
+        android:title="@string/tab_keuangan"
+        android:enabled="true" />
+</menu>

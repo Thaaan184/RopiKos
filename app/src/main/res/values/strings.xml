@@ -1,17 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Manajemen Kos</string>
-    <string name="dashboard_title">Dashboard</string>
-    <string name="menu_penyewa">Penyewa</string>
-    <string name="menu_kamar">Kamar</string>
-    <string name="menu_keuangan">Keuangan</string>
-
-    <string name="welcome_hello">Halo, Patan</string>
-    <string name="welcome_message">Selamat datang di Manajemen Kos</string>
-
-    <string name="stat_occupied">Terisi</string>
-    <string name="stat_vacant">Kosong</string>
-    <string name="stat_income">Pendapatan</string>
-
-    <string name="add_button">Tambah</string>
+    <string name="tab_dashboard">Dashboard</string>
+    <string name="tab_kamar">Kamar</string>
+    <string name="tab_penyewa">Penyewa</string>
+    <string name="tab_keuangan">Keuangan</string>
+    <string name="door_icon">Icon Pintu</string>
+    <string name="sample_nama_kamar">Nama Kamar</string>
+    <string name="sample_nomor_kamar">Nomor Kamar</string>
+    <string name="add_penyewa">+ Penyewa</string>
+    <string name="detail_kamar_title">Detail Kamar</string>
+    <string name="sample_detail_kamar">Detail sampel untuk kamar.</string>
+    <string name="hapus_kamar">Hapus Kamar</string>
+    <string name="edit_kamar">Edit Kamar</string>
+    <string name="tambah_kamar_title">Tambah Kamar</string>
+    <string name="hint_awalan">Awalan (e.g., A)</string>
+    <string name="hint_nama_unit">Nama Unit</string>
+    <string name="hint_angka_pertama">Angka Pertama</string>
+    <string name="hint_angka_terakhir">Angka Terakhir</string>
+    <string name="hint_harga">Harga</string>
+    <string name="hint_detail">Detail</string>
+    <string name="hint_max_penyewa">Max Penyewa</string>
+    <string name="simpan">Simpan</string>
+    <string name="person_icon">Icon Orang</string>
+    <string name="sample_nama_penyewa">Nama Penyewa</string>
+    <string name="sample_harga_sewa">Rp 1.000.000</string>
+    <string name="detail_penyewa_title">Detail Penyewa</string>
+    <string name="sample_nama">Nama: Sampel</string>
+    <string name="sample_whatsapp">Whatsapp: 08123456789</string>
+    <string name="foto_ktp">Foto KTP</string>
+    <string name="sample_deskripsi">Deskripsi sampel.</string>
+    <string name="edit_penyewa">Edit Penyewa</string>
+    <string name="konfirmasi_pembayaran">Konfirmasi Pembayaran</string>
+    <string name="keluar_unit">Keluar dari Unit</string>
+    <string name="edit_penyewa_title">Edit Penyewa</string>
+    <string name="hint_nama_penyewa">Nama Penyewa</string>
+    <string name="hint_nomor_whatsapp">Nomor Whatsapp</string>
+    <string name="upload_ktp">Upload Foto KTP/SIM</string>
+    <string name="hint_deskripsi">Deskripsi</string>
+    <string name="unit_sewa">Unit Sewa</string>
+    <string name="sample_detail_unit">Nama + Nomor Unit</string>
+    <string name="sample_harga">Harga: Rp 1.000.000</string>
+    <string name="hint_tanggal_masuk">Tanggal Masuk</string>
+    <string name="lain_lain">Lain-lain</string>
+    <string name="hint_diskon">Diskon</string>
+    <string name="hint_bayar_dp">Bayar DP</string>
+    <string name="hint_nama_layanan">Nama Layanan Tambahan</string>
+    <string name="hint_harga_layanan">Harga Layanan</string>
+    <string name="keuangan_title">Keuangan</string>
+    <!-- ... Dashboard ... -->
+    <string name="dashboard_title">RopiKos</string>
+    <string name="welcome_message">Selamat Datang!</string>
+    <string name="welcome_submessage">Kelola kamar dan penyewa Anda dengan mudah hari ini.</string>
+    <string name="total_kamar">Total Kamar</string>
+    <string name="sample_total_kamar">10</string>
+    <string name="total_penyewa">Total Penyewa</string>
+    <string name="sample_total_penyewa">8</string>
+    <string name="total_lunas">Total Lunas</string>
+    <string name="sample_total_lunas">6</string>
+    <string name="total_perbaikan">Total Perbaikan</string>
+    <string name="sample_total_perbaikan">2</string>
+    <string name="pendapatan_bulan_ini">Pendapatan Bulan Ini</string>
+    <string name="sample_pendapatan_bulan_ini">Rp 8.000.000</string>
+    <string name="sample_progress_info">75% dari target bulan ini</string>
 </resources>

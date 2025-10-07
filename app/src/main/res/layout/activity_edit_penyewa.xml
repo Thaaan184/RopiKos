@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_penyewa_title"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/et_nama_penyewa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_nama_penyewa" />
+
+        <EditText
+            android:id="@+id/et_nomor_whatsapp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_nomor_whatsapp"
+            android:inputType="phone" />
+
+        <Spinner
+            android:id="@+id/sp_jenis_kelamin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/jenis_kelamin" />
+
+        <!-- Upload Foto -->
+        <Button
+            android:id="@+id/btn_upload_ktp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/upload_ktp"
+            android:background="@drawable/button_selector" />
+
+        <EditText
+            android:id="@+id/et_deskripsi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_deskripsi"
+            android:inputType="textMultiLine" />
+
+        <!-- Unit Sewa -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/unit_sewa" />
+
+        <Spinner
+            android:id="@+id/sp_unit_sewa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_detail_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sample_detail_unit" />
+
+        <TextView
+            android:id="@+id/tv_harga_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sample_harga" />
+
+        <EditText
+            android:id="@+id/et_tanggal_masuk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_tanggal_masuk"
+            android:inputType="date" />
+
+        <!-- Lain-lain -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lain_lain"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/et_diskon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_diskon"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/et_bayar_dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_bayar_dp"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/et_nama_layanan_tambahan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_nama_layanan" />
+
+        <EditText
+            android:id="@+id/et_harga_layanan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_harga_layanan"
+            android:inputType="numberDecimal" />
+
+        <Button
+            android:id="@+id/btn_simpan_penyewa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/simpan"
+            android:background="@drawable/button_selector" />
+
+    </LinearLayout>
+</ScrollView>
