@@ -11,7 +11,7 @@
     <ImageView
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="@drawable/ic_money"
+        android:src="@drawable/ic_pendapatan"
         android:contentDescription="Icon Pemasukan"
         app:tint="@color/green_color" />
 
