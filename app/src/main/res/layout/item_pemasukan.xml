@@ -34,7 +34,7 @@
             android:id="@+id/tv_pemasukan_tanggal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="07/10/2025"
+            android:text="07/10/2025 s.d. 07/11/2025"
             android:textSize="14sp" />
     </LinearLayout>
 
