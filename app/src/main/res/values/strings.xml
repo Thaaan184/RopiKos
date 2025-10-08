@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">ropikost</string>
     <!-- Navigation Tab Titles -->
     <string name="tab_dashboard">Dashboard</string>
     <string name="tab_kamar">Kamar</string>
@@ -60,7 +61,7 @@
     <string name="keuangan_title">Keuangan</string>
 
     <!-- Dashboard Specific Strings -->
-    <string name="dashboard_title">RopiKos</string>
+    <string name="dashboard_title">RopiKost</string>
     <string name="welcome_message">Selamat Datang!</string>
     <string name="welcome_submessage">Kelola kamar dan penyewa Anda dengan mudah hari ini.</string>
     <string name="total_kamar">Total Kamar</string>
