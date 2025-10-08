@@ -18,25 +18,17 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
 
-        <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_back"
-            app:tint="@color/background_color"
-            android:contentDescription="icon back" />
-
         <TextView
+            android:id="@+id/tv_profile_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Profil Akun"
+            android:text="Profil"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Isi Scrollable -->
+    <!-- Konten Scrollable -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -48,9 +40,8 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Profil Pengguna -->
+            <!-- Profil Card -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/card_profile_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="8dp"
@@ -63,29 +54,29 @@
 
                     <ImageView
                         android:id="@+id/iv_profile"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:src="@drawable/ic_profile"
-                        android:contentDescription="Foto Profil" />
+                        android:layout_centerVertical="true" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/iv_profile"
+                        android:layout_centerVertical="true"
                         android:layout_marginStart="16dp"
-                        android:orientation="vertical"
-                        android:layout_centerVertical="true">
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_nama_user"
+                            android:id="@+id/tv_nama"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Admin Kost"
+                            android:text="SabilGemink"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tv_alamat_user"
+                            android:id="@+id/tv_alamat"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Jl. Kweni No.83, RT.1/RW.3, Balekambang, Kec. Kramat jati, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13530" />
@@ -98,32 +89,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Informasi Aplikasi"
-                android:textStyle="bold"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/card_faq"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="8dp"
-                android:layout_marginBottom="8dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true">
+                android:layout_marginBottom="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_faq"
-                        android:tint="@color/primary_color"
                         android:layout_marginEnd="16dp" />
 
                     <TextView
@@ -135,27 +121,22 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/card_about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="8dp"
-                android:layout_marginBottom="24dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true">
+                android:layout_marginBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_info"
-                        android:tint="@color/primary_color"
                         android:layout_marginEnd="16dp" />
 
                     <TextView
@@ -166,37 +147,33 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Bagian Akun -->
+            <!-- Akun -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Akun"
-                android:textStyle="bold"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
 
+            <!-- Pengaturan Akun -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/card_pengaturan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="8dp"
-                android:layout_marginBottom="16dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true">
+                android:layout_marginBottom="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_wrench"
-                        android:tint="@color/primary_color"
                         android:layout_marginEnd="16dp" />
 
                     <TextView
@@ -207,16 +184,16 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Logout -->
             <Button
                 android:id="@+id/btn_logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Logout"
-                android:textColor="@android:color/white"
                 android:backgroundTint="@color/red_color"
-                app:cardCornerRadius="10dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp" />
+                android:textColor="@android:color/white"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
