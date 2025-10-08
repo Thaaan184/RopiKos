@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="7dp"
-            android:text="Tambah Tipe Unit"
+            android:text="Tambah Kamar"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -46,7 +46,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Card for Basic Info -->
+            <!-- Informasi Kamar -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,24 +62,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Informasi Tipe Unit"
+                        android:text="Informasi Kamar"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="16dp"/>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:hint="Nama Tipe Unit">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_nama_tipe_unit"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="VIP"/>
-                    </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -92,13 +78,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
-                            android:text="Kamar"/>
+                            android:text="Kamar AC"/>
                     </com.google.android.material.textfield.TextInputLayout>
-
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Card for Unit Details -->
+            <!-- Detail Unit -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -119,6 +104,7 @@
                         android:textStyle="bold"
                         android:layout_marginBottom="16dp"/>
 
+                    <!-- Nomor Unit -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -126,26 +112,53 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp"/>
 
-                    <RadioGroup
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:weightSum="2"
                         android:layout_marginBottom="8dp">
 
-                        <RadioButton
-                            android:id="@+id/rb_nomor_unit_1"
-                            android:layout_width="wrap_content"
+                        <!-- Kolom 1: Awalan Unit -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:text="001"
-                            android:checked="true"/>
-                        <RadioButton
-                            android:id="@+id/rb_nomor_unit_2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="A01"/>
-                    </RadioGroup>
+                            android:hint="Awalan (contoh: A, B, KK, #)">
 
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_awalan_unit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapCharacters"
+                                android:maxLines="1"
+                                android:text="A"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Spacer -->
+                        <Space
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"/>
+
+                        <!-- Kolom 2: Nomor Unit -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:hint="Nomor (contoh: 01, 2, 20)">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_nomor_unit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:text="01"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <!-- Jumlah Unit -->
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
@@ -161,6 +174,7 @@
                             android:text="5"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- Keterangan -->
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
@@ -177,6 +191,7 @@
                             android:text="Kamar dengan view taman, AC, dan kamar mandi dalam."/>
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- Maksimal Penyewa -->
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
@@ -194,7 +209,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Card for Pricing -->
+            <!-- Harga Sewa -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -262,7 +277,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-
+            <!-- Tombol Simpan -->
             <Button
                 android:id="@+id/btn_simpan"
                 android:layout_width="match_parent"

@@ -6,5 +6,6 @@
     <color name="green_color">#4CAF50</color>
     <color name="red_color">#F44336</color>
     <color name="nav_item_color">#FFFFFF</color>
+    <color name="black">#000000</color>
 </resources>
 
