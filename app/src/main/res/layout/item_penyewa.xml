@@ -1,46 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="16dp"
-    android:background="@drawable/item_selector">
-
-    <!-- Simbol atau Icon Penyewa -->
-    <ImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_person"
-        android:contentDescription="@string/person_icon"
-        app:tint="@color/primary_color" />
-
-    <!-- Harga Sewa dengan Warna -->
+    android:layout_margin="0.5dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="6dp"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@drawable/item_selector">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_person"
+            android:contentDescription="@string/person_icon"
+            app:tint="@color/primary_color" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_nama_penyewa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sample_nama_penyewa"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_nama_penyewa"
+            android:id="@+id/tv_harga_sewa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sample_nama_penyewa"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="10dp"
+            android:text="@string/sample_harga_sewa"
+            android:textSize="16sp"
+            android:textColor="@color/green_color"
+            android:layout_gravity="center_vertical" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_harga_sewa"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/sample_harga_sewa"
-        android:textSize="16sp"
-        android:textColor="@color/green_color" /> <!-- or @color/red_color -->
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>
