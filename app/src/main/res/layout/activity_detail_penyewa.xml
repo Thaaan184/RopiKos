@@ -17,21 +17,20 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
 
-        <TextView
-            android:id="@+id/tv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="&lt;"
-            android:textColor="@android:color/white"
-            android:textSize="28sp"
-            android:textStyle="bold"/>
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_back"
+            android:layout_marginStart="7dp"
+            android:contentDescription="icon back"
+            app:tint="@color/background_color" />
 
         <TextView
             android:id="@+id/tv_detail_penyewa_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="7dp"
             android:text="Detail Penyewa"
             android:textColor="@android:color/white"
             android:textSize="24sp"
