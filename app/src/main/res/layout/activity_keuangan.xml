@@ -15,17 +15,31 @@
         android:orientation="horizontal"
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
+
+        <!-- Judul -->
         <TextView
             android:id="@+id/tv_keuangan_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/tab_keuangan"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
+
+        <!-- Tombol Profil -->
+        <ImageButton
+            android:id="@+id/btn_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="1dp"
+            android:src="@drawable/ic_profile"
+            android:contentDescription="profile_button"
+            app:tint="@android:color/white" />
     </LinearLayout>
 
-    <!-- Dua Card Bersebelahan -->
+    <!-- Konten Keuangan -->
     <LinearLayout
         android:id="@+id/card_container"
         android:layout_width="match_parent"
@@ -85,7 +99,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Scrollable Content (termasuk Transaksi + Spinner + List) -->
+    <!-- ScrollView -->
     <ScrollView
         android:id="@+id/scroll_content"
         android:layout_width="match_parent"
@@ -99,7 +113,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Transaksi + Spinner diletakkan di dalam ScrollView -->
+            <!-- Filter -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -123,17 +137,11 @@
                     android:background="@color/divider_color" />
             </LinearLayout>
 
-            <!-- List / transaksi statis -->
+            <!-- List Transaksi -->
             <include layout="@layout/item_pemasukan" />
             <include layout="@layout/item_pengeluaran" />
             <include layout="@layout/item_pemasukan" />
             <include layout="@layout/item_pengeluaran" />
-            <include layout="@layout/item_pemasukan" />
-            <include layout="@layout/item_pengeluaran" />
-            <include layout="@layout/item_pemasukan" />
-            <include layout="@layout/item_pengeluaran" />            <include layout="@layout/item_pemasukan" />
-            <include layout="@layout/item_pengeluaran" />
-
         </LinearLayout>
     </ScrollView>
 
@@ -150,5 +158,4 @@
         app:itemIconSize="24dp"
         app:itemIconTint="@android:color/black"
         app:itemTextColor="@android:color/black" />
-
 </RelativeLayout>

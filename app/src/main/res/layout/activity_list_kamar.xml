@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_color">
 
-    <!-- Header Kamar dengan background biru full layar dan padding kecil -->
+    <!-- Header Kamar -->
     <LinearLayout
         android:id="@+id/header_kamar"
         android:layout_width="match_parent"
@@ -16,14 +16,27 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
 
+        <!-- Judul -->
         <TextView
             android:id="@+id/tv_kamar_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/tab_kamar"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
+
+        <!-- Tombol Profil -->
+        <ImageButton
+            android:id="@+id/btn_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="1dp"
+            android:src="@drawable/ic_profile"
+            android:contentDescription="profile_button"
+            app:tint="@android:color/white" />
     </LinearLayout>
 
     <!-- Scrollable Content -->
@@ -31,43 +44,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_navigation"
-        android:padding="16dp"
-        android:layout_below="@id/header_kamar">
+        android:layout_below="@id/header_kamar"
+        android:padding="16dp">
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/list_kamar_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <!-- Dummy List of Kamar -->
-            <LinearLayout
-                android:id="@+id/list_kamar_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-                <include layout="@layout/item_kamar"/>
-            </LinearLayout>
-
-        </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <include layout="@layout/item_kamar"/>
+            <include layout="@layout/item_kamar"/>
+            <include layout="@layout/item_kamar"/>
+            <include layout="@layout/item_kamar"/>
+            <include layout="@layout/item_kamar"/>
+            <include layout="@layout/item_kamar"/>
+        </LinearLayout>
     </ScrollView>
 
-    <!-- Bottom Navigation Bar -->
+    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -80,5 +74,4 @@
         app:itemIconSize="24dp"
         app:itemIconTint="@android:color/black"
         app:itemTextColor="@android:color/black" />
-
 </RelativeLayout>

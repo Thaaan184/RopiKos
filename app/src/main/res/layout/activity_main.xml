@@ -16,14 +16,27 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
 
+        <!-- Judul Dashboard -->
         <TextView
             android:id="@+id/tv_dashboard_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/dashboard_title"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
+
+        <!-- Tombol Profil di Kanan -->
+        <ImageButton
+            android:id="@+id/btn_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="1dp"
+            android:src="@drawable/ic_profile"
+            android:contentDescription="profile_button"
+            app:tint="@android:color/white" />
     </LinearLayout>
 
     <!-- Scrollable Content -->
@@ -58,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/welcome_message"
                         android:textSize="18sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -255,5 +268,4 @@
         app:itemIconSize="24dp"
         app:itemIconTint="@android:color/black"
         app:itemTextColor="@android:color/black" />
-
 </RelativeLayout>
