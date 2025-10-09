@@ -160,7 +160,7 @@
                 android:text="Register"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
-                android:backgroundTint="#0D47A1"
+                android:backgroundTint="@color/primary_color"
                 android:layout_marginTop="20dp" />
         </LinearLayout>
 
