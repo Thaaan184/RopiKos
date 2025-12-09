@@ -40,21 +40,28 @@
     </LinearLayout>
 
     <!-- Scrollable Content -->
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_navigation"
         android:layout_below="@id/header_penyewa"
-        android:padding="16dp">
-        <!-- Jika list di klik terlempar kek detail penyewa -->
+        android:fillViewport="true">
+
         <LinearLayout
-            android:id="@+id/list_penyewa_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <include layout="@layout/item_penyewa"/>
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_penyewa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <!-- Floating Action Button ini lempar ke fungsi tambah penyewa-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
