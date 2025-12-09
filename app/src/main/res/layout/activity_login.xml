@@ -138,6 +138,8 @@
             android:text="Don't have account? Create now"
             android:textColor="#111111"
             android:textSize="14sp"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="24dp"
+            android:id="@+id/tv_register_link"
+            />
     </LinearLayout>
 </ScrollView>

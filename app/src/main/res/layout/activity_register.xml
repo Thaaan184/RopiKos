@@ -171,6 +171,8 @@
             android:text="Sudah punya akun? Masuk sekarang"
             android:textColor="#111111"
             android:textSize="14sp"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="24dp"
+            android:id="@+id/tv_login_link"
+            />
     </LinearLayout>
 </ScrollView>
