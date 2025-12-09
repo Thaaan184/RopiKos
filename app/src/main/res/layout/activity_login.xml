@@ -12,7 +12,6 @@
         android:gravity="center_horizontal"
         android:padding="24dp">
 
-        <!-- ===== Header (Logo + Tagline) ===== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,8 +27,6 @@
                 android:contentDescription="Logo App"
                 android:src="@drawable/logo" />
 
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,21 +35,16 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- ===== Card Login ===== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:background="@android:color/white"
             android:padding="24dp"
             android:elevation="6dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="30dp"
-            android:backgroundTintMode="src_over"
-            android:clipToOutline="true"
             android:background="@drawable/bg_card_rounded">
 
-            <!-- Title -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,7 +54,7 @@
                 android:textColor="#111111"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="24dp" />
-            <!-- Username -->
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,12 +62,12 @@
                 android:textStyle="bold"
                 android:textColor="#333333"
                 android:layout_marginBottom="4dp" />
-            <!-- Username -->
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Username">
+                android:hint="Masukkan Username">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_username"
@@ -84,7 +76,6 @@
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Password -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,14 +84,13 @@
                 android:textColor="#333333"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="4dp" />
-            <!-- Password -->
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
-                app:endIconMode="password_toggle"
-                android:layout_marginTop="12dp">
+                android:hint="Masukkan Password"
+                app:endIconMode="password_toggle">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_password"
@@ -109,8 +99,8 @@
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Forgot Password -->
             <TextView
+                android:id="@+id/tv_forgot_pass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Forgot?"
@@ -119,7 +109,6 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="8dp" />
 
-            <!-- Login Button -->
             <Button
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
@@ -131,15 +120,13 @@
                 android:layout_marginTop="16dp" />
         </LinearLayout>
 
-        <!-- Bottom Link -->
         <TextView
+            android:id="@+id/tv_register_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Don't have account? Create now"
+            android:text="Belum punya akun? Daftar sekarang"
             android:textColor="#111111"
             android:textSize="14sp"
-            android:layout_marginBottom="24dp"
-            android:id="@+id/tv_register_link"
-            />
+            android:layout_marginBottom="24dp" />
     </LinearLayout>
 </ScrollView>
