@@ -80,7 +80,7 @@
                         android:background="#ECECEC"
                         android:scaleType="centerInside"
                         android:src="@drawable/ic_person"
-                        android:tint="#2196F3"
+                        app:tint="#2196F3"
                         android:contentDescription="Foto Profil" />
 
                     <com.google.android.material.textfield.TextInputLayout
