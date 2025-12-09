@@ -2,108 +2,115 @@ package com.example.ropikos;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Deklarasi Variabel UI sesuai Mockup (Gambar 3)
+    // UI Components untuk Dashboard Stats
     private TextView tvTotalKamar, tvTotalPenyewa, tvTotalLunas, tvTotalPerbaikan;
-    private TextView tvPendapatanBulanIni, tvPersentaseTarget;
-    private ProgressBar progressBarTarget;
+    private TextView tvPendapatan, tvPendapatanDesc;
+    private ProgressBar pbPendapatan;
+    private ImageButton btnProfile;
     private BottomNavigationView bottomNavigationView;
-
-    private DatabaseHelper dbHelper;
-    private final double TARGET_PENDAPATAN = 10000000; // Contoh target hardcoded atau ambil dari settings
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); // Pastikan layout XML sesuai
+        setContentView(R.layout.activity_main);
 
-        // Inisialisasi Database
-        dbHelper = new DatabaseHelper(this);
-
-        // Inisialisasi Komponen UI
         initViews();
-
-        // Setup Navigasi Bawah (FR-15)
         setupBottomNavigation();
-    }
 
-    // FR-17: Pembaruan Otomatis Statistik
-    // Data dimuat ulang setiap kali user kembali ke halaman ini (setelah edit/tambah data)
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadDashboardData();
+        // Memuat data statistik Dashboard (CRUD READ - Aggregation)
+        loadDashboardStats();
+
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: Intent ke ProfileActivity
+                Toast.makeText(MainActivity.this, "Fitur Profil", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initViews() {
-        tvTotalKamar = findViewById(R.id.tv_total_kamar);
-        tvTotalPenyewa = findViewById(R.id.tv_total_penyewa);
-        tvTotalLunas = findViewById(R.id.tv_total_lunas);
-        tvTotalPerbaikan = findViewById(R.id.tv_total_perbaikan);
-        tvPendapatanBulanIni = findViewById(R.id.tv_pendapatan_value);
-        tvPersentaseTarget = findViewById(R.id.tv_target_persen);
-        progressBarTarget = findViewById(R.id.progress_bar_pendapatan);
+        tvTotalKamar = findViewById(R.id.tv_total_kamar_value);
+        tvTotalPenyewa = findViewById(R.id.tv_total_penyewa_value);
+        tvTotalLunas = findViewById(R.id.tv_total_lunas_value);
+        tvTotalPerbaikan = findViewById(R.id.tv_total_perbaikan_value);
+        tvPendapatan = findViewById(R.id.tv_pendapatan_value);
+        tvPendapatanDesc = findViewById(R.id.tv_pendapatan_desc);
+        pbPendapatan = findViewById(R.id.pb_pendapatan);
+
+        btnProfile = findViewById(R.id.btn_profile);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
     }
 
-    private void loadDashboardData() {
-        // Mengambil data dari SQLite (FR-05)
-        int totalKamar = dbHelper.getTotalKamar();
-        int totalPenyewa = dbHelper.getTotalPenyewa();
-        int totalLunas = dbHelper.getTotalLunasBulanIni();
-        int totalPerbaikan = dbHelper.getTotalPerbaikan();
-        double pendapatan = dbHelper.getPendapatanBulanIni();
+    private void setupBottomNavigation() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
 
-        // Update UI Text
+                if (itemId == R.id.nav_dashboard) {
+                    // Sudah di dashboard
+                    return true;
+                } else if (itemId == R.id.nav_kamar) {
+                    // TODO: Intent ke KamarActivity
+                    Toast.makeText(MainActivity.this, "Menu Kamar", Toast.LENGTH_SHORT).show();
+                    return true;
+                } else if (itemId == R.id.nav_penyewa) {
+                    // TODO: Intent ke PenyewaActivity
+                    Toast.makeText(MainActivity.this, "Menu Penyewa", Toast.LENGTH_SHORT).show();
+                    return true;
+                } else if (itemId == R.id.nav_keuangan) {
+                    // TODO: Intent ke KeuanganActivity
+                    Toast.makeText(MainActivity.this, "Menu Keuangan", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    // Method untuk load data dari DB ke Dashboard
+    private void loadDashboardStats() {
+        // TODO: Panggil DBHelper untuk ambil Count Kamar, Penyewa, Sum Pendapatan, dll.
+
+        // --- Mock Data (Data Palsu Sementara) ---
+        int totalKamar = 10;
+        int totalPenyewa = 8;
+        int totalLunas = 6;
+        int totalPerbaikan = 2;
+        int pendapatan = 8000000;
+        int target = 10000000; // Misal target 10juta
+
+        // Update UI
         tvTotalKamar.setText(String.valueOf(totalKamar));
         tvTotalPenyewa.setText(String.valueOf(totalPenyewa));
         tvTotalLunas.setText(String.valueOf(totalLunas));
         tvTotalPerbaikan.setText(String.valueOf(totalPerbaikan));
 
-        // Format Mata Uang (Rupiah)
-        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
-        tvPendapatanBulanIni.setText(formatRupiah.format(pendapatan));
+        tvPendapatan.setText("Rp " + String.format("%,d", pendapatan).replace(',', '.'));
 
-        // Update Logic Progress Bar Target
-        int percentage = (int) ((pendapatan / TARGET_PENDAPATAN) * 100);
-        if (percentage > 100) percentage = 100;
-
-        progressBarTarget.setProgress(percentage);
-        tvPersentaseTarget.setText(percentage + "% dari target bulan ini");
+        // Hitung progress
+        int percentage = (int) (((double) pendapatan / target) * 100);
+        pbPendapatan.setProgress(percentage);
+        tvPendapatanDesc.setText(percentage + "% dari target bulan ini");
     }
 
-    private void setupBottomNavigation() {
-        // FR-15: Navigasi Bawah berisi Dashboard, Kamar, Penyewa, Pendapatan
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-
-            if (itemId == R.id.nav_dashboard) {
-                return true; // Sudah di dashboard
-            } else if (itemId == R.id.nav_kamar) {
-                // Intent ke KamarActivity (List Kamar)
-                startActivity(new Intent(this, KamarActivity.class));
-                return true;
-            } else if (itemId == R.id.nav_penyewa) {
-                // Intent ke PenyewaActivity (List Penyewa)
-                startActivity(new Intent(this, PenyewaActivity.class));
-                return true;
-            } else if (itemId == R.id.nav_pendapatan) {
-                // Intent ke PendapatanActivity (Laporan)
-                startActivity(new Intent(this, PendapatanActivity.class));
-                return true;
-            }
-            return false;
-        });
-
-        // Set default selection
-        bottomNavigationView.setSelectedItemId(R.id.nav_dashboard);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh data saat kembali ke halaman ini (misal habis nambah kamar)
+        loadDashboardStats();
     }
 }

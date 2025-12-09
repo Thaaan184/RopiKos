@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color">
+    android:background="#F4F7FC">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header_dashboard"
         android:layout_width="match_parent"
@@ -16,35 +15,32 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
 
-        <!-- Judul Dashboard -->
         <TextView
             android:id="@+id/tv_dashboard_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/dashboard_title"
+            android:text="RopiKost"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <!-- Tombol Profil di Kanan -->
         <ImageButton
             android:id="@+id/btn_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="1dp"
+            android:padding="8dp"
             android:src="@drawable/ic_profile"
-            android:contentDescription="profile_button"
-            app:tint="@android:color/white" />
+            app:tint="@android:color/white"
+            android:contentDescription="Profile" />
     </LinearLayout>
 
-    <!-- Scrollable Content -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom_navigation"
         android:layout_below="@id/header_dashboard"
+        android:layout_above="@+id/bottom_navigation"
         android:padding="16dp">
 
         <LinearLayout
@@ -52,13 +48,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Card Selamat Datang -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
+                app:cardElevation="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -69,152 +64,127 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/welcome_message"
+                        android:text="Selamat Datang!"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/welcome_submessage"
-                        android:textSize="14sp" />
+                        android:text="Kelola kamar dan penyewa Anda dengan mudah hari ini."
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Card Statistik -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
+                app:cardElevation="2dp">
 
                 <LinearLayout
-                    android:id="@+id/stats_grid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- Row 1 -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="2"
-                        android:layout_marginBottom="8dp">
+                        android:layout_marginBottom="16dp">
 
                         <LinearLayout
-                            android:id="@+id/card_total_kamar"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginEnd="8dp"
                             android:orientation="vertical">
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/total_kamar"
-                                android:textSize="16sp"
+                                android:text="Total Kamar"
                                 android:textStyle="bold" />
-
                             <TextView
+                                android:id="@+id/tv_total_kamar_value"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/sample_total_kamar"
-                                android:textColor="@color/green_color"
-                                android:textSize="14sp" />
+                                android:text="0"
+                                android:textSize="16sp" />
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/card_total_penyewa"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginStart="8dp"
                             android:orientation="vertical">
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/total_penyewa"
-                                android:textSize="16sp"
+                                android:text="Total Penyewa"
                                 android:textStyle="bold" />
-
                             <TextView
+                                android:id="@+id/tv_total_penyewa_value"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/sample_total_penyewa"
-                                android:textColor="@color/green_color"
-                                android:textSize="14sp" />
+                                android:text="0"
+                                android:textSize="16sp" />
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Row 2 -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:orientation="horizontal">
 
                         <LinearLayout
-                            android:id="@+id/card_total_lunas"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginEnd="8dp"
                             android:orientation="vertical">
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/total_lunas"
-                                android:textSize="16sp"
+                                android:text="Total Lunas"
                                 android:textStyle="bold" />
-
                             <TextView
+                                android:id="@+id/tv_total_lunas_value"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/sample_total_lunas"
+                                android:text="0"
                                 android:textColor="@color/green_color"
-                                android:textSize="14sp" />
+                                android:textSize="16sp" />
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/card_total_perbaikan"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginStart="8dp"
                             android:orientation="vertical">
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/total_perbaikan"
-                                android:textSize="16sp"
+                                android:text="Total Perbaikan"
                                 android:textStyle="bold" />
-
                             <TextView
+                                android:id="@+id/tv_total_perbaikan_value"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/sample_total_perbaikan"
+                                android:text="0"
                                 android:textColor="@color/red_color"
-                                android:textSize="14sp" />
+                                android:textSize="16sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Card Pendapatan -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/pendapatan_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="80dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="4dp"
-                android:layout_marginBottom="16dp">
+                app:cardElevation="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -225,47 +195,51 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/pendapatan_bulan_ini"
-                        android:textSize="18sp"
+                        android:text="Pendapatan Bulan Ini"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tv_pendapatan_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/sample_pendapatan_bulan_ini"
+                        android:text="Rp 0"
                         android:textColor="@color/green_color"
-                        android:textSize="16sp" />
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp" />
 
                     <ProgressBar
+                        android:id="@+id/pb_pendapatan"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:progress="75"
-                        android:progressDrawable="@drawable/progress_background" />
+                        android:progress="0"
+                        android:max="100" />
 
                     <TextView
+                        android:id="@+id/tv_pendapatan_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="0% dari target bulan ini"
+                        android:textSize="12sp"
                         android:layout_marginTop="4dp"
-                        android:text="@string/sample_progress_info"
-                        android:textSize="14sp" />
+                        android:textColor="#888888" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
 
-    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        style="@style/BottomNavigationView"
         android:background="@android:color/white"
         app:menu="@menu/bottom_nav_menu"
-        app:labelVisibilityMode="labeled"
-        app:itemIconSize="24dp"
-        app:itemIconTint="@android:color/black"
-        app:itemTextColor="@android:color/black" />
+        app:itemIconTint="@color/primary_color"
+        app:itemTextColor="@color/primary_color"
+        app:labelVisibilityMode="labeled" />
+
 </RelativeLayout>
