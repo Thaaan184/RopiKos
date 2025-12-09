@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
         dbHelper = new DBHelper(this);
 
-        // Init Views
         tvTotalKamar = findViewById(R.id.tv_total_kamar_value);
         tvTotalPenyewa = findViewById(R.id.tv_total_penyewa_value);
         tvTotalLunas = findViewById(R.id.tv_total_lunas_value);
@@ -40,11 +39,7 @@ public class MainActivity extends AppCompatActivity {
         pbPendapatan = findViewById(R.id.pb_pendapatan);
         btnProfile = findViewById(R.id.btn_profile);
 
-        // Profile Button Logic
-        btnProfile.setOnClickListener(v -> {
-            // Intent ke ProfileActivity (Jika sudah ada)
-            Toast.makeText(this, "Ke Menu Profil", Toast.LENGTH_SHORT).show();
-        });
+        btnProfile.setOnClickListener(v -> Toast.makeText(this, "Menu Profil", Toast.LENGTH_SHORT).show());
 
         setupBottomNavigation();
     }
@@ -56,21 +51,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadDashboardData() {
-        // Ambil data statistik dari DBHelper
         int totalKamar = dbHelper.getTotalKamar();
         int totalPenyewa = dbHelper.getTotalPenyewa();
         int totalPerbaikan = dbHelper.getTotalPerbaikan();
-        int totalLunas = dbHelper.getTotalLunas(); // Logic pelunasan
+        int totalLunas = dbHelper.getTotalLunas();
 
-        // Set Text
         tvTotalKamar.setText(String.valueOf(totalKamar));
         tvTotalPenyewa.setText(String.valueOf(totalPenyewa));
         tvTotalLunas.setText(String.valueOf(totalLunas));
         tvTotalPerbaikan.setText(String.valueOf(totalPerbaikan));
 
-        // Simulasi Pendapatan (Nanti diganti real logic)
         double pendapatan = dbHelper.getPendapatanBulanIni();
-        double target = 5000000; // Contoh target
+        double target = 5000000;
         int progress = (int) ((pendapatan / target) * 100);
 
         tvPendapatanValue.setText(formatRupiah(pendapatan));
@@ -80,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupBottomNavigation() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.nav_dashboard); // Set active item
+        bottomNavigationView.setSelectedItemId(R.id.nav_dashboard);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();

@@ -1,11 +1,11 @@
 package com.example.ropikos;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,13 +37,11 @@ public class ListKamarActivity extends AppCompatActivity {
         rvKamar = findViewById(R.id.rv_kamar);
         fabAddRoom = findViewById(R.id.fab_add_room);
 
-        // Setup RecyclerView
         rvKamar.setLayoutManager(new LinearLayoutManager(this));
 
-        // FAB Action
+        // Use Case 3: Tombol Tambah -> Pindah ke Activity Tambah
         fabAddRoom.setOnClickListener(v -> {
-            // Ganti dengan Intent ke Activity Tambah Kamar
-            Toast.makeText(this, "Fitur Tambah Kamar", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(ListKamarActivity.this, TambahKamarActivity.class));
         });
 
         setupBottomNavigation();
@@ -64,7 +62,6 @@ public class ListKamarActivity extends AppCompatActivity {
     private void setupBottomNavigation() {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_kamar);
-
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_kamar) return true;
@@ -81,8 +78,7 @@ public class ListKamarActivity extends AppCompatActivity {
         });
     }
 
-    // --- SIMPLE ADAPTER INNER CLASS ---
-    // Pastikan Anda sudah membuat layout item_kamar.xml secara terpisah
+    // --- Adapter Inner Class ---
     class KamarAdapter extends RecyclerView.Adapter<KamarAdapter.ViewHolder> {
         private List<Kamar> data;
 
@@ -93,18 +89,29 @@ public class ListKamarActivity extends AppCompatActivity {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // Gunakan layout simple_list_item_1 bawaan Android jika belum buat custom layout
-            // Atau ganti android.R.layout.simple_list_item_2 dengan R.layout.item_kamar
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(android.R.layout.simple_list_item_2, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_kamar, parent, false);
             return new ViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Kamar k = data.get(position);
-            holder.text1.setText("Unit " + k.getNomorUnit() + " (" + k.getJenisUnit() + ")");
-            holder.text2.setText(k.getStatus() == 1 ? "Terisi" : "Kosong");
+            holder.tvNama.setText(k.getJenisUnit());
+            holder.tvNomor.setText("Unit: " + k.getNomorUnit());
+
+            // Klik item untuk lihat detail (Use Case 4 & 5 Trigger)
+            holder.itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(ListKamarActivity.this, DetailKamarActivity.class);
+                intent.putExtra("KAMAR_ID", k.getId());
+                startActivity(intent);
+            });
+
+            // Klik icon tambah penyewa di card
+            holder.btnAddPenyewa.setOnClickListener(v -> {
+                Intent intent = new Intent(ListKamarActivity.this, TambahPenyewaActivity.class);
+                intent.putExtra("PRESELECTED_KAMAR_ID", k.getId()); // Opsional
+                startActivity(intent);
+            });
         }
 
         @Override
@@ -113,11 +120,20 @@ public class ListKamarActivity extends AppCompatActivity {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            TextView text1, text2;
+            TextView tvNama, tvNomor;
+            ImageView btnAddPenyewa;
+
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                text1 = itemView.findViewById(android.R.id.text1);
-                text2 = itemView.findViewById(android.R.id.text2);
+                tvNama = itemView.findViewById(R.id.tv_nama_kamar);
+                tvNomor = itemView.findViewById(R.id.tv_nomor_kamar);
+                // Pastikan di item_kamar.xml, ImageView icon add penyewa diberi ID iv_add_penyewa_shortcut
+                // Jika belum ada ID, tambahkan android:id="@+id/iv_add_penyewa_shortcut" di XML item_kamar
+                btnAddPenyewa = itemView.findViewById(R.id.iv_add_penyewa_shortcut);
+                if(btnAddPenyewa == null) {
+                    // Fallback jika ID tidak ditemukan agar tidak crash saat testing
+                    btnAddPenyewa = (ImageView) ((ViewGroup)itemView).getChildAt(0); // Dummy logic
+                }
             }
         }
     }

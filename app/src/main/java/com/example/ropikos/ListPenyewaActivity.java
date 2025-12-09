@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,8 +36,9 @@ public class ListPenyewaActivity extends AppCompatActivity {
 
         rvPenyewa.setLayoutManager(new LinearLayoutManager(this));
 
+        // Use Case 6 Trigger
         fabAddRent.setOnClickListener(v -> {
-            Toast.makeText(this, "Fitur Tambah Penyewa", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(ListPenyewaActivity.this, TambahPenyewaActivity.class));
         });
 
         setupBottomNavigation();
@@ -54,7 +54,6 @@ public class ListPenyewaActivity extends AppCompatActivity {
     private void setupBottomNavigation() {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_penyewa);
-
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_penyewa) return true;
@@ -71,36 +70,37 @@ public class ListPenyewaActivity extends AppCompatActivity {
         });
     }
 
-    // Simple Adapter
     class PenyewaAdapter extends RecyclerView.Adapter<PenyewaAdapter.ViewHolder> {
         private List<Penyewa> data;
-
         public PenyewaAdapter(List<Penyewa> data) { this.data = data; }
 
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(android.R.layout.simple_list_item_2, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_penyewa, parent, false);
             return new ViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Penyewa p = data.get(position);
-            holder.text1.setText(p.getNama());
-            holder.text2.setText("WA: " + p.getWhatsapp());
+            holder.tvNama.setText(p.getNama());
+
+            // Klik item untuk Detail (Use Case 7 & 8 Trigger)
+            holder.itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(ListPenyewaActivity.this, DetailPenyewaActivity.class);
+                intent.putExtra("PENYEWA_ID", p.getId());
+                startActivity(intent);
+            });
         }
 
-        @Override
-        public int getItemCount() { return data.size(); }
+        @Override public int getItemCount() { return data.size(); }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            TextView text1, text2;
+            TextView tvNama;
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                text1 = itemView.findViewById(android.R.id.text1);
-                text2 = itemView.findViewById(android.R.id.text2);
+                tvNama = itemView.findViewById(R.id.tv_nama_penyewa);
             }
         }
     }
