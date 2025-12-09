@@ -209,12 +209,13 @@ public class DBHelper extends SQLiteOpenHelper {
         User user = null;
         if (cursor != null && cursor.moveToFirst()) {
             user = new User();
-            user.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_USER_ID)));
-            user.setFullname(cursor.getString(cursor.getColumnIndex(COLUMN_USER_FULLNAME)));
-            user.setUsername(cursor.getString(cursor.getColumnIndex(COLUMN_USER_USERNAME)));
-            user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
-            user.setPhoneNumber(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PHONE)));
-            user.setAddress(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ADDRESS)));
+            // GANTI getColumnIndex -> getColumnIndexOrThrow
+            user.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID)));
+            user.setFullname(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_FULLNAME)));
+            user.setUsername(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_USERNAME)));
+            user.setPassword(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_PASSWORD)));
+            user.setPhoneNumber(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_PHONE)));
+            user.setAddress(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_ADDRESS)));
             cursor.close();
         }
         return user;
@@ -274,19 +275,20 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Kamar kamar = new Kamar();
-                kamar.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_KAMAR_ID)));
-                kamar.setJenisUnit(cursor.getString(cursor.getColumnIndex(COLUMN_KAMAR_JENIS_UNIT)));
-                kamar.setNomorUnit(cursor.getString(cursor.getColumnIndex(COLUMN_KAMAR_NOMOR_UNIT)));
-                kamar.setKeterangan(cursor.getString(cursor.getColumnIndex(COLUMN_KAMAR_KETERANGAN)));
-                kamar.setMaksPenyewa(cursor.getInt(cursor.getColumnIndex(COLUMN_KAMAR_MAKS_PENYEWA)));
-                kamar.setHarga1Bulan(cursor.getDouble(cursor.getColumnIndex(COLUMN_KAMAR_HARGA_1BULAN)));
-                kamar.setHarga3Bulan(cursor.getDouble(cursor.getColumnIndex(COLUMN_KAMAR_HARGA_3BULAN)));
-                kamar.setHarga6Bulan(cursor.getDouble(cursor.getColumnIndex(COLUMN_KAMAR_HARGA_6BULAN)));
-                kamar.setStatus(cursor.getInt(cursor.getColumnIndex(COLUMN_KAMAR_STATUS)));
+                // GANTI getColumnIndex -> getColumnIndexOrThrow
+                kamar.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_ID)));
+                kamar.setJenisUnit(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_JENIS_UNIT)));
+                kamar.setNomorUnit(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_NOMOR_UNIT)));
+                kamar.setKeterangan(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_KETERANGAN)));
+                kamar.setMaksPenyewa(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_MAKS_PENYEWA)));
+                kamar.setHarga1Bulan(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_1BULAN)));
+                kamar.setHarga3Bulan(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_3BULAN)));
+                kamar.setHarga6Bulan(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_6BULAN)));
+                kamar.setStatus(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_STATUS)));
                 kamarList.add(kamar);
             } while (cursor.moveToNext());
         }
-        cursor.close();
+        if (cursor != null) cursor.close();
         return kamarList;
     }
 
@@ -311,22 +313,22 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Penyewa penyewa = new Penyewa();
-                penyewa.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_PENYEWA_ID)));
-                penyewa.setNama(cursor.getString(cursor.getColumnIndex(COLUMN_PENYEWA_NAMA)));
-                penyewa.setWhatsapp(cursor.getString(cursor.getColumnIndex(COLUMN_PENYEWA_WHATSAPP)));
-                penyewa.setFotoProfil(cursor.getString(cursor.getColumnIndex(COLUMN_PENYEWA_FOTO_PROFIL)));
-                penyewa.setKtp(cursor.getString(cursor.getColumnIndex(COLUMN_PENYEWA_KTP)));
-                penyewa.setIdKamar(cursor.getInt(cursor.getColumnIndex(COLUMN_PENYEWA_ID_KAMAR)));
-                penyewa.setDurasiSewa(cursor.getInt(cursor.getColumnIndex(COLUMN_PENYEWA_DURASI_SEWA)));
-                penyewa.setTglMulai(cursor.getString(cursor.getColumnIndex(COLUMN_PENYEWA_TGL_MULAI)));
-                penyewa.setTglPembayaranBerikutnya(cursor.getString(cursor.getColumnIndex(COLUMN_PENYEWA_TGL_PEMBAYARAN_BERIKUTNYA)));
+                // GANTI getColumnIndex -> getColumnIndexOrThrow
+                penyewa.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_ID)));
+                penyewa.setNama(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_NAMA)));
+                penyewa.setWhatsapp(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_WHATSAPP)));
+                penyewa.setFotoProfil(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_FOTO_PROFIL)));
+                penyewa.setKtp(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_KTP)));
+                penyewa.setIdKamar(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_ID_KAMAR)));
+                penyewa.setDurasiSewa(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_DURASI_SEWA)));
+                penyewa.setTglMulai(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_TGL_MULAI)));
+                penyewa.setTglPembayaranBerikutnya(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_TGL_PEMBAYARAN_BERIKUTNYA)));
                 penyewaList.add(penyewa);
             } while (cursor.moveToNext());
         }
-        cursor.close();
+        if (cursor != null) cursor.close();
         return penyewaList;
     }
-
     public long insertKeuangan(Keuangan keuangan) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -344,15 +346,16 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Keuangan keuangan = new Keuangan();
-                keuangan.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_KEUANGAN_ID)));
-                keuangan.setTipe(cursor.getString(cursor.getColumnIndex(COLUMN_KEUANGAN_TIPE)));
-                keuangan.setDeskripsi(cursor.getString(cursor.getColumnIndex(COLUMN_KEUANGAN_DESKRIPSI)));
-                keuangan.setNominal(cursor.getDouble(cursor.getColumnIndex(COLUMN_KEUANGAN_NOMINAL)));
-                keuangan.setTanggal(cursor.getString(cursor.getColumnIndex(COLUMN_KEUANGAN_TANGGAL)));
+                // GANTI getColumnIndex -> getColumnIndexOrThrow
+                keuangan.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KEUANGAN_ID)));
+                keuangan.setTipe(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KEUANGAN_TIPE)));
+                keuangan.setDeskripsi(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KEUANGAN_DESKRIPSI)));
+                keuangan.setNominal(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KEUANGAN_NOMINAL)));
+                keuangan.setTanggal(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KEUANGAN_TANGGAL)));
                 keuanganList.add(keuangan);
             } while (cursor.moveToNext());
         }
-        cursor.close();
+        if (cursor != null) cursor.close();
         return keuanganList;
     }
 
@@ -376,18 +379,19 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Perawatan perawatan = new Perawatan();
-                perawatan.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_PERAWATAN_ID)));
-                perawatan.setNamaPerawatan(cursor.getString(cursor.getColumnIndex(COLUMN_PERAWATAN_NAMA)));
-                perawatan.setTanggal(cursor.getString(cursor.getColumnIndex(COLUMN_PERAWATAN_TANGGAL)));
-                perawatan.setIdKamar(cursor.getInt(cursor.getColumnIndex(COLUMN_PERAWATAN_ID_KAMAR)));
-                perawatan.setBiayaSparepart(cursor.getDouble(cursor.getColumnIndex(COLUMN_PERAWATAN_BIAYA_SPAREPART)));
-                perawatan.setBiayaJasa(cursor.getDouble(cursor.getColumnIndex(COLUMN_PERAWATAN_BIAYA_JASA)));
-                perawatan.setOngkir(cursor.getDouble(cursor.getColumnIndex(COLUMN_PERAWATAN_ONGKIR)));
-                perawatan.setCatatan(cursor.getString(cursor.getColumnIndex(COLUMN_PERAWATAN_CATATAN)));
+                // GANTI getColumnIndex -> getColumnIndexOrThrow
+                perawatan.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PERAWATAN_ID)));
+                perawatan.setNamaPerawatan(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PERAWATAN_NAMA)));
+                perawatan.setTanggal(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PERAWATAN_TANGGAL)));
+                perawatan.setIdKamar(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PERAWATAN_ID_KAMAR)));
+                perawatan.setBiayaSparepart(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_PERAWATAN_BIAYA_SPAREPART)));
+                perawatan.setBiayaJasa(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_PERAWATAN_BIAYA_JASA)));
+                perawatan.setOngkir(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_PERAWATAN_ONGKIR)));
+                perawatan.setCatatan(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PERAWATAN_CATATAN)));
                 perawatanList.add(perawatan);
             } while (cursor.moveToNext());
         }
-        cursor.close();
+        if (cursor != null) cursor.close();
         return perawatanList;
     }
 
