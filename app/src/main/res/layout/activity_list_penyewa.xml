@@ -46,24 +46,17 @@
         android:layout_above="@+id/bottom_navigation"
         android:layout_below="@id/header_penyewa"
         android:padding="16dp">
-
+        <!-- Jika list di klik terlempar kek detail penyewa -->
         <LinearLayout
             android:id="@+id/list_penyewa_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <include layout="@layout/item_penyewa"/>
-            <include layout="@layout/item_penyewa"/>
-            <include layout="@layout/item_penyewa"/>
-            <include layout="@layout/item_penyewa"/>
-            <include layout="@layout/item_penyewa"/>
-            <include layout="@layout/item_penyewa"/>
-            <include layout="@layout/item_penyewa"/>
-            <include layout="@layout/item_penyewa"/>
         </LinearLayout>
     </ScrollView>
 
-    <!-- Floating Action Button -->
+    <!-- Floating Action Button ini lempar ke fungsi tambah penyewa-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_rent"
         android:layout_width="wrap_content"

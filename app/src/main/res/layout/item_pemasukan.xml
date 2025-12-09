@@ -33,7 +33,7 @@
                 android:id="@+id/tv_pemasukan_deskripsi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sewa Kamar A1"
+                android:text="Placeholder Nama Pemasukan"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -41,7 +41,7 @@
                 android:id="@+id/tv_pemasukan_tanggal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="07/10/2025 s.d. 07/11/2025"
+                android:text="dd/mm/yyyy"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -49,7 +49,7 @@
             android:id="@+id/tv_pemasukan_nominal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rp 1.000.000"
+            android:text="Rp 0.000.000"
             android:textSize="16sp"
             android:textColor="@color/green_color"
             android:layout_gravity="center_vertical" />

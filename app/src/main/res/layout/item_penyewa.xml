@@ -43,10 +43,9 @@
             android:id="@+id/tv_harga_sewa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_gravity="center_vertical"
             android:text="@string/sample_harga_sewa"
-            android:textSize="16sp"
             android:textColor="@color/green_color"
-            android:layout_gravity="center_vertical" />
+            android:textSize="16sp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

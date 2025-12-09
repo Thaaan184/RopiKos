@@ -46,29 +46,16 @@
         android:layout_above="@+id/bottom_navigation"
         android:layout_below="@id/header_kamar"
         android:padding="16dp">
-
+        <!-- Jika list di klik terlempar kek detail kamar -->
         <LinearLayout
             android:id="@+id/list_kamar_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <include layout="@layout/item_kamar"/>
-            <include layout="@layout/item_kamar"/>
-            <include layout="@layout/item_kamar"/>
-            <include layout="@layout/item_kamar"/>
-            <include layout="@layout/item_kamar"/>
-            <include layout="@layout/item_kamar"/>
-            <include layout="@layout/item_kamar"/>
-            <include layout="@layout/item_kamar"/>
-            <include layout="@layout/item_kamar"/>
-            <include layout="@layout/item_kamar"/>
-            <include layout="@layout/item_kamar"/>
-            <include layout="@layout/item_kamar"/>
-            <include layout="@layout/item_kamar"/>
-            <include layout="@layout/item_kamar"/>
         </LinearLayout>
     </ScrollView>
-    <!-- Floating Action Button -->
+    <!-- Floating Action Button ini lempar ke tambah kamar -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_room"
         android:layout_width="wrap_content"
