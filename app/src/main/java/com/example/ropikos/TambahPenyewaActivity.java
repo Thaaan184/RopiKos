@@ -23,11 +23,11 @@ public class TambahPenyewaActivity extends AppCompatActivity {
 
         dbHelper = new DBHelper(this);
         etNama = findViewById(R.id.et_nama_penyewa); // Pastikan ID ini ada di XML tambah penyewa, jika belum tambahkan
-        if (etNama == null) {
-            // Fallback ID jika di XML belum ada ID spesifik, gunakan ID wrapper atau sesuaikan
-            // Disini saya asumsikan di XML anda sudah ada TextInputEditText
-            etNama = findViewById(R.id.header).findViewById(R.id.tv_title); // Dummy
-        }
+//        if (etNama == null) {
+//            // Fallback ID jika di XML belum ada ID spesifik, gunakan ID wrapper atau sesuaikan
+//            // Disini saya asumsikan di XML anda sudah ada TextInputEditText
+//            etNama = findViewById(R.id.header).findViewById(R.id.tv_title); // Dummy
+//        }
 
         // Cari ID button simpan
         btnSimpan = findViewById(R.id.btn_simpan);
@@ -40,8 +40,10 @@ public class TambahPenyewaActivity extends AppCompatActivity {
             // Anda harus update ID di XML activity_tambah_penyewa.xml terlebih dahulu
             // Contoh: android:id="@+id/et_nama_penyewa" pada TextInputEditText
 
+            // Ambil nilai dari EditText
+            String namaPenyewa = etNama.getText().toString();
             Penyewa p = new Penyewa();
-            p.setNama("Penyewa Baru"); // Ambil dari EditText
+            p.setNama(namaPenyewa); // Ambil dari EditText
             p.setWhatsapp("0812345");
 
             long res = dbHelper.insertPenyewa(p);
