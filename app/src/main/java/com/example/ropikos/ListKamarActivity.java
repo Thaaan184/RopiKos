@@ -82,6 +82,7 @@ public class ListKamarActivity extends AppCompatActivity {
     class KamarAdapter extends RecyclerView.Adapter<KamarAdapter.ViewHolder> {
         private List<Kamar> data;
 
+        // Parameter
         public KamarAdapter(List<Kamar> data) {
             this.data = data;
         }
@@ -100,6 +101,7 @@ public class ListKamarActivity extends AppCompatActivity {
             holder.tvNomor.setText("Unit: " + k.getNomorUnit());
 
             // Klik item untuk lihat detail (Use Case 4 & 5 Trigger)
+            // Mengarah ke layout activity_detail_kamar.xml
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(ListKamarActivity.this, DetailKamarActivity.class);
                 intent.putExtra("KAMAR_ID", k.getId());
@@ -130,6 +132,8 @@ public class ListKamarActivity extends AppCompatActivity {
                 // Pastikan di item_kamar.xml, ImageView icon add penyewa diberi ID iv_add_penyewa_shortcut
                 // Jika belum ada ID, tambahkan android:id="@+id/iv_add_penyewa_shortcut" di XML item_kamar
                 btnAddPenyewa = itemView.findViewById(R.id.iv_add_penyewa_shortcut);
+
+                //? Karena sudah ada id iv_add_penyewa_shortcut di item_kamar.xml, maybe bisa dihapus saja?
                 if(btnAddPenyewa == null) {
                     // Fallback jika ID tidak ditemukan agar tidak crash saat testing
                     btnAddPenyewa = (ImageView) ((ViewGroup)itemView).getChildAt(0); // Dummy logic
