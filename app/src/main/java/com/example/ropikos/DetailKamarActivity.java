@@ -10,12 +10,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.ropikos.db.DBHelper;
 import com.example.ropikos.model.Kamar;
+import java.util.Locale;
 
 public class DetailKamarActivity extends AppCompatActivity {
 
     private DBHelper dbHelper;
     private int kamarId;
-    private TextView tvTitle;
+    private TextView tvJenisNomor, tvStatus, tvKeterangan;
+    private TextView tvHarga1Bulan, tvHarga3Bulan, tvHarga6Bulan;
     private Button btnEdit, btnHapus;
     private ImageView btnBack;
 
@@ -70,8 +72,27 @@ public class DetailKamarActivity extends AppCompatActivity {
 
     private void loadData() {
         Kamar k = dbHelper.getKamar(kamarId);
-        // Disini Anda bisa set data ke TextView yang ada di layout detail
-        // Karena layout detail XML Anda statis (hardcoded text), logic ini hanya memastikan data ada.
-        // Untuk implementasi real, TextView di XML detail harus diberi ID unik.
+        if (k != null) {
+            // Logic Menampilkan Data Dinamis
+            tvJenisNomor.setText(k.getJenisUnit() + ", " + k.getNomorUnit());
+            tvKeterangan.setText(k.getKeterangan());
+
+            // Gunakan Locale Indonesia untuk format titik
+            Locale localeID = Locale.forLanguageTag("id");
+
+            // Set Harga
+            tvHarga1Bulan.setText("Rp " + String.format(localeID, "%,.0f", k.getHarga1Bulan()));
+            tvHarga3Bulan.setText("Rp " + String.format(localeID, "%,.0f", k.getHarga1Bulan()));
+            tvHarga6Bulan.setText("Rp " + String.format(localeID, "%,.0f", k.getHarga1Bulan()));
+
+            // Set Status
+            if (k.getStatus() == 0) {
+                tvStatus.setText("Kosong");
+                tvStatus.setTextColor(getResources().getColor(android.R.color.holo_green_dark)); // Contoh warna hijau
+            } else {
+                tvStatus.setText("Terisi");
+                tvStatus.setTextColor(getResources().getColor(android.R.color.holo_red_dark)); // Contoh warna merah
+            }
+        }
     }
 }

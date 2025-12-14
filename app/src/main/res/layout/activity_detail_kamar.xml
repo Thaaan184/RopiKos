@@ -17,6 +17,7 @@
         android:paddingEnd="16dp">
 
         <ImageView
+            android:id="@+id/btn_back"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_back"
@@ -59,15 +60,17 @@
                     android:orientation="vertical"
                     android:padding="16dp">
                     <TextView
+                        android:id="@+id/tv_jenis_nomor_kamar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Kamar AC, A01"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                     <TextView
+                        android:id="@+id/tv_status_kamar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tersedia"
+                        android:text="Terisi"
                         android:textColor="@color/green_color"
                         android:textStyle="bold"/>
                 </LinearLayout>
@@ -92,6 +95,7 @@
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp"/>
                     <TextView
+                        android:id="@+id/tv_keterangan_kamar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Kamar dengan fasilitas lengkap, AC, kamar mandi dalam. Maksimal 1 penyewa." />
@@ -125,12 +129,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1 Bulan"/>
+
                         <TextView
+                            android:id="@+id/tv_harga_1_bulan"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:text="Rp 500.000"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
                     </RelativeLayout>
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -141,6 +147,7 @@
                             android:layout_height="wrap_content"
                             android:text="3 Bulan"/>
                         <TextView
+                            android:id="@+id/tv_harga_3_bulan"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
@@ -155,6 +162,7 @@
                             android:layout_height="wrap_content"
                             android:text="6 Bulan"/>
                         <TextView
+                            android:id="@+id/tv_harga_6_bulan"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
