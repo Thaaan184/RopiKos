@@ -33,8 +33,18 @@ public class DetailKamarActivity extends AppCompatActivity {
         btnEdit = findViewById(R.id.btn_edit_kamar);
         btnHapus = findViewById(R.id.btn_hapus_kamar);
 
+        // Inisialisasi TextView data
+        tvJenisNomor = findViewById(R.id.tv_jenis_nomor_kamar);
+        tvStatus = findViewById(R.id.tv_status_kamar);
+        tvKeterangan = findViewById(R.id.tv_keterangan_kamar);
+        tvHarga1Bulan = findViewById(R.id.tv_harga_1_bulan);
+        tvHarga3Bulan = findViewById(R.id.tv_harga_3_bulan);
+        tvHarga6Bulan = findViewById(R.id.tv_harga_6_bulan);
+
         // Header
-        TextView tvHeaderTitle = findViewById(R.id.header_detail_kamar).findViewById(R.id.tv_detail_kamar_title);
+        // * Karena judul di layout sudah statis ("Detail Kamar"), maka inisialisasi variabel tvHeaderTitle tidak diperlukan.
+        // TextView tvHeaderTitle = findViewById(R.id.header_detail_kamar).findViewById(R.id.tv_detail_kamar_title);
+
         btnBack = findViewById(R.id.header_detail_kamar).findViewById(R.id.btn_back); // ID dari include header biasanya
         if(btnBack == null) btnBack = findViewById(R.id.btn_back); // Fallback cari direct ID
 
