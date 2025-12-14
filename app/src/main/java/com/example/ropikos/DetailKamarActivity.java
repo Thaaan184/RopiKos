@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.ropikos.db.DBHelper;
 import com.example.ropikos.model.Kamar;
 import java.util.Locale;
+import androidx.core.content.ContextCompat;
 
 public class DetailKamarActivity extends AppCompatActivity {
 
@@ -98,10 +99,10 @@ public class DetailKamarActivity extends AppCompatActivity {
             // Set Status
             if (k.getStatus() == 0) {
                 tvStatus.setText("Kosong");
-                tvStatus.setTextColor(getResources().getColor(android.R.color.holo_green_dark)); // Contoh warna hijau
+                tvStatus.setTextColor(ContextCompat.getColor(this, android.R.color.holo_red_dark));
             } else {
                 tvStatus.setText("Terisi");
-                tvStatus.setTextColor(getResources().getColor(android.R.color.holo_red_dark)); // Contoh warna merah
+                tvStatus.setTextColor(ContextCompat.getColor(this, android.R.color.holo_green_dark));
             }
         }
     }
