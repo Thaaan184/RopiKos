@@ -50,11 +50,12 @@ public class TambahKamarActivity extends AppCompatActivity {
                 String h3Str = etHarga3.getText().toString();
                 String h6Str = etHarga6.getText().toString();
 
+                // Memastikan harga tidak kosong jika user mengosongkan TextInputEditText
                 double h1 = h1Str.isEmpty() ? 0 : Double.parseDouble(h1Str);
                 double h3 = h3Str.isEmpty() ? 0 : Double.parseDouble(h3Str);
                 double h6 = h6Str.isEmpty() ? 0 : Double.parseDouble(h6Str);
 
-                String maksStr = actvMaks.getText().toString().replaceAll("[^0-9]", "");
+                String maksStr = actvMaks.getText().toString().replaceAll("[^0-9]", ""); // Ambil angka saja
                 int maks = maksStr.isEmpty() ? 1 : Integer.parseInt(maksStr);
 
                 Kamar kamarBaru = new Kamar(jenis, nomorFull, ket, maks, h1, h3, h6, 0);
