@@ -74,6 +74,7 @@
                         android:layout_height="wrap_content"
                         android:hint="Jenis Unit">
 
+                       <!-- ? Mungkin bisa diganti menggunakan dropdown menu?                     -->
                         <AutoCompleteTextView
                             android:id="@+id/actv_jenis_unit"
                             android:layout_width="match_parent"
@@ -167,6 +168,7 @@
                         android:layout_marginBottom="8dp"
                         android:hint="Jumlah Unit">
 
+                        <!-- ! Belum ada kolomnya pada tabel kamar  -->
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_jumlah_unit"
                             android:layout_width="match_parent"
