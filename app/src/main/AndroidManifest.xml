@@ -11,6 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RopiKos">
+        <activity android:name=".TambahKamarActivity" />
+        <activity android:name=".ListKamarActivity" />
+        <activity android:name=".DetailKamarActivity" />
+        <activity android:name=".EditKamarActivity" />
+        <activity android:name=".TambahPenyewaActivity" />
+        <activity android:name=".ListPenyewaActivity" />
+<!--        <activity android:name=".DetailPenyewaActivity" />-->
+<!--        <activity android:name=".EditPenyewaActivity" />-->
         <activity
             android:name=".MainActivity"
             android:exported="true">

@@ -100,6 +100,22 @@ public class ListKamarActivity extends AppCompatActivity {
             holder.tvNama.setText(k.getJenisUnit());
             holder.tvNomor.setText("Unit: " + k.getNomorUnit());
 
+            // Sembunyikan tombol tambah penyewa
+            if (k.getStatus() == 1) {
+                // Jika Kamar Terisi (1), sembunyikan tombol
+                holder.btnAddPenyewa.setVisibility(View.GONE);
+            } else {
+                // Jika Kamar Kosong (0), tampilkan tombol
+                holder.btnAddPenyewa.setVisibility(View.VISIBLE);
+
+                // Pindahkan listener klik tombol ke sini (agar hanya bisa diklik kalau tombolnya ada)
+                holder.btnAddPenyewa.setOnClickListener(v -> {
+                    Intent intent = new Intent(ListKamarActivity.this, TambahPenyewaActivity.class);
+                    intent.putExtra("PRESELECTED_KAMAR_ID", k.getId());
+                    startActivity(intent);
+                });
+            }
+
             // Klik item untuk lihat detail (Use Case 4 & 5 Trigger)
             // Mengarah ke layout activity_detail_kamar.xml
             holder.itemView.setOnClickListener(v -> {
@@ -108,12 +124,7 @@ public class ListKamarActivity extends AppCompatActivity {
                 startActivity(intent);
             });
 
-            // Klik icon tambah penyewa di card
-            holder.btnAddPenyewa.setOnClickListener(v -> {
-                Intent intent = new Intent(ListKamarActivity.this, TambahPenyewaActivity.class);
-                intent.putExtra("PRESELECTED_KAMAR_ID", k.getId()); // Opsional
-                startActivity(intent);
-            });
+
         }
 
         @Override
@@ -132,12 +143,6 @@ public class ListKamarActivity extends AppCompatActivity {
                 // Pastikan di item_kamar.xml, ImageView icon add penyewa diberi ID iv_add_penyewa_shortcut
                 // Jika belum ada ID, tambahkan android:id="@+id/iv_add_penyewa_shortcut" di XML item_kamar
                 btnAddPenyewa = itemView.findViewById(R.id.iv_add_penyewa_shortcut);
-
-                //? Karena sudah ada id iv_add_penyewa_shortcut di item_kamar.xml, maybe bisa dihapus saja?
-                if(btnAddPenyewa == null) {
-                    // Fallback jika ID tidak ditemukan agar tidak crash saat testing
-                    btnAddPenyewa = (ImageView) ((ViewGroup)itemView).getChildAt(0); // Dummy logic
-                }
             }
         }
     }

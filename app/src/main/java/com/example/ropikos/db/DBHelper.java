@@ -255,6 +255,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(COLUMN_KAMAR_JENIS_UNIT, kamar.getJenisUnit());
         values.put(COLUMN_KAMAR_NOMOR_UNIT, kamar.getNomorUnit());
         values.put(COLUMN_KAMAR_KETERANGAN, kamar.getKeterangan());
+        values.put(COLUMN_KAMAR_STATUS, kamar.getStatus());
         values.put(COLUMN_KAMAR_MAKS_PENYEWA, kamar.getMaksPenyewa());
         values.put(COLUMN_KAMAR_HARGA_1BULAN, kamar.getHarga1Bulan());
         values.put(COLUMN_KAMAR_HARGA_3BULAN, kamar.getHarga3Bulan());

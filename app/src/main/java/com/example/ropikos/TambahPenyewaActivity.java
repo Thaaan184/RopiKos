@@ -34,8 +34,8 @@ import java.io.OutputStream;
 public class TambahPenyewaActivity extends AppCompatActivity {
 
     private DBHelper dbHelper;
-    private TextInputEditText etNamaPenyewa, etWhatsapp, etDeskripsi, etTglBayar;
-    private AutoCompleteTextView etJenisKelamin, etJenisUnit, etNoUnit, etTglMulaiSewa, etDurasiSewa;
+    private TextInputEditText etNamaPenyewa, etWhatsapp, etDeskripsi, etTglBayar, etTglMulaiSewa;
+    private AutoCompleteTextView etJenisKelamin, etJenisUnit, etNoUnit, etDurasiSewa;
     private Button btnSimpan, btnKtp;
     private ImageView btnBack, ivProfilePic, ivKtpPreview;
     private TextView tvUnitSummary, tvHargaSummary, tvTotalHarga;

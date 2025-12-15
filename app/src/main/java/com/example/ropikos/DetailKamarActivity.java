@@ -17,9 +17,8 @@ public class DetailKamarActivity extends AppCompatActivity {
 
     private DBHelper dbHelper;
     private int kamarId;
-    private TextView tvJenisNomor, tvStatus, tvKeterangan;
-    private TextView tvHarga1Bulan, tvHarga3Bulan, tvHarga6Bulan;
-    private Button btnEdit, btnHapus;
+    private TextView tvJenisNomor, tvStatus, tvKeterangan, tvHarga1Bulan, tvHarga3Bulan, tvHarga6Bulan, tvMaksPenghuni;
+    private Button btnEdit, btnHapus, btnPerawatanKamar;
     private ImageView btnBack;
 
     @Override
@@ -33,6 +32,7 @@ public class DetailKamarActivity extends AppCompatActivity {
         // ID Mapping (Sesuaikan dengan activity_detail_kamar.xml)
         btnEdit = findViewById(R.id.btn_edit_kamar);
         btnHapus = findViewById(R.id.btn_hapus_kamar);
+        btnPerawatanKamar = findViewById(R.id.btn_perawatan_kamar);
 
         // Inisialisasi TextView data
         tvJenisNomor = findViewById(R.id.tv_jenis_nomor_kamar);
@@ -41,10 +41,7 @@ public class DetailKamarActivity extends AppCompatActivity {
         tvHarga1Bulan = findViewById(R.id.tv_harga_1_bulan);
         tvHarga3Bulan = findViewById(R.id.tv_harga_3_bulan);
         tvHarga6Bulan = findViewById(R.id.tv_harga_6_bulan);
-
-        // Header
-        // * Karena judul di layout sudah statis ("Detail Kamar"), maka inisialisasi variabel tvHeaderTitle tidak diperlukan.
-        // TextView tvHeaderTitle = findViewById(R.id.header_detail_kamar).findViewById(R.id.tv_detail_kamar_title);
+        tvMaksPenghuni = findViewById(R.id.tv_maks_penghuni);
 
         btnBack = findViewById(R.id.header_detail_kamar).findViewById(R.id.btn_back); // ID dari include header biasanya
         if(btnBack == null) btnBack = findViewById(R.id.btn_back); // Fallback cari direct ID
@@ -60,18 +57,44 @@ public class DetailKamarActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // Trigger Perawatan (Use Case 6)
+        // TODO: Belum dicek lebih lanjut intent ini
+        btnPerawatanKamar.setOnClickListener(v -> {
+            /*
+            Intent intent = new Intent(this, TambahPerawatanActivity.class);
+            intent.putExtra("KAMAR_ID", kamarId);
+            startActivity(intent);
+             */
+        });
+
         // Trigger Hapus (Use Case 5)
         btnHapus.setOnClickListener(v -> {
-            new AlertDialog.Builder(this)
-                    .setTitle("Hapus Kamar")
-                    .setMessage("Apakah Anda yakin ingin menghapus kamar ini secara permanen?")
-                    .setPositiveButton("Ya", (dialog, which) -> {
-                        dbHelper.deleteKamar(kamarId);
-                        Toast.makeText(this, "Kamar dihapus", Toast.LENGTH_SHORT).show();
-                        finish();
-                    })
-                    .setNegativeButton("Batal", null)
-                    .show();
+            // Ambil data kamar terbaru dari database untuk memastikan statusnya akurat
+            Kamar currentKamar = dbHelper.getKamar(kamarId);
+
+            if (currentKamar != null) {
+                // Cek Status Kamar
+                if (currentKamar.getStatus() == 1) {
+                    // JIKA STATUS TERISI: Tampilkan Peringatan & Batalkan Penghapusan
+                    new AlertDialog.Builder(this)
+                            .setTitle("Gagal Menghapus")
+                            .setMessage("Kamar ini sedang terisi oleh penyewa. Silakan hapus data penyewa terlebih dahulu untuk mengosongkan kamar ini.")
+                            .setPositiveButton("Oke", null)
+                            .show();
+                } else {
+                    // JIKA STATUS KOSONG: Lanjutkan Proses Hapus (Tampilkan Konfirmasi)
+                    new AlertDialog.Builder(this)
+                            .setTitle("Hapus Kamar")
+                            .setMessage("Apakah Anda yakin ingin menghapus kamar ini secara permanen?")
+                            .setPositiveButton("Ya", (dialog, which) -> {
+                                dbHelper.deleteKamar(kamarId);
+                                Toast.makeText(this, "Kamar dihapus", Toast.LENGTH_SHORT).show();
+                                finish();
+                            })
+                            .setNegativeButton("Batal", null)
+                            .show();
+                }
+            }
         });
     }
 
@@ -86,6 +109,7 @@ public class DetailKamarActivity extends AppCompatActivity {
         if (k != null) {
             // Logic Menampilkan Data Dinamis
             tvJenisNomor.setText(k.getJenisUnit() + ", " + k.getNomorUnit());
+            tvMaksPenghuni.setText("Maksimal " + k.getMaksPenyewa() + " Orang");
             tvKeterangan.setText(k.getKeterangan());
 
             // Gunakan Locale Indonesia untuk format titik
@@ -93,8 +117,8 @@ public class DetailKamarActivity extends AppCompatActivity {
 
             // Set Harga
             tvHarga1Bulan.setText("Rp " + String.format(localeID, "%,.0f", k.getHarga1Bulan()));
-            tvHarga3Bulan.setText("Rp " + String.format(localeID, "%,.0f", k.getHarga1Bulan()));
-            tvHarga6Bulan.setText("Rp " + String.format(localeID, "%,.0f", k.getHarga1Bulan()));
+            tvHarga3Bulan.setText("Rp " + String.format(localeID, "%,.0f", k.getHarga3Bulan()));
+            tvHarga6Bulan.setText("Rp " + String.format(localeID, "%,.0f", k.getHarga6Bulan()));
 
             // Set Status
             if (k.getStatus() == 0) {
