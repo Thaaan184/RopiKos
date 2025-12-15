@@ -80,7 +80,7 @@
                         android:background="#ECECEC"
                         android:scaleType="centerInside"
                         android:src="@drawable/ic_person"
-                        android:tint="#2196F3"
+                        app:tint="#2196F3"
                         android:contentDescription="Foto Profil" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -105,6 +105,7 @@
                         android:hint="Whatsapp">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_whatsapp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="phone"
@@ -119,6 +120,7 @@
                         android:hint="Pilih Jenis Kelamin">
 
                         <AutoCompleteTextView
+                            android:id="@+id/et_jenis_kelamin"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
@@ -149,7 +151,7 @@
                         android:background="#ECECEC"
                         android:scaleType="centerInside"
                         android:src="@drawable/ic_identity_card_placeholder"
-                        android:tint="#2196F3"
+                        app:tint="#2196F3"
                         android:contentDescription="Preview KTP" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -159,6 +161,7 @@
                         android:hint="Deskripsi">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_deskripsi"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:minLines="1"
@@ -197,6 +200,7 @@
                         android:hint="Kosan">
 
                         <AutoCompleteTextView
+                            android:id="@+id/et_jenis_unit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
@@ -211,6 +215,7 @@
                         android:hint="Tipe Unit">
 
                         <AutoCompleteTextView
+                            android:id="@+id/et_nomor_unit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
@@ -221,14 +226,43 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:hint="Tanggal Mulai Sewa">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_tgl_mulai_sewa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:focusable="false" /> </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:hint="Durasi Sewa">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/et_durasi_sewa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:text="1 Bulan" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:hint="Tanggal Pembayaran Berikutnya">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_tgl_pembayaran_berikutnya"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="date"
-                            android:text="08-11-2025" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:inputType="none"
+                            android:focusable="false" /> </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
