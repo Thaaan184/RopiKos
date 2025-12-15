@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ropikos.db.DBHelper;
+import com.example.ropikos.model.Kamar;
 import com.example.ropikos.model.Penyewa;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,6 +27,8 @@ public class ListPenyewaActivity extends AppCompatActivity {
     private DBHelper dbHelper;
     private RecyclerView rvPenyewa;
     private FloatingActionButton fabAddRent;
+    private PenyewaAdapter adapter;
+    private ImageButton btnProfil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,7 @@ public class ListPenyewaActivity extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         rvPenyewa = findViewById(R.id.rv_penyewa);
         fabAddRent = findViewById(R.id.fab_add_rent);
+        btnProfil = findViewById(R.id.btn_profile);
 
         rvPenyewa.setLayoutManager(new LinearLayoutManager(this));
 
@@ -41,14 +47,24 @@ public class ListPenyewaActivity extends AppCompatActivity {
             startActivity(new Intent(ListPenyewaActivity.this, TambahPenyewaActivity.class));
         });
 
+        // TODO: Buat dan arahkan ke ProfilActivity nanti
+        btnProfil.setOnClickListener(v -> {
+            // startActivity(new Intent(ListPenyewaActivity.this, ProfilActivity.class));
+        });
+
         setupBottomNavigation();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        List<Penyewa> list = dbHelper.getAllPenyewa();
-        rvPenyewa.setAdapter(new PenyewaAdapter(list));
+        loadDataPenyewa();
+    }
+
+    private void loadDataPenyewa() {
+        List<Penyewa> listPenyewa = dbHelper.getAllPenyewa();
+        adapter = new PenyewaAdapter(listPenyewa);
+        rvPenyewa.setAdapter(adapter);
     }
 
     private void setupBottomNavigation() {
@@ -84,7 +100,30 @@ public class ListPenyewaActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Penyewa p = data.get(position);
+            // Ambil data kamar dari database berdasarkan id_kamar milik penyewa
+            Kamar k = dbHelper.getKamar(p.getIdKamar());
+
+            // Logic menampilkan harga sewa
+            double hargaFinal = 0;
+            if (k != null) {
+                // Cek durasi sewa si penyewa (1, 3, atau 6 bulan?)
+                int durasi = p.getDurasiSewa();
+
+                if (durasi == 3) {
+                    hargaFinal = k.getHarga3Bulan();
+                } else if (durasi == 6) {
+                    hargaFinal = k.getHarga6Bulan();
+                } else {
+                    // Default ke 1 bulan jika durasi 1 atau data aneh
+                    hargaFinal = k.getHarga1Bulan();
+                }
+            }
+
+            // Format ke Rupiah (Contoh: Rp 1.000.000)
+            String hargaFormatted = String.format(java.util.Locale.forLanguageTag("id"), "Rp %,.0f", hargaFinal);
+
             holder.tvNama.setText(p.getNama());
+            holder.tvHarga.setText(hargaFormatted);
 
             // Klik item untuk Detail (Use Case 7 & 8 Trigger)
             holder.itemView.setOnClickListener(v -> {
@@ -97,10 +136,11 @@ public class ListPenyewaActivity extends AppCompatActivity {
         @Override public int getItemCount() { return data.size(); }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            TextView tvNama;
+            TextView tvNama, tvHarga;
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 tvNama = itemView.findViewById(R.id.tv_nama_penyewa);
+                tvHarga = itemView.findViewById(R.id.tv_harga_sewa);
             }
         }
     }
