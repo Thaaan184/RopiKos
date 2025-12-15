@@ -18,7 +18,7 @@ import java.util.List;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "ropikos.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3; // saat ini ke 3
 
     // --- TABEL USER ---
     public static final String TABLE_USER = "users";
@@ -46,6 +46,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_PENYEWA_ID = "id";
     public static final String COLUMN_PENYEWA_NAMA = "nama";
     public static final String COLUMN_PENYEWA_WHATSAPP = "whatsapp";
+    public static final String COLUMN_PENYEWA_JENIS_KELAMIN = "jenis_kelamin";
+    public static final String COLUMN_PENYEWA_DESKRIPSI = "deskripsi";
     public static final String COLUMN_PENYEWA_FOTO_PROFIL = "foto_profil";
     public static final String COLUMN_PENYEWA_KTP = "ktp";
     public static final String COLUMN_PENYEWA_ID_KAMAR = "id_kamar";
@@ -101,6 +103,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + COLUMN_PENYEWA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_PENYEWA_NAMA + " TEXT, "
                 + COLUMN_PENYEWA_WHATSAPP + " TEXT, "
+                + COLUMN_PENYEWA_JENIS_KELAMIN + " TEXT, "
+                + COLUMN_PENYEWA_DESKRIPSI + " TEXT, "
                 + COLUMN_PENYEWA_FOTO_PROFIL + " TEXT, "
                 + COLUMN_PENYEWA_KTP + " TEXT, "
                 + COLUMN_PENYEWA_ID_KAMAR + " INTEGER, "
@@ -218,6 +222,32 @@ public class DBHelper extends SQLiteOpenHelper {
         return null;
     }
 
+    // Ambil semua kamar yang statusnya Kosong (0)
+    public List<Kamar> getKamarTersedia() {
+        List<Kamar> kamarList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Query: SELECT * FROM kamar WHERE status = 0
+        Cursor cursor = db.query(TABLE_KAMAR, null, COLUMN_KAMAR_STATUS + "=?", new String[]{"0"}, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Kamar kamar = new Kamar();
+                kamar.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_ID)));
+                kamar.setJenisUnit(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_JENIS_UNIT)));
+                kamar.setNomorUnit(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_NOMOR_UNIT)));
+                kamar.setKeterangan(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_KETERANGAN)));
+                kamar.setMaksPenyewa(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_MAKS_PENYEWA)));
+                kamar.setHarga1Bulan(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_1BULAN)));
+                kamar.setHarga3Bulan(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_3BULAN)));
+                kamar.setHarga6Bulan(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_6BULAN)));
+                kamar.setStatus(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_STATUS)));
+                kamarList.add(kamar);
+            } while (cursor.moveToNext());
+        }
+        if (cursor != null) cursor.close();
+        return kamarList;
+    }
+
     // Update Kamar
     public int updateKamar(Kamar kamar) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -247,6 +277,8 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_PENYEWA_NAMA, penyewa.getNama());
         values.put(COLUMN_PENYEWA_WHATSAPP, penyewa.getWhatsapp());
+        values.put(COLUMN_PENYEWA_JENIS_KELAMIN, penyewa.getJenisKelamin());
+        values.put(COLUMN_PENYEWA_DESKRIPSI, penyewa.getDeskripsi());
         values.put(COLUMN_PENYEWA_FOTO_PROFIL, penyewa.getFotoProfil());
         values.put(COLUMN_PENYEWA_KTP, penyewa.getKtp());
         values.put(COLUMN_PENYEWA_ID_KAMAR, penyewa.getIdKamar());
