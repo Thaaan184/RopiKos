@@ -4,6 +4,8 @@ public class Penyewa {
     private int id;
     private String nama;
     private String whatsapp;
+    private String jenisKelamin;
+    private String deskripsi;
     private String fotoProfil; // Path atau URI gambar
     private String ktp;        // Nomor KTP
     private int idKamar;
@@ -15,9 +17,11 @@ public class Penyewa {
     }
 
     // Constructor tanpa ID
-    public Penyewa(String nama, String whatsapp, String fotoProfil, String ktp, int idKamar, int durasiSewa, String tglMulai, String tglPembayaranBerikutnya) {
+    public Penyewa(String nama, String whatsapp, String jenisKelamin, String deskripsi, String fotoProfil, String ktp, int idKamar, int durasiSewa, String tglMulai, String tglPembayaranBerikutnya) {
         this.nama = nama;
         this.whatsapp = whatsapp;
+        this.jenisKelamin = jenisKelamin;
+        this.deskripsi = deskripsi;
         this.fotoProfil = fotoProfil;
         this.ktp = ktp;
         this.idKamar = idKamar;
@@ -35,6 +39,12 @@ public class Penyewa {
 
     public String getWhatsapp() { return whatsapp; }
     public void setWhatsapp(String whatsapp) { this.whatsapp = whatsapp; }
+
+    public String getJenisKelamin() { return jenisKelamin; }
+    public void setJenisKelamin(String jenisKelamin) { this.jenisKelamin = jenisKelamin; }
+
+    public String getDeskripsi() { return deskripsi; }
+    public void setDeskripsi(String deskripsi) { this.deskripsi = deskripsi; }
 
     public String getFotoProfil() { return fotoProfil; }
     public void setFotoProfil(String fotoProfil) { this.fotoProfil = fotoProfil; }
