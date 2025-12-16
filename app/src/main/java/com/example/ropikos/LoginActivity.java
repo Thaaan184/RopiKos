@@ -30,14 +30,14 @@ public class LoginActivity extends AppCompatActivity {
         // Di dalam onCreate LoginActivity
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false);
-
-        if (isLoggedIn) {
-            // Jika sudah login, langsung ke MainActivity
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-            return; // agar tidak merender layout login kembali
-        }
+//          Is Logged in nya gw taro di splash
+//        if (isLoggedIn) {
+//            // Jika sudah login, langsung ke MainActivity
+//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//            startActivity(intent);
+//            finish();
+//            return; // agar tidak merender layout login kembali
+//        }
 
         setContentView(R.layout.activity_login);
 
