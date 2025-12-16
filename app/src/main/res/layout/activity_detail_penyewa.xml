@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/background_color">
 
-    <!-- Header with Back, Title, and Edit Button -->
     <LinearLayout
         android:id="@+id/header_detail_penyewa"
         android:layout_width="match_parent"
@@ -18,12 +17,13 @@
         android:paddingEnd="16dp">
 
         <ImageView
+            android:id="@+id/btn_back_header"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_back"
             android:layout_marginStart="7dp"
             android:contentDescription="icon back"
-            app:tint="@color/background_color" />
+            app:tint="@android:color/white" />
 
         <TextView
             android:id="@+id/tv_detail_penyewa_title"
@@ -43,7 +43,6 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_edit"
             app:tint="@android:color/white" />
-
     </LinearLayout>
 
     <ScrollView
@@ -57,7 +56,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Tenant Info Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,6 +72,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_centerVertical="true"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/ic_person" />
 
                     <LinearLayout
@@ -89,7 +88,7 @@
                             android:id="@+id/tv_nama_penyewa"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Po"
+                            android:text="Nama Penyewa"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -97,7 +96,15 @@
                             android:id="@+id/tv_kamar_info"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Kosan 1, Biasa 01" />
+                            android:text="Info Kamar" />
+
+                        <TextView
+                            android:id="@+id/tv_durasi_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="#666666"
+                            android:text="Durasi" />
                     </LinearLayout>
 
                     <ImageView
@@ -112,7 +119,6 @@
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Transaction History -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -129,24 +135,18 @@
                 android:nestedScrollingEnabled="true">
 
                 <LinearLayout
+                    android:id="@+id/ll_list_transaksi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    <include layout="@layout/item_pemasukan" />
-                    <include layout="@layout/item_pemasukan" />
-                    <include layout="@layout/item_pengeluaran" />
-                    <include layout="@layout/item_pemasukan" />
-                    <include layout="@layout/item_pemasukan" />
-                    <include layout="@layout/item_pemasukan" />
 
                 </LinearLayout>
             </ScrollView>
 
-            <!-- Identity Card Image -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kartu Identitas"
+                android:text="Kartu Identitas (KTP)"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp"/>
@@ -155,18 +155,17 @@
                 android:id="@+id/iv_foto_identitas"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:background="@color/divider_color"
+                android:scaleType="centerInside"
+                android:background="#EEEEEE"
                 android:src="@drawable/ic_identity_card_placeholder"
                 android:contentDescription="Foto Kartu Identitas"
                 android:layout_marginBottom="32dp"/>
 
-            <!-- Action Buttons -->
             <Button
                 android:id="@+id/btn_perpanjang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Perpanjang"
+                android:text="Perpanjang Sewa"
                 android:backgroundTint="@color/primary_color"
                 android:textColor="@android:color/white"
                 android:layout_marginBottom="8dp"/>
@@ -176,11 +175,10 @@
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Lainnya"
+                android:text="Hapus / Opsi Lain"
                 android:textColor="@color/primary_color"
                 app:strokeColor="@color/primary_color" />
 
         </LinearLayout>
     </ScrollView>
-
 </RelativeLayout>

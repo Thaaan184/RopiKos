@@ -15,10 +15,16 @@ import com.example.ropikos.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "ropikos.db";
-    private static final int DATABASE_VERSION = 3; // saat ini ke 3
+    // NAIKKAN VERSI karena ada perubahan struktur (tambah id_penyewa di keuangan)
+    private static final int DATABASE_VERSION = 4;
 
     // --- TABEL USER ---
     public static final String TABLE_USER = "users";
@@ -58,6 +64,7 @@ public class DBHelper extends SQLiteOpenHelper {
     // --- TABEL KEUANGAN ---
     public static final String TABLE_KEUANGAN = "keuangan";
     public static final String COLUMN_KEUANGAN_ID = "id";
+    public static final String COLUMN_KEUANGAN_ID_PENYEWA = "id_penyewa"; // BARU
     public static final String COLUMN_KEUANGAN_TIPE = "tipe";
     public static final String COLUMN_KEUANGAN_DESKRIPSI = "deskripsi";
     public static final String COLUMN_KEUANGAN_NOMINAL = "nominal";
@@ -86,7 +93,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + COLUMN_USER_USERNAME + " TEXT UNIQUE, "
                 + COLUMN_USER_PASSWORD + " TEXT, "
                 + COLUMN_USER_PHONE + " TEXT, "
-                + COLUMN_USER_ADDRESS + " TEXT" + ");");
+                + COLUMN_USER_ADDRESS + " TEXT);");
 
         db.execSQL("CREATE TABLE " + TABLE_KAMAR + " ("
                 + COLUMN_KAMAR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -97,7 +104,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + COLUMN_KAMAR_HARGA_1BULAN + " REAL, "
                 + COLUMN_KAMAR_HARGA_3BULAN + " REAL, "
                 + COLUMN_KAMAR_HARGA_6BULAN + " REAL, "
-                + COLUMN_KAMAR_STATUS + " INTEGER DEFAULT 0" + ");");
+                + COLUMN_KAMAR_STATUS + " INTEGER DEFAULT 0);");
 
         db.execSQL("CREATE TABLE " + TABLE_PENYEWA + " ("
                 + COLUMN_PENYEWA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -111,14 +118,16 @@ public class DBHelper extends SQLiteOpenHelper {
                 + COLUMN_PENYEWA_DURASI_SEWA + " INTEGER, "
                 + COLUMN_PENYEWA_TGL_MULAI + " TEXT, "
                 + COLUMN_PENYEWA_TGL_PEMBAYARAN_BERIKUTNYA + " TEXT, "
-                + "FOREIGN KEY(" + COLUMN_PENYEWA_ID_KAMAR + ") REFERENCES " + TABLE_KAMAR + "(" + COLUMN_KAMAR_ID + ")" + ");");
+                + "FOREIGN KEY(" + COLUMN_PENYEWA_ID_KAMAR + ") REFERENCES "
+                + TABLE_KAMAR + "(" + COLUMN_KAMAR_ID + "));");
 
         db.execSQL("CREATE TABLE " + TABLE_KEUANGAN + " ("
                 + COLUMN_KEUANGAN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_KEUANGAN_ID_PENYEWA + " INTEGER, "
                 + COLUMN_KEUANGAN_TIPE + " TEXT, "
                 + COLUMN_KEUANGAN_DESKRIPSI + " TEXT, "
                 + COLUMN_KEUANGAN_NOMINAL + " REAL, "
-                + COLUMN_KEUANGAN_TANGGAL + " TEXT" + ");");
+                + COLUMN_KEUANGAN_TANGGAL + " TEXT);");
 
         db.execSQL("CREATE TABLE " + TABLE_PERAWATAN + " ("
                 + COLUMN_PERAWATAN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -129,11 +138,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 + COLUMN_PERAWATAN_BIAYA_JASA + " REAL, "
                 + COLUMN_PERAWATAN_ONGKIR + " REAL, "
                 + COLUMN_PERAWATAN_CATATAN + " TEXT, "
-                + "FOREIGN KEY(" + COLUMN_PERAWATAN_ID_KAMAR + ") REFERENCES " + TABLE_KAMAR + "(" + COLUMN_KAMAR_ID + ")" + ");");
+                + "FOREIGN KEY(" + COLUMN_PERAWATAN_ID_KAMAR + ") REFERENCES "
+                + TABLE_KAMAR + "(" + COLUMN_KAMAR_ID + "));");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // WARNING: semua data akan terhapus saat upgrade
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_KAMAR);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PENYEWA);
@@ -142,10 +153,11 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // --- USER METHODS ---
+    // ================= USER =================
     public User getUser(String username) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_USER, null, COLUMN_USER_USERNAME + "=?", new String[]{username}, null, null, null);
+        Cursor cursor = db.query(TABLE_USER, null, COLUMN_USER_USERNAME + "=?",
+                new String[]{username}, null, null, null);
         User user = null;
         if (cursor != null && cursor.moveToFirst()) {
             user = new User();
@@ -160,249 +172,380 @@ public class DBHelper extends SQLiteOpenHelper {
         return user;
     }
 
-    // --- KAMAR METHODS ---
-
-    // Insert Kamar
+    // ================= KAMAR =================
     public long insertKamar(Kamar kamar) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_KAMAR_JENIS_UNIT, kamar.getJenisUnit());
-        values.put(COLUMN_KAMAR_NOMOR_UNIT, kamar.getNomorUnit());
-        values.put(COLUMN_KAMAR_KETERANGAN, kamar.getKeterangan());
-        values.put(COLUMN_KAMAR_MAKS_PENYEWA, kamar.getMaksPenyewa());
-        values.put(COLUMN_KAMAR_HARGA_1BULAN, kamar.getHarga1Bulan());
-        values.put(COLUMN_KAMAR_HARGA_3BULAN, kamar.getHarga3Bulan());
-        values.put(COLUMN_KAMAR_HARGA_6BULAN, kamar.getHarga6Bulan());
-        values.put(COLUMN_KAMAR_STATUS, kamar.getStatus());
-        return db.insert(TABLE_KAMAR, null, values);
+        ContentValues v = new ContentValues();
+        v.put(COLUMN_KAMAR_JENIS_UNIT, kamar.getJenisUnit());
+        v.put(COLUMN_KAMAR_NOMOR_UNIT, kamar.getNomorUnit());
+        v.put(COLUMN_KAMAR_KETERANGAN, kamar.getKeterangan());
+        v.put(COLUMN_KAMAR_MAKS_PENYEWA, kamar.getMaksPenyewa());
+        v.put(COLUMN_KAMAR_HARGA_1BULAN, kamar.getHarga1Bulan());
+        v.put(COLUMN_KAMAR_HARGA_3BULAN, kamar.getHarga3Bulan());
+        v.put(COLUMN_KAMAR_HARGA_6BULAN, kamar.getHarga6Bulan());
+        v.put(COLUMN_KAMAR_STATUS, kamar.getStatus());
+        return db.insert(TABLE_KAMAR, null, v);
     }
 
-    // Get All Kamar
     public List<Kamar> getAllKamar() {
-        List<Kamar> kamarList = new ArrayList<>();
+        List<Kamar> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_KAMAR, null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
+        Cursor c = db.query(TABLE_KAMAR, null, null, null, null, null, null);
+        if (c.moveToFirst()) {
             do {
-                Kamar kamar = new Kamar();
-                kamar.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_ID)));
-                kamar.setJenisUnit(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_JENIS_UNIT)));
-                kamar.setNomorUnit(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_NOMOR_UNIT)));
-                kamar.setKeterangan(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_KETERANGAN)));
-                kamar.setMaksPenyewa(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_MAKS_PENYEWA)));
-                kamar.setHarga1Bulan(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_1BULAN)));
-                kamar.setHarga3Bulan(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_3BULAN)));
-                kamar.setHarga6Bulan(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_6BULAN)));
-                kamar.setStatus(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_STATUS)));
-                kamarList.add(kamar);
-            } while (cursor.moveToNext());
+                Kamar k = new Kamar();
+                k.setId(c.getInt(c.getColumnIndexOrThrow(COLUMN_KAMAR_ID)));
+                k.setJenisUnit(c.getString(c.getColumnIndexOrThrow(COLUMN_KAMAR_JENIS_UNIT)));
+                k.setNomorUnit(c.getString(c.getColumnIndexOrThrow(COLUMN_KAMAR_NOMOR_UNIT)));
+                k.setKeterangan(c.getString(c.getColumnIndexOrThrow(COLUMN_KAMAR_KETERANGAN)));
+                k.setMaksPenyewa(c.getInt(c.getColumnIndexOrThrow(COLUMN_KAMAR_MAKS_PENYEWA)));
+                k.setHarga1Bulan(c.getDouble(c.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_1BULAN)));
+                k.setHarga3Bulan(c.getDouble(c.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_3BULAN)));
+                k.setHarga6Bulan(c.getDouble(c.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_6BULAN)));
+                k.setStatus(c.getInt(c.getColumnIndexOrThrow(COLUMN_KAMAR_STATUS)));
+                list.add(k);
+            } while (c.moveToNext());
         }
-        if (cursor != null) cursor.close();
-        return kamarList;
+        c.close();
+        return list;
     }
 
-    // Get 1 Kamar by ID
     public Kamar getKamar(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_KAMAR, null, COLUMN_KAMAR_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            Kamar kamar = new Kamar();
-            kamar.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_ID)));
-            kamar.setJenisUnit(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_JENIS_UNIT)));
-            kamar.setNomorUnit(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_NOMOR_UNIT)));
-            kamar.setKeterangan(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_KETERANGAN)));
-            kamar.setMaksPenyewa(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_MAKS_PENYEWA)));
-            kamar.setHarga1Bulan(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_1BULAN)));
-            kamar.setHarga3Bulan(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_3BULAN)));
-            kamar.setHarga6Bulan(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_6BULAN)));
-            kamar.setStatus(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_STATUS)));
-            cursor.close();
-            return kamar;
+        Cursor c = db.query(TABLE_KAMAR, null, COLUMN_KAMAR_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if (c != null && c.moveToFirst()) {
+            Kamar k = new Kamar();
+            k.setId(c.getInt(c.getColumnIndexOrThrow(COLUMN_KAMAR_ID)));
+            k.setJenisUnit(c.getString(c.getColumnIndexOrThrow(COLUMN_KAMAR_JENIS_UNIT)));
+            k.setNomorUnit(c.getString(c.getColumnIndexOrThrow(COLUMN_KAMAR_NOMOR_UNIT)));
+            k.setKeterangan(c.getString(c.getColumnIndexOrThrow(COLUMN_KAMAR_KETERANGAN)));
+            k.setMaksPenyewa(c.getInt(c.getColumnIndexOrThrow(COLUMN_KAMAR_MAKS_PENYEWA)));
+            k.setHarga1Bulan(c.getDouble(c.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_1BULAN)));
+            k.setHarga3Bulan(c.getDouble(c.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_3BULAN)));
+            k.setHarga6Bulan(c.getDouble(c.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_6BULAN)));
+            k.setStatus(c.getInt(c.getColumnIndexOrThrow(COLUMN_KAMAR_STATUS)));
+            c.close();
+            return k;
         }
         return null;
     }
 
-    // Ambil semua kamar yang statusnya Kosong (0)
     public List<Kamar> getKamarTersedia() {
-        List<Kamar> kamarList = new ArrayList<>();
+        List<Kamar> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        // Query: SELECT * FROM kamar WHERE status = 0
-        Cursor cursor = db.query(TABLE_KAMAR, null, COLUMN_KAMAR_STATUS + "=?", new String[]{"0"}, null, null, null);
-
-        if (cursor.moveToFirst()) {
+        Cursor c = db.query(TABLE_KAMAR, null, COLUMN_KAMAR_STATUS + "=?",
+                new String[]{"0"}, null, null, null);
+        if (c.moveToFirst()) {
             do {
-                Kamar kamar = new Kamar();
-                kamar.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_ID)));
-                kamar.setJenisUnit(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_JENIS_UNIT)));
-                kamar.setNomorUnit(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_NOMOR_UNIT)));
-                kamar.setKeterangan(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_KETERANGAN)));
-                kamar.setMaksPenyewa(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_MAKS_PENYEWA)));
-                kamar.setHarga1Bulan(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_1BULAN)));
-                kamar.setHarga3Bulan(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_3BULAN)));
-                kamar.setHarga6Bulan(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_6BULAN)));
-                kamar.setStatus(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KAMAR_STATUS)));
-                kamarList.add(kamar);
-            } while (cursor.moveToNext());
+                Kamar k = new Kamar();
+                k.setId(c.getInt(c.getColumnIndexOrThrow(COLUMN_KAMAR_ID)));
+                k.setJenisUnit(c.getString(c.getColumnIndexOrThrow(COLUMN_KAMAR_JENIS_UNIT)));
+                k.setNomorUnit(c.getString(c.getColumnIndexOrThrow(COLUMN_KAMAR_NOMOR_UNIT)));
+                k.setKeterangan(c.getString(c.getColumnIndexOrThrow(COLUMN_KAMAR_KETERANGAN)));
+                k.setMaksPenyewa(c.getInt(c.getColumnIndexOrThrow(COLUMN_KAMAR_MAKS_PENYEWA)));
+                k.setHarga1Bulan(c.getDouble(c.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_1BULAN)));
+                k.setHarga3Bulan(c.getDouble(c.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_3BULAN)));
+                k.setHarga6Bulan(c.getDouble(c.getColumnIndexOrThrow(COLUMN_KAMAR_HARGA_6BULAN)));
+                k.setStatus(c.getInt(c.getColumnIndexOrThrow(COLUMN_KAMAR_STATUS)));
+                list.add(k);
+            } while (c.moveToNext());
         }
-        if (cursor != null) cursor.close();
-        return kamarList;
+        c.close();
+        return list;
     }
 
-    // Update Kamar
     public int updateKamar(Kamar kamar) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_KAMAR_JENIS_UNIT, kamar.getJenisUnit());
-        values.put(COLUMN_KAMAR_NOMOR_UNIT, kamar.getNomorUnit());
-        values.put(COLUMN_KAMAR_KETERANGAN, kamar.getKeterangan());
-        values.put(COLUMN_KAMAR_STATUS, kamar.getStatus());
-        values.put(COLUMN_KAMAR_MAKS_PENYEWA, kamar.getMaksPenyewa());
-        values.put(COLUMN_KAMAR_HARGA_1BULAN, kamar.getHarga1Bulan());
-        values.put(COLUMN_KAMAR_HARGA_3BULAN, kamar.getHarga3Bulan());
-        values.put(COLUMN_KAMAR_HARGA_6BULAN, kamar.getHarga6Bulan());
-        // Status biasanya diupdate otomatis oleh sistem sewa, tapi bisa manual juga
-        return db.update(TABLE_KAMAR, values, COLUMN_KAMAR_ID + " = ?", new String[]{String.valueOf(kamar.getId())});
+        ContentValues v = new ContentValues();
+        v.put(COLUMN_KAMAR_JENIS_UNIT, kamar.getJenisUnit());
+        v.put(COLUMN_KAMAR_NOMOR_UNIT, kamar.getNomorUnit());
+        v.put(COLUMN_KAMAR_KETERANGAN, kamar.getKeterangan());
+        v.put(COLUMN_KAMAR_MAKS_PENYEWA, kamar.getMaksPenyewa());
+        v.put(COLUMN_KAMAR_HARGA_1BULAN, kamar.getHarga1Bulan());
+        v.put(COLUMN_KAMAR_HARGA_3BULAN, kamar.getHarga3Bulan());
+        v.put(COLUMN_KAMAR_HARGA_6BULAN, kamar.getHarga6Bulan());
+        v.put(COLUMN_KAMAR_STATUS, kamar.getStatus());
+        return db.update(TABLE_KAMAR, v, COLUMN_KAMAR_ID + "=?",
+                new String[]{String.valueOf(kamar.getId())});
     }
 
-    // Delete Kamar
     public void deleteKamar(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_KAMAR, COLUMN_KAMAR_ID + " = ?", new String[]{String.valueOf(id)});
+        db.delete(TABLE_KAMAR, COLUMN_KAMAR_ID + "=?",
+                new String[]{String.valueOf(id)});
     }
 
-    // --- PENYEWA METHODS ---
-
-    // Insert Penyewa
-    public long insertPenyewa(Penyewa penyewa) {
+    // ================= PENYEWA =================
+    public long insertPenyewa(Penyewa p) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_PENYEWA_NAMA, penyewa.getNama());
-        values.put(COLUMN_PENYEWA_WHATSAPP, penyewa.getWhatsapp());
-        values.put(COLUMN_PENYEWA_JENIS_KELAMIN, penyewa.getJenisKelamin());
-        values.put(COLUMN_PENYEWA_DESKRIPSI, penyewa.getDeskripsi());
-        values.put(COLUMN_PENYEWA_FOTO_PROFIL, penyewa.getFotoProfil());
-        values.put(COLUMN_PENYEWA_KTP, penyewa.getKtp());
-        values.put(COLUMN_PENYEWA_ID_KAMAR, penyewa.getIdKamar());
-        values.put(COLUMN_PENYEWA_DURASI_SEWA, penyewa.getDurasiSewa());
-        values.put(COLUMN_PENYEWA_TGL_MULAI, penyewa.getTglMulai());
-        values.put(COLUMN_PENYEWA_TGL_PEMBAYARAN_BERIKUTNYA, penyewa.getTglPembayaranBerikutnya());
-        return db.insert(TABLE_PENYEWA, null, values);
+        ContentValues v = new ContentValues();
+        v.put(COLUMN_PENYEWA_NAMA, p.getNama());
+        v.put(COLUMN_PENYEWA_WHATSAPP, p.getWhatsapp());
+        v.put(COLUMN_PENYEWA_JENIS_KELAMIN, p.getJenisKelamin());
+        v.put(COLUMN_PENYEWA_DESKRIPSI, p.getDeskripsi());
+        v.put(COLUMN_PENYEWA_FOTO_PROFIL, p.getFotoProfil());
+        v.put(COLUMN_PENYEWA_KTP, p.getKtp());
+        v.put(COLUMN_PENYEWA_ID_KAMAR, p.getIdKamar());
+        v.put(COLUMN_PENYEWA_DURASI_SEWA, p.getDurasiSewa());
+        v.put(COLUMN_PENYEWA_TGL_MULAI, p.getTglMulai());
+        v.put(COLUMN_PENYEWA_TGL_PEMBAYARAN_BERIKUTNYA, p.getTglPembayaranBerikutnya());
+        return db.insert(TABLE_PENYEWA, null, v);
     }
 
-    // Get All Penyewa
     public List<Penyewa> getAllPenyewa() {
-        List<Penyewa> penyewaList = new ArrayList<>();
+        List<Penyewa> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_PENYEWA, null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
+        Cursor c = db.query(TABLE_PENYEWA, null, null, null, null, null, null);
+        if (c.moveToFirst()) {
             do {
-                Penyewa penyewa = new Penyewa();
-                penyewa.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_ID)));
-                penyewa.setNama(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_NAMA)));
-                penyewa.setWhatsapp(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_WHATSAPP)));
-                penyewa.setFotoProfil(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_FOTO_PROFIL)));
-                penyewa.setKtp(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_KTP)));
-                penyewa.setIdKamar(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_ID_KAMAR)));
-                penyewa.setDurasiSewa(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_DURASI_SEWA)));
-                penyewa.setTglMulai(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_TGL_MULAI)));
-                penyewa.setTglPembayaranBerikutnya(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_TGL_PEMBAYARAN_BERIKUTNYA)));
-                penyewaList.add(penyewa);
-            } while (cursor.moveToNext());
+                Penyewa p = new Penyewa();
+                p.setId(c.getInt(c.getColumnIndexOrThrow(COLUMN_PENYEWA_ID)));
+                p.setNama(c.getString(c.getColumnIndexOrThrow(COLUMN_PENYEWA_NAMA)));
+                p.setWhatsapp(c.getString(c.getColumnIndexOrThrow(COLUMN_PENYEWA_WHATSAPP)));
+                p.setFotoProfil(c.getString(c.getColumnIndexOrThrow(COLUMN_PENYEWA_FOTO_PROFIL)));
+                p.setKtp(c.getString(c.getColumnIndexOrThrow(COLUMN_PENYEWA_KTP)));
+                p.setIdKamar(c.getInt(c.getColumnIndexOrThrow(COLUMN_PENYEWA_ID_KAMAR)));
+                p.setDurasiSewa(c.getInt(c.getColumnIndexOrThrow(COLUMN_PENYEWA_DURASI_SEWA)));
+                p.setTglMulai(c.getString(c.getColumnIndexOrThrow(COLUMN_PENYEWA_TGL_MULAI)));
+                p.setTglPembayaranBerikutnya(c.getString(c.getColumnIndexOrThrow(COLUMN_PENYEWA_TGL_PEMBAYARAN_BERIKUTNYA)));
+                list.add(p);
+            } while (c.moveToNext());
         }
-        if (cursor != null) cursor.close();
-        return penyewaList;
+        c.close();
+        return list;
     }
 
-    // Get 1 Penyewa by ID
     public Penyewa getPenyewa(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_PENYEWA, null, COLUMN_PENYEWA_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            Penyewa penyewa = new Penyewa();
-            penyewa.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_ID)));
-            penyewa.setNama(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_NAMA)));
-            penyewa.setWhatsapp(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_WHATSAPP)));
-            penyewa.setFotoProfil(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_FOTO_PROFIL)));
-            penyewa.setKtp(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_KTP)));
-            penyewa.setIdKamar(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_ID_KAMAR)));
-            penyewa.setDurasiSewa(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_DURASI_SEWA)));
-            penyewa.setTglMulai(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_TGL_MULAI)));
-            penyewa.setTglPembayaranBerikutnya(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PENYEWA_TGL_PEMBAYARAN_BERIKUTNYA)));
-            cursor.close();
-            return penyewa;
+        Cursor c = db.query(TABLE_PENYEWA, null, COLUMN_PENYEWA_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if (c != null && c.moveToFirst()) {
+            Penyewa p = new Penyewa();
+            p.setId(c.getInt(c.getColumnIndexOrThrow(COLUMN_PENYEWA_ID)));
+            p.setNama(c.getString(c.getColumnIndexOrThrow(COLUMN_PENYEWA_NAMA)));
+            p.setWhatsapp(c.getString(c.getColumnIndexOrThrow(COLUMN_PENYEWA_WHATSAPP)));
+            p.setFotoProfil(c.getString(c.getColumnIndexOrThrow(COLUMN_PENYEWA_FOTO_PROFIL)));
+            p.setKtp(c.getString(c.getColumnIndexOrThrow(COLUMN_PENYEWA_KTP)));
+            p.setIdKamar(c.getInt(c.getColumnIndexOrThrow(COLUMN_PENYEWA_ID_KAMAR)));
+            p.setDurasiSewa(c.getInt(c.getColumnIndexOrThrow(COLUMN_PENYEWA_DURASI_SEWA)));
+            p.setTglMulai(c.getString(c.getColumnIndexOrThrow(COLUMN_PENYEWA_TGL_MULAI)));
+            p.setTglPembayaranBerikutnya(c.getString(c.getColumnIndexOrThrow(COLUMN_PENYEWA_TGL_PEMBAYARAN_BERIKUTNYA)));
+            c.close();
+            return p;
         }
         return null;
     }
 
-    // Update Penyewa
-    public int updatePenyewa(Penyewa penyewa) {
+    public int updatePenyewa(Penyewa p) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_PENYEWA_NAMA, penyewa.getNama());
-        values.put(COLUMN_PENYEWA_WHATSAPP, penyewa.getWhatsapp());
-        // Tambahkan field lain jika diperlukan edit foto dll
-        return db.update(TABLE_PENYEWA, values, COLUMN_PENYEWA_ID + " = ?", new String[]{String.valueOf(penyewa.getId())});
+        ContentValues v = new ContentValues();
+        v.put(COLUMN_PENYEWA_NAMA, p.getNama());
+        v.put(COLUMN_PENYEWA_WHATSAPP, p.getWhatsapp());
+        v.put(COLUMN_PENYEWA_JENIS_KELAMIN, p.getJenisKelamin());
+        v.put(COLUMN_PENYEWA_DESKRIPSI, p.getDeskripsi());
+        v.put(COLUMN_PENYEWA_FOTO_PROFIL, p.getFotoProfil());
+        v.put(COLUMN_PENYEWA_KTP, p.getKtp());
+        // Update ID Kamar juga (PENTING untuk fitur Pindah Kamar)
+        v.put(COLUMN_PENYEWA_ID_KAMAR, p.getIdKamar());
+        v.put(COLUMN_PENYEWA_TGL_PEMBAYARAN_BERIKUTNYA, p.getTglPembayaranBerikutnya());
+
+        return db.update(TABLE_PENYEWA, v, COLUMN_PENYEWA_ID + "=?",
+                new String[]{String.valueOf(p.getId())});
     }
 
-    // Delete Penyewa
     public void deletePenyewa(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_PENYEWA, COLUMN_PENYEWA_ID + " = ?", new String[]{String.valueOf(id)});
+        db.delete(TABLE_PENYEWA, COLUMN_PENYEWA_ID + "=?",
+                new String[]{String.valueOf(id)});
     }
 
-    // --- KEUANGAN METHODS ---
+    // ================= KEUANGAN =================
+    public long insertKeuangan(Keuangan k) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues v = new ContentValues();
+        v.put(COLUMN_KEUANGAN_ID_PENYEWA, k.getIdPenyewa());
+        v.put(COLUMN_KEUANGAN_TIPE, k.getTipe());
+        v.put(COLUMN_KEUANGAN_DESKRIPSI, k.getDeskripsi());
+        v.put(COLUMN_KEUANGAN_NOMINAL, k.getNominal());
+        v.put(COLUMN_KEUANGAN_TANGGAL, k.getTanggal());
+        return db.insert(TABLE_KEUANGAN, null, v);
+    }
+
     public List<Keuangan> getAllKeuangan() {
-        List<Keuangan> keuanganList = new ArrayList<>();
+        List<Keuangan> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_KEUANGAN, null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
+        Cursor c = db.query(TABLE_KEUANGAN, null, null, null, null, null, null);
+        if (c.moveToFirst()) {
             do {
-                Keuangan keuangan = new Keuangan();
-                keuangan.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KEUANGAN_ID)));
-                keuangan.setTipe(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KEUANGAN_TIPE)));
-                keuangan.setDeskripsi(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KEUANGAN_DESKRIPSI)));
-                keuangan.setNominal(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_KEUANGAN_NOMINAL)));
-                keuangan.setTanggal(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KEUANGAN_TANGGAL)));
-                keuanganList.add(keuangan);
-            } while (cursor.moveToNext());
+                Keuangan k = new Keuangan();
+                k.setId(c.getInt(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_ID)));
+                if (c.getColumnIndex(COLUMN_KEUANGAN_ID_PENYEWA) != -1) {
+                    k.setIdPenyewa(c.getInt(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_ID_PENYEWA)));
+                }
+                k.setTipe(c.getString(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_TIPE)));
+                k.setDeskripsi(c.getString(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_DESKRIPSI)));
+                k.setNominal(c.getDouble(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_NOMINAL)));
+                k.setTanggal(c.getString(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_TANGGAL)));
+                list.add(k);
+            } while (c.moveToNext());
         }
-        if (cursor != null) cursor.close();
-        return keuanganList;
+        c.close();
+        return list;
     }
 
-    // --- STATISTIK ---
+    // ================= STATISTIK =================
     public int getTotalKamar() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_KAMAR, null);
+        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_KAMAR, null);
         int count = 0;
-        if (cursor.moveToFirst()) {
-            count = cursor.getInt(0);
-        }
-        cursor.close();
+        if (c.moveToFirst()) count = c.getInt(0);
+        c.close();
         return count;
     }
 
     public int getTotalPenyewa() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_PENYEWA, null);
+        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_PENYEWA, null);
         int count = 0;
-        if (cursor.moveToFirst()) {
-            count = cursor.getInt(0);
-        }
-        cursor.close();
+        if (c.moveToFirst()) count = c.getInt(0);
+        c.close();
         return count;
     }
 
-    public int getTotalLunas() { return getTotalPenyewa(); } // Logic dummy
+    public int getTotalLunas() {
+        return getTotalPenyewa(); // dummy logic
+    }
 
     public int getTotalPerbaikan() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_PERAWATAN, null);
+        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_PERAWATAN, null);
         int count = 0;
-        if (cursor.moveToFirst()) count = cursor.getInt(0);
-        cursor.close();
+        if (c.moveToFirst()) count = c.getInt(0);
+        c.close();
         return count;
     }
 
-    public double getPendapatanBulanIni() { return 0; }
+    // ================= STATISTIK =================
+    public double getPendapatanBulanIni() {
+        double totalPendapatan = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Format tanggal di DB: dd-MM-yyyy
+        // Ambil bulan & tahun saat ini -> "-MM-yyyy"
+        SimpleDateFormat sdf = new SimpleDateFormat("-MM-yyyy", Locale.US);
+        String currentMonthYear = sdf.format(new Date());
+
+        String query = "SELECT " + COLUMN_KEUANGAN_NOMINAL + ", " + COLUMN_KEUANGAN_TANGGAL +
+                " FROM " + TABLE_KEUANGAN +
+                " WHERE " + COLUMN_KEUANGAN_TIPE + " = 'Pemasukan'";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String tanggalDB = cursor.getString(
+                        cursor.getColumnIndexOrThrow(COLUMN_KEUANGAN_TANGGAL)
+                );
+                double nominal = cursor.getDouble(
+                        cursor.getColumnIndexOrThrow(COLUMN_KEUANGAN_NOMINAL)
+                );
+
+                // Cek apakah tanggal termasuk bulan ini
+                if (tanggalDB != null && tanggalDB.endsWith(currentMonthYear)) {
+                    totalPendapatan += nominal;
+                }
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return totalPendapatan;
+    }
+
+    // Mengambil daftar keuangan berdasarkan ID Penyewa (untuk halaman Detail Penyewa)
+    public List<Keuangan> getKeuanganByPenyewa(int idPenyewa) {
+        List<Keuangan> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Urutkan dari data terbaru
+        String query = "SELECT * FROM " + TABLE_KEUANGAN +
+                " WHERE " + COLUMN_KEUANGAN_ID_PENYEWA + " = ?" +
+                " ORDER BY " + COLUMN_KEUANGAN_ID + " DESC";
+
+        Cursor c = db.rawQuery(query, new String[]{String.valueOf(idPenyewa)});
+
+        if (c.moveToFirst()) {
+            do {
+                Keuangan k = new Keuangan();
+                k.setId(c.getInt(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_ID)));
+                k.setIdPenyewa(c.getInt(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_ID_PENYEWA)));
+                k.setTipe(c.getString(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_TIPE)));
+                k.setDeskripsi(c.getString(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_DESKRIPSI)));
+                k.setNominal(c.getDouble(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_NOMINAL)));
+                k.setTanggal(c.getString(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_TANGGAL)));
+                list.add(k);
+            } while (c.moveToNext());
+        }
+
+        c.close();
+        return list;
+    }
+
+    // --- TAMBAHAN UNTUK EDIT & HAPUS KEUANGAN ---
+
+    // Ambil 1 data keuangan berdasarkan ID (untuk Edit)
+    public Keuangan getKeuangan(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.query(TABLE_KEUANGAN, null, COLUMN_KEUANGAN_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if (c != null && c.moveToFirst()) {
+            Keuangan k = new Keuangan();
+            k.setId(c.getInt(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_ID)));
+            if (c.getColumnIndex(COLUMN_KEUANGAN_ID_PENYEWA) != -1) {
+                k.setIdPenyewa(c.getInt(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_ID_PENYEWA)));
+            }
+            k.setTipe(c.getString(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_TIPE)));
+            k.setDeskripsi(c.getString(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_DESKRIPSI)));
+            k.setNominal(c.getDouble(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_NOMINAL)));
+            k.setTanggal(c.getString(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_TANGGAL)));
+            c.close();
+            return k;
+        }
+        return null;
+    }
+
+    // Update Data Keuangan
+    public int updateKeuangan(Keuangan k) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues v = new ContentValues();
+        v.put(COLUMN_KEUANGAN_TIPE, k.getTipe());
+        v.put(COLUMN_KEUANGAN_DESKRIPSI, k.getDeskripsi());
+        v.put(COLUMN_KEUANGAN_NOMINAL, k.getNominal());
+        v.put(COLUMN_KEUANGAN_TANGGAL, k.getTanggal());
+        // id_penyewa biasanya tidak diubah saat edit transaksi manual, tapi bisa ditambahkan jika perlu
+        return db.update(TABLE_KEUANGAN, v, COLUMN_KEUANGAN_ID + "=?",
+                new String[]{String.valueOf(k.getId())});
+    }
+
+    // Hapus Data Keuangan
+    public void deleteKeuangan(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_KEUANGAN, COLUMN_KEUANGAN_ID + "=?",
+                new String[]{String.valueOf(id)});
+    }
+
+    // --- TAMBAHAN BARU: METHOD INSERT PERAWATAN ---
+    public long insertPerawatan(Perawatan p) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues v = new ContentValues();
+        v.put(COLUMN_PERAWATAN_NAMA, p.getNamaPerawatan());
+        v.put(COLUMN_PERAWATAN_TANGGAL, p.getTanggal());
+        v.put(COLUMN_PERAWATAN_ID_KAMAR, p.getIdKamar());
+        v.put(COLUMN_PERAWATAN_BIAYA_SPAREPART, p.getBiayaSparepart());
+        v.put(COLUMN_PERAWATAN_BIAYA_JASA, p.getBiayaJasa());
+        v.put(COLUMN_PERAWATAN_ONGKIR, p.getOngkir());
+        v.put(COLUMN_PERAWATAN_CATATAN, p.getCatatan());
+        return db.insert(TABLE_PERAWATAN, null, v);
+    }
+
 }

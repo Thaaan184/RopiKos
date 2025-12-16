@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.ropikos.db.DBHelper;
 import com.example.ropikos.model.Kamar;
+import com.example.ropikos.model.Keuangan; // MODIFIKASI: Import Model Keuangan
 import com.example.ropikos.model.Penyewa;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -43,42 +44,34 @@ public class TambahPenyewaActivity extends AppCompatActivity {
     private TextView tvUnitSummary, tvHargaSummary, tvTotalHarga;
     private TextInputLayout tilNama, tilWhatsapp, tilJenisUnit, tilNoUnit, tilJenisKelamin;
 
-    // Variabel untuk menyimpan path gambar
     private String pathFotoProfil = null;
     private String pathKtp = null;
 
-    // Variable untuk menyimpan ID Kamar yang dipilih (jika ada)
     private int selectedKamarId = -1;
-    private Kamar selectedKamar = null; // Menyimpan objek kamar yang dipilih
-    private List<Kamar> availableKamarList; // List kamar kosong untuk dropdown
+    private Kamar selectedKamar = null;
+    private List<Kamar> availableKamarList;
     private final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
-    // Launcher untuk Foto Profil
     private final ActivityResultLauncher<Intent> launcherProfile = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     Uri selectedUri = result.getData().getData();
                     if (selectedUri != null) {
-                        // Tampilkan preview
                         ivProfilePic.setImageURI(selectedUri);
-                        // Simpan ke internal storage & ambil path-nya
                         pathFotoProfil = saveImageToInternalStorage(selectedUri, "profile_" + System.currentTimeMillis());
                     }
                 }
             }
     );
 
-    // Launcher untuk KTP
     private final ActivityResultLauncher<Intent> launcherKtp = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     Uri selectedUri = result.getData().getData();
                     if (selectedUri != null) {
-                        // Tampilkan preview
                         ivKtpPreview.setImageURI(selectedUri);
-                        // Simpan ke internal storage & ambil path-nya
                         pathKtp = saveImageToInternalStorage(selectedUri, "ktp_" + System.currentTimeMillis());
                     }
                 }
@@ -118,127 +111,101 @@ public class TambahPenyewaActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btn_back);
         btnKtp = findViewById(R.id.btn_upload_ktp);
 
-        // Klik Foto Profil untuk ganti gambar
         ivProfilePic.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
-            launcherProfile.launch(intent); // pemicu launcher
+            launcherProfile.launch(intent);
         });
 
-        // Klik Tombol Upload KTP
         btnKtp.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
-            launcherKtp.launch(intent); // pemicu launcher
+            launcherKtp.launch(intent);
         });
 
         if (btnBack != null) btnBack.setOnClickListener(v -> finish());
 
         setupDateAndDurationLogic();
 
-        // cek sumber data (Intent dari button tambah penyewa di layout item_kamar.xml atau Manual)
         if (getIntent().hasExtra("PRESELECTED_KAMAR_ID")) {
-            // Case A: Dari ListKamarActivity (Autofill)
             selectedKamarId = getIntent().getIntExtra("PRESELECTED_KAMAR_ID", -1);
             if (selectedKamarId != -1) {
                 fillKamarData(selectedKamarId);
-                // Kunci dropdown agar tidak diubah
                 etJenisUnit.setEnabled(false);
                 etNoUnit.setEnabled(false);
-                // Matikan juga layout wrapper agar terlihat disabled
                 tilJenisUnit.setEnabled(false);
                 tilNoUnit.setEnabled(false);
             }
         } else {
-            // Case B: Dari ListPenyewaActivity / FAB (Manual Dropdown)
             setupDropdownKamarAvailable();
         }
 
-        setupStaticDropdowns(); // Isi dropdown Jenis Kelamin
+        setupStaticDropdowns();
 
         btnSimpan.setOnClickListener(v -> simpanPenyewa());
     }
 
-    // Autofill Data Kamar dari item kamar yang dipilih
     private void fillKamarData(int kamarId) {
         selectedKamar = dbHelper.getKamar(kamarId);
         if (selectedKamar != null) {
             etJenisUnit.setText(selectedKamar.getJenisUnit());
             etNoUnit.setText(selectedKamar.getNomorUnit());
-            updateSummary(); // Hitung harga langsung
+            updateSummary();
         }
     }
 
-    // Setup Dropdown Manual Kamar Kosong (Tersedia)
     private void setupDropdownKamarAvailable() {
-        availableKamarList = dbHelper.getKamarTersedia(); // Mengambil data harga juga
+        availableKamarList = dbHelper.getKamarTersedia();
 
-        // Saring data untuk mendapatkan daftar jenis unit tanpa duplikasi (misal: hanya muncul satu 'AC' meski ada banyak kamar AC)
         Set<String> jenisSet = new HashSet<>();
         for (Kamar k : availableKamarList) {
             jenisSet.add(k.getJenisUnit());
         }
-
-        // Mengisi dropdown Jenis Unit dengan Kamar yang masih kosong
         List<String> listJenis = new ArrayList<>(jenisSet);
         ArrayAdapter<String> adapterJenis = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, listJenis);
         etJenisUnit.setAdapter(adapterJenis);
 
-        // Listener saat Jenis Unit dipilih -> Filter Nomor Unit
         etJenisUnit.setOnItemClickListener((parent, view, position, id) -> {
             String selectedJenis = adapterJenis.getItem(position);
-            etNoUnit.setText(""); // Reset nomor
+            etNoUnit.setText("");
             selectedKamarId = -1;
             selectedKamar = null;
             setupDropdownNomor(selectedJenis);
         });
     }
 
-    // Mengatur isi dropdown Nomor Unit berdasarkan Jenis Unit yang dipilih.
     private void setupDropdownNomor(String jenisUnit) {
         List<String> listNomor = new ArrayList<>();
         final List<Kamar> filteredKamar = new ArrayList<>();
 
-        // Hanya ambil nomor unit yang sesuai dengan jenis unit yang dipilih
         for (Kamar k : availableKamarList) {
             if (k.getJenisUnit().equals(jenisUnit)) {
-                listNomor.add(k.getNomorUnit()); // Data untuk dropdown nomor unit
-                filteredKamar.add(k); // Menyimpan objek-objek Kamar (idKamar, harga, dan Kapasitas) sesuai dengan jenis unit dan nomor unit yg dpilih seperti (idKamar, harga, dan Kapasitas)
+                listNomor.add(k.getNomorUnit());
+                filteredKamar.add(k);
             }
         }
 
-        // Pasang adapter (data) ke Dropdown Nomor Unit
         ArrayAdapter<String> adapterNomor = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, listNomor);
         etNoUnit.setAdapter(adapterNomor);
 
-        // Listener saat user memilih Nomor Unit
         etNoUnit.setOnItemClickListener((parent, view, position, id) -> {
-            // Ambil objek kamar yang sesuai dengan posisi pilihan di list yang sudah difilter
             selectedKamar = filteredKamar.get(position);
             selectedKamarId = selectedKamar.getId();
-
-            // Hitung ulang total harga berdasarkan kamar yang baru dipilih
             updateSummary();
         });
     }
 
-
-    // Logic Tanggal & Durasi
     private void setupDateAndDurationLogic() {
-        // Setup Date Picker
         etTglMulaiSewa.setOnClickListener(v -> showDatePicker());
-        etTglMulaiSewa.setText(DATE_FORMATTER.format(Calendar.getInstance().getTime())); // Default Hari Ini
+        etTglMulaiSewa.setText(DATE_FORMATTER.format(Calendar.getInstance().getTime()));
 
-        // Setup Dropdown Durasi
         String[] durasiOptions = {"1 Bulan", "3 Bulan", "6 Bulan"};
         ArrayAdapter<String> durasiAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, durasiOptions);
         etDurasiSewa.setAdapter(durasiAdapter);
-        etDurasiSewa.setText("1 Bulan", false); // nilai default durasi menjadi 1 Bulan agar kolom tidak kosong saat awal dibuka
+        etDurasiSewa.setText("1 Bulan", false);
 
-        // Trigger hitung ulang saat durasi berubah
         etDurasiSewa.setOnItemClickListener((parent, view, position, id) -> updateSummary());
 
-        // Hitung awal
         calculateEndDate();
     }
 
@@ -248,7 +215,7 @@ public class TambahPenyewaActivity extends AppCompatActivity {
                 (view, year, monthOfYear, dayOfMonth) -> {
                     kalender.set(year, monthOfYear, dayOfMonth);
                     etTglMulaiSewa.setText(DATE_FORMATTER.format(kalender.getTime()));
-                    updateSummary(); // Recalculate dates
+                    updateSummary();
                 },
                 kalender.get(Calendar.YEAR),
                 kalender.get(Calendar.MONTH),
@@ -257,7 +224,6 @@ public class TambahPenyewaActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    // Hitung tanggal berakhir saja
     private void calculateEndDate() {
         String tglMulaiStr = etTglMulaiSewa.getText().toString();
         int durasiBulan = getDurasiInt();
@@ -266,14 +232,13 @@ public class TambahPenyewaActivity extends AppCompatActivity {
             Calendar kalender = Calendar.getInstance();
             kalender.setTime(DATE_FORMATTER.parse(tglMulaiStr));
             kalender.add(Calendar.MONTH, durasiBulan);
-            kalender.add(Calendar.DAY_OF_MONTH, -1); // H-1
+            kalender.add(Calendar.DAY_OF_MONTH, -1);
             etTglBayar.setText(DATE_FORMATTER.format(kalender.getTime()));
         } catch (Exception e) {
             etTglBayar.setText("-");
         }
     }
 
-    // Helper ambil durasi integer
     private int getDurasiInt() {
         String durasiStr = etDurasiSewa.getText().toString();
         try {
@@ -283,16 +248,14 @@ public class TambahPenyewaActivity extends AppCompatActivity {
         }
     }
 
-    // Gabungan Harga & Tanggal
     private void updateSummary() {
-        calculateEndDate(); // Pastikan tanggal akhir update dulu
+        calculateEndDate();
 
         if (selectedKamar == null) return;
 
         int durasi = getDurasiInt();
         double hargaFinal = 0;
 
-        // Cek harga berdasarkan durasi (DB getKamarTersedia)
         if (durasi == 3) {
             hargaFinal = selectedKamar.getHarga3Bulan();
         } else if (durasi == 6) {
@@ -301,17 +264,11 @@ public class TambahPenyewaActivity extends AppCompatActivity {
             hargaFinal = selectedKamar.getHarga1Bulan();
         }
 
-        // Format Rupiah
-        String hargaFormatted = String.format(Locale.forLanguageTag("id"), "Rp %,.0f", hargaFinal); // contoh Rp 1.000.000
+        String hargaFormatted = String.format(Locale.forLanguageTag("id"), "Rp %,.0f", hargaFinal);
 
-
-        // Update UI
         String tglMulai = etTglMulaiSewa.getText().toString();
         String tglAkhir = etTglBayar.getText().toString();
 
-        /* TODO: format saat ini (Kamar AC A01, 3 bulan (15-12-2025 s.d. 14-03-2026)
-         * mungkin format nya bisa disesuaikan lagi jika dperlukan
-         */
         tvUnitSummary.setText(String.format("%s %s, %d bulan\n(%s s.d. %s)",
                 selectedKamar.getJenisUnit(), selectedKamar.getNomorUnit(), durasi, tglMulai, tglAkhir));
 
@@ -334,7 +291,7 @@ public class TambahPenyewaActivity extends AppCompatActivity {
             outputStream.close();
             inputStream.close();
 
-            return file.getAbsolutePath(); // Mengembalikan path file lokal (contoh: /data/user/0/com.example.../files/ktp_123.jpg)
+            return file.getAbsolutePath();
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Gagal menyimpan gambar", Toast.LENGTH_SHORT).show();
@@ -395,12 +352,14 @@ public class TambahPenyewaActivity extends AppCompatActivity {
         return isValid;
     }
 
-    // save logic
+    // MODIFIKASI: LOGIKA SIMPAN PENYEWA + AUTO INSERT KEUANGAN
     private void simpanPenyewa() {
         // Validasi Input terlebih dahulu
         if (!validateInputs()) {
             return;
         }
+
+        int durasi = getDurasiInt();
 
         Penyewa p = new Penyewa();
         p.setNama(etNamaPenyewa.getText().toString());
@@ -408,19 +367,41 @@ public class TambahPenyewaActivity extends AppCompatActivity {
         p.setJenisKelamin(etJenisKelamin.getText().toString());
         p.setDeskripsi(etDeskripsi.getText().toString());
         p.setIdKamar(selectedKamarId);
-        p.setDurasiSewa(getDurasiInt());
+        p.setDurasiSewa(durasi);
         p.setTglMulai(etTglMulaiSewa.getText().toString());
         p.setTglPembayaranBerikutnya(etTglBayar.getText().toString());
         p.setFotoProfil(pathFotoProfil != null ? pathFotoProfil : "");
         p.setKtp(pathKtp != null ? pathKtp : "");
 
-        long res = dbHelper.insertPenyewa(p);
-        if (res > 0) {
-            // Update status kamar jadi Terisi
+        // 1. Simpan Penyewa
+        long resPenyewa = dbHelper.insertPenyewa(p);
+
+        if (resPenyewa > 0) {
+            // 2. Update status kamar jadi Terisi
             selectedKamar.setStatus(1);
             dbHelper.updateKamar(selectedKamar);
 
-            Toast.makeText(this, "Penyewa Berhasil Ditambah", Toast.LENGTH_SHORT).show();
+            // MODIFIKASI: 3. Simpan ke Tabel Keuangan (Pemasukan Otomatis)
+            double hargaFinal = 0;
+            if (durasi == 3) hargaFinal = selectedKamar.getHarga3Bulan();
+            else if (durasi == 6) hargaFinal = selectedKamar.getHarga6Bulan();
+            else hargaFinal = selectedKamar.getHarga1Bulan();
+
+            Keuangan k = new Keuangan();
+            k.setIdPenyewa((int) resPenyewa); // Menggunakan ID dari hasil insertPenyewa
+            k.setTipe("Pemasukan");
+            k.setDeskripsi("Pembayaran Awal Sewa - " + p.getNama() + " (Unit " + selectedKamar.getNomorUnit() + ")");
+            k.setNominal(hargaFinal);
+            k.setTanggal(p.getTglMulai()); // Menggunakan tanggal mulai sewa sebagai tanggal transaksi
+
+            long resKeuangan = dbHelper.insertKeuangan(k);
+
+            if(resKeuangan > 0) {
+                Toast.makeText(this, "Penyewa & Data Keuangan Berhasil Disimpan", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Penyewa tersimpan, tapi Gagal simpan Keuangan", Toast.LENGTH_LONG).show();
+            }
+
             finish();
         } else {
             Toast.makeText(this, "Gagal menyimpan", Toast.LENGTH_SHORT).show();
