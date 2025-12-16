@@ -453,7 +453,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return totalPendapatan;
     }
-    
+
     // Mengambil daftar keuangan berdasarkan ID Penyewa (untuk halaman Detail Penyewa)
     public List<Keuangan> getKeuanganByPenyewa(int idPenyewa) {
         List<Keuangan> list = new ArrayList<>();
@@ -481,6 +481,49 @@ public class DBHelper extends SQLiteOpenHelper {
 
         c.close();
         return list;
+    }
+
+    // --- TAMBAHAN UNTUK EDIT & HAPUS KEUANGAN ---
+
+    // Ambil 1 data keuangan berdasarkan ID (untuk Edit)
+    public Keuangan getKeuangan(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.query(TABLE_KEUANGAN, null, COLUMN_KEUANGAN_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if (c != null && c.moveToFirst()) {
+            Keuangan k = new Keuangan();
+            k.setId(c.getInt(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_ID)));
+            if (c.getColumnIndex(COLUMN_KEUANGAN_ID_PENYEWA) != -1) {
+                k.setIdPenyewa(c.getInt(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_ID_PENYEWA)));
+            }
+            k.setTipe(c.getString(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_TIPE)));
+            k.setDeskripsi(c.getString(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_DESKRIPSI)));
+            k.setNominal(c.getDouble(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_NOMINAL)));
+            k.setTanggal(c.getString(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_TANGGAL)));
+            c.close();
+            return k;
+        }
+        return null;
+    }
+
+    // Update Data Keuangan
+    public int updateKeuangan(Keuangan k) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues v = new ContentValues();
+        v.put(COLUMN_KEUANGAN_TIPE, k.getTipe());
+        v.put(COLUMN_KEUANGAN_DESKRIPSI, k.getDeskripsi());
+        v.put(COLUMN_KEUANGAN_NOMINAL, k.getNominal());
+        v.put(COLUMN_KEUANGAN_TANGGAL, k.getTanggal());
+        // id_penyewa biasanya tidak diubah saat edit transaksi manual, tapi bisa ditambahkan jika perlu
+        return db.update(TABLE_KEUANGAN, v, COLUMN_KEUANGAN_ID + "=?",
+                new String[]{String.valueOf(k.getId())});
+    }
+
+    // Hapus Data Keuangan
+    public void deleteKeuangan(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_KEUANGAN, COLUMN_KEUANGAN_ID + "=?",
+                new String[]{String.valueOf(id)});
     }
 
 }

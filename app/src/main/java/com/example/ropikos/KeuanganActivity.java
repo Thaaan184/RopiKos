@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,8 +36,6 @@ public class KeuanganActivity extends AppCompatActivity {
     private TextView tvMasuk, tvKeluar, tvFilterDate, tvEmptyState;
     private ImageButton btnProfile;
     private KeuanganAdapter adapter;
-
-    // Variabel Filter: null = Semua, "MM-yyyy" = Filter Bulan Tertentu
     private String currentFilter = null;
 
     @Override
@@ -46,7 +45,6 @@ public class KeuanganActivity extends AppCompatActivity {
 
         dbHelper = new DBHelper(this);
 
-        // Inisialisasi View
         rvTransaksi = findViewById(R.id.rv_transaksi);
         tvMasuk = findViewById(R.id.tv_keuangan_masuk);
         tvKeluar = findViewById(R.id.tv_keuangan_keluar);
@@ -56,12 +54,8 @@ public class KeuanganActivity extends AppCompatActivity {
 
         rvTransaksi.setLayoutManager(new LinearLayoutManager(this));
 
-        // Logic Filter Klik
         tvFilterDate.setOnClickListener(v -> showFilterDialog());
-
-        btnProfile.setOnClickListener(v -> {
-            // Placeholder: Intent ke Profil jika ada
-        });
+        btnProfile.setOnClickListener(v -> {});
 
         setupBottomNavigation();
     }
@@ -72,21 +66,66 @@ public class KeuanganActivity extends AppCompatActivity {
         loadDataKeuangan();
     }
 
-    // --- LOGIC FILTER ---
+    // --- LOGIC DIALOG OPSI & HAPUS BERLIPAT ---
 
+    private void showOptionsDialog(Keuangan k) {
+        String[] options = {"Ubah Data", "Hapus Data"};
+
+        new AlertDialog.Builder(this)
+                .setTitle("Pilih Aksi")
+                .setItems(options, (dialog, which) -> {
+                    if (which == 0) {
+                        // Opsi Ubah -> Buka Activity Edit
+                        Intent intent = new Intent(KeuanganActivity.this, EditKeuanganActivity.class);
+                        intent.putExtra("KEUANGAN_ID", k.getId());
+                        startActivity(intent);
+                    } else {
+                        // Opsi Hapus -> Masuk Konfirmasi 1
+                        showDeleteConfirmation1(k.getId());
+                    }
+                })
+                .show();
+    }
+
+    // Konfirmasi Tahap 1
+    private void showDeleteConfirmation1(int id) {
+        new AlertDialog.Builder(this)
+                .setTitle("Hapus Transaksi?")
+                .setMessage("Apakah Anda yakin ingin menghapus transaksi ini?")
+                .setPositiveButton("Ya, Hapus", (dialog, which) -> {
+                    // Masuk Konfirmasi Tahap 2
+                    showDeleteConfirmation2(id);
+                })
+                .setNegativeButton("Batal", null)
+                .show();
+    }
+
+    // Konfirmasi Tahap 2 (Final)
+    private void showDeleteConfirmation2(int id) {
+        new AlertDialog.Builder(this)
+                .setTitle("PERINGATAN TERAKHIR")
+                .setMessage("Data yang dihapus TIDAK BISA dikembalikan. Anda benar-benar yakin?")
+                .setPositiveButton("Hapus Sekarang", (dialog, which) -> {
+                    // Eksekusi Hapus
+                    dbHelper.deleteKeuangan(id);
+                    Toast.makeText(this, "Transaksi berhasil dihapus", Toast.LENGTH_SHORT).show();
+                    loadDataKeuangan(); // Reload list
+                })
+                .setNegativeButton("Batal", null)
+                .show();
+    }
+
+    // --- LOGIC FILTER ---
     private void showFilterDialog() {
         String[] options = {"Semua", "Pilih Bulan & Tahun"};
-
         new AlertDialog.Builder(this)
                 .setTitle("Filter Transaksi")
                 .setItems(options, (dialog, which) -> {
                     if (which == 0) {
-                        // Reset ke Semua
                         currentFilter = null;
                         tvFilterDate.setText("Filter: Semua");
                         loadDataKeuangan();
                     } else {
-                        // Buka Picker
                         showMonthYearPicker();
                     }
                 })
@@ -95,33 +134,26 @@ public class KeuanganActivity extends AppCompatActivity {
 
     private void showMonthYearPicker() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        // --- PERBAIKAN: Membuat Layout Secara Programmatic (Tanpa XML) ---
         LinearLayout ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.HORIZONTAL);
         ll.setGravity(Gravity.CENTER);
         ll.setPadding(32, 32, 32, 32);
 
-        // Setup Month Picker
         final NumberPicker monthPicker = new NumberPicker(this);
         monthPicker.setMinValue(1);
         monthPicker.setMaxValue(12);
         monthPicker.setDisplayedValues(new String[]{"Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"});
-
         Calendar cal = Calendar.getInstance();
         monthPicker.setValue(cal.get(Calendar.MONTH) + 1);
 
-        // Setup Year Picker
         final NumberPicker yearPicker = new NumberPicker(this);
         int currentYear = cal.get(Calendar.YEAR);
-        yearPicker.setMinValue(currentYear - 5); // 5 tahun ke belakang
-        yearPicker.setMaxValue(currentYear + 5); // 5 tahun ke depan
+        yearPicker.setMinValue(currentYear - 5);
+        yearPicker.setMaxValue(currentYear + 5);
         yearPicker.setValue(currentYear);
 
-        // Tambahkan ke Layout
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(16, 0, 16, 0);
-
         ll.addView(monthPicker, params);
         ll.addView(yearPicker, params);
 
@@ -130,41 +162,29 @@ public class KeuanganActivity extends AppCompatActivity {
                 .setPositiveButton("Terapkan", (dialog, id) -> {
                     int selectedMonth = monthPicker.getValue();
                     int selectedYear = yearPicker.getValue();
-
-                    // Format filter: MM-yyyy (contoh: 12-2025 atau 01-2025)
                     String monthStr = selectedMonth < 10 ? "0" + selectedMonth : String.valueOf(selectedMonth);
                     currentFilter = monthStr + "-" + selectedYear;
 
-                    // Update Text UI
                     String[] months = {"Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"};
                     tvFilterDate.setText("Filter: " + months[selectedMonth - 1] + " " + selectedYear);
-
-                    // Reload Data
                     loadDataKeuangan();
                 })
                 .setNegativeButton("Batal", null)
-                .create()
-                .show();
+                .create().show();
     }
 
-    // --- LOGIC LOAD DATA ---
-
+    // --- LOAD DATA ---
     private void loadDataKeuangan() {
         List<Keuangan> allData = dbHelper.getAllKeuangan();
         List<Keuangan> filteredList = new ArrayList<>();
-
         double totalMasuk = 0;
         double totalKeluar = 0;
 
-        // Filter Logic
         for (Keuangan k : allData) {
             boolean include = false;
-
             if (currentFilter == null) {
-                // Tampilkan Semua
                 include = true;
             } else {
-                // Cek tanggal (Format DB: dd-MM-yyyy)
                 if (k.getTanggal() != null && k.getTanggal().endsWith(currentFilter)) {
                     include = true;
                 }
@@ -172,7 +192,6 @@ public class KeuanganActivity extends AppCompatActivity {
 
             if (include) {
                 filteredList.add(k);
-                // Hitung Total HANYA untuk yang lolos filter
                 if ("Pemasukan".equalsIgnoreCase(k.getTipe())) {
                     totalMasuk += k.getNominal();
                 } else if ("Pengeluaran".equalsIgnoreCase(k.getTipe())) {
@@ -180,15 +199,11 @@ public class KeuanganActivity extends AppCompatActivity {
                 }
             }
         }
-
-        // Balik urutan (Terbaru diatas)
         Collections.reverse(filteredList);
 
-        // Update UI Total
         if (tvMasuk != null) tvMasuk.setText(formatRupiah(totalMasuk));
         if (tvKeluar != null) tvKeluar.setText(formatRupiah(totalKeluar));
 
-        // Update Adapter
         if (filteredList.isEmpty()) {
             rvTransaksi.setVisibility(View.GONE);
             tvEmptyState.setVisibility(View.VISIBLE);
@@ -211,7 +226,6 @@ public class KeuanganActivity extends AppCompatActivity {
     private void setupBottomNavigation() {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_keuangan);
-
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_keuangan) return true;
@@ -228,9 +242,8 @@ public class KeuanganActivity extends AppCompatActivity {
         });
     }
 
-    // ================== ADAPTER ==================
+    // --- ADAPTER ---
     class KeuanganAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
         private static final int TYPE_PEMASUKAN = 0;
         private static final int TYPE_PENGELUARAN = 1;
         private List<Keuangan> data;
@@ -260,6 +273,11 @@ public class KeuanganActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             Keuangan k = data.get(position);
             String rupiah = formatRupiah(k.getNominal());
+
+            // --- LOGIKA KLIK ITEM (POPUP) ---
+            holder.itemView.setOnClickListener(v -> {
+                showOptionsDialog(k);
+            });
 
             if (getItemViewType(position) == TYPE_PENGELUARAN) {
                 PengeluaranViewHolder h = (PengeluaranViewHolder) holder;

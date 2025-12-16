@@ -20,6 +20,7 @@
         <activity android:name=".DetailPenyewaActivity" />
         <activity android:name=".EditPenyewaActivity" />
         <activity android:name=".KeuanganActivity" />
+        <activity android:name=".EditKeuanganActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
