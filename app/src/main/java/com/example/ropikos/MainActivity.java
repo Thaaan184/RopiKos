@@ -72,7 +72,10 @@ public class MainActivity extends AppCompatActivity {
         // Init Card Pendapatan
         cvPendapatan = findViewById(R.id.cv_pendapatan);
 
-        btnProfile.setOnClickListener(v -> Toast.makeText(this, "Menu Profil", Toast.LENGTH_SHORT).show());
+        btnProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ProfilActivity.class);
+            startActivity(intent);
+        });
 
         // --- SETUP LISTENER CARD UNTUK POPUP EDIT ---
         setupEditListeners();
