@@ -59,6 +59,7 @@ public class TambahPenyewaActivity extends AppCompatActivity {
                     Uri selectedUri = result.getData().getData();
                     if (selectedUri != null) {
                         ivProfilePic.setImageURI(selectedUri);
+                        ivProfilePic.setImageTintList(null);
                         pathFotoProfil = saveImageToInternalStorage(selectedUri, "profile_" + System.currentTimeMillis());
                     }
                 }
@@ -72,6 +73,7 @@ public class TambahPenyewaActivity extends AppCompatActivity {
                     Uri selectedUri = result.getData().getData();
                     if (selectedUri != null) {
                         ivKtpPreview.setImageURI(selectedUri);
+                        ivKtpPreview.setImageTintList(null);
                         pathKtp = saveImageToInternalStorage(selectedUri, "ktp_" + System.currentTimeMillis());
                     }
                 }
