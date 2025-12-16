@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
-    tools:context=".ProfileActivity">
+    android:background="@color/background_color">
 
     <!-- Header -->
     <LinearLayout
@@ -158,6 +157,7 @@
 
             <!-- Pengaturan Akun -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_pengaturan_akun"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="8dp"

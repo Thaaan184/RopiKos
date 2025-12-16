@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".RegistrasiActivity" />
+        <activity android:name=".ProfilActivity" />
+        <activity android:name=".EditProfilActivity" />
         <activity android:name=".TambahKamarActivity" />
         <activity android:name=".ListKamarActivity" />
         <activity android:name=".DetailKamarActivity" />
