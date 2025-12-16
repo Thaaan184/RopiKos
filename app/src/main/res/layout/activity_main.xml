@@ -49,6 +49,7 @@
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_welcome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -62,6 +63,7 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/tv_welcome_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Selamat Datang!"
@@ -69,6 +71,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tv_welcome_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Kelola kamar dan penyewa Anda dengan mudah hari ini."
@@ -180,6 +183,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_pendapatan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="80dp"
@@ -231,7 +235,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
