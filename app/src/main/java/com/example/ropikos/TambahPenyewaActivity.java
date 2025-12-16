@@ -13,6 +13,8 @@ import com.example.ropikos.db.DBHelper;
 import com.example.ropikos.model.Kamar;
 import com.example.ropikos.model.Penyewa;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import android.app.Activity;
@@ -39,6 +41,7 @@ public class TambahPenyewaActivity extends AppCompatActivity {
     private Button btnSimpan, btnKtp;
     private ImageView btnBack, ivProfilePic, ivKtpPreview;
     private TextView tvUnitSummary, tvHargaSummary, tvTotalHarga;
+    private TextInputLayout tilNama, tilWhatsapp, tilJenisUnit, tilNoUnit, tilJenisKelamin;
 
     // Variabel untuk menyimpan path gambar
     private String pathFotoProfil = null;
@@ -104,6 +107,13 @@ public class TambahPenyewaActivity extends AppCompatActivity {
         tvHargaSummary = findViewById(R.id.tv_harga_sewa_summary);
         tvTotalHarga = findViewById(R.id.tv_total_harga);
 
+        tilNama = findViewById(R.id.til_nama_penyewa);
+        tilWhatsapp = findViewById(R.id.til_whatsapp);
+        tilJenisUnit = findViewById(R.id.til_jenis_unit);
+        tilNoUnit = findViewById(R.id.til_nomor_unit);
+        tilJenisKelamin = findViewById(R.id.til_jenis_kelamin);
+
+
         btnSimpan = findViewById(R.id.btn_simpan);
         btnBack = findViewById(R.id.btn_back);
         btnKtp = findViewById(R.id.btn_upload_ktp);
@@ -135,6 +145,9 @@ public class TambahPenyewaActivity extends AppCompatActivity {
                 // Kunci dropdown agar tidak diubah
                 etJenisUnit.setEnabled(false);
                 etNoUnit.setEnabled(false);
+                // Matikan juga layout wrapper agar terlihat disabled
+                tilJenisUnit.setEnabled(false);
+                tilNoUnit.setEnabled(false);
             }
         } else {
             // Case B: Dari ListPenyewaActivity / FAB (Manual Dropdown)
@@ -160,11 +173,13 @@ public class TambahPenyewaActivity extends AppCompatActivity {
     private void setupDropdownKamarAvailable() {
         availableKamarList = dbHelper.getKamarTersedia(); // Mengambil data harga juga
 
-        // Ambil Jenis Unit Unik
+        // Saring data untuk mendapatkan daftar jenis unit tanpa duplikasi (misal: hanya muncul satu 'AC' meski ada banyak kamar AC)
         Set<String> jenisSet = new HashSet<>();
         for (Kamar k : availableKamarList) {
             jenisSet.add(k.getJenisUnit());
         }
+
+        // Mengisi dropdown Jenis Unit dengan Kamar yang masih kosong
         List<String> listJenis = new ArrayList<>(jenisSet);
         ArrayAdapter<String> adapterJenis = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, listJenis);
         etJenisUnit.setAdapter(adapterJenis);
@@ -179,26 +194,34 @@ public class TambahPenyewaActivity extends AppCompatActivity {
         });
     }
 
+    // Mengatur isi dropdown Nomor Unit berdasarkan Jenis Unit yang dipilih.
     private void setupDropdownNomor(String jenisUnit) {
         List<String> listNomor = new ArrayList<>();
         final List<Kamar> filteredKamar = new ArrayList<>();
 
+        // Hanya ambil nomor unit yang sesuai dengan jenis unit yang dipilih
         for (Kamar k : availableKamarList) {
             if (k.getJenisUnit().equals(jenisUnit)) {
-                listNomor.add(k.getNomorUnit());
-                filteredKamar.add(k);
+                listNomor.add(k.getNomorUnit()); // Data untuk dropdown nomor unit
+                filteredKamar.add(k); // Menyimpan objek-objek Kamar (idKamar, harga, dan Kapasitas) sesuai dengan jenis unit dan nomor unit yg dpilih seperti (idKamar, harga, dan Kapasitas)
             }
         }
 
+        // Pasang adapter (data) ke Dropdown Nomor Unit
         ArrayAdapter<String> adapterNomor = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, listNomor);
         etNoUnit.setAdapter(adapterNomor);
 
+        // Listener saat user memilih Nomor Unit
         etNoUnit.setOnItemClickListener((parent, view, position, id) -> {
+            // Ambil objek kamar yang sesuai dengan posisi pilihan di list yang sudah difilter
             selectedKamar = filteredKamar.get(position);
             selectedKamarId = selectedKamar.getId();
-            updateSummary(); // Hitung harga saat nomor dipilih
+
+            // Hitung ulang total harga berdasarkan kamar yang baru dipilih
+            updateSummary();
         });
     }
+
 
     // Logic Tanggal & Durasi
     private void setupDateAndDurationLogic() {
@@ -230,6 +253,7 @@ public class TambahPenyewaActivity extends AppCompatActivity {
                 kalender.get(Calendar.YEAR),
                 kalender.get(Calendar.MONTH),
                 kalender.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()); // agar tidak bisa pilih tgl sebelumnya
         datePickerDialog.show();
     }
 
@@ -278,7 +302,8 @@ public class TambahPenyewaActivity extends AppCompatActivity {
         }
 
         // Format Rupiah
-        String hargaFormatted = String.format(Locale.forLanguageTag("id"), "Rp %,.0f", hargaFinal);
+        String hargaFormatted = String.format(Locale.forLanguageTag("id"), "Rp %,.0f", hargaFinal); // contoh Rp 1.000.000
+
 
         // Update UI
         String tglMulai = etTglMulaiSewa.getText().toString();
@@ -322,14 +347,58 @@ public class TambahPenyewaActivity extends AppCompatActivity {
         etJenisKelamin.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, jk));
     }
 
+    // Validasi Input
+    private boolean validateInputs() {
+        boolean isValid = true;
+
+        if (etNamaPenyewa.getText().toString().trim().isEmpty()) {
+            tilNama.setError("Nama wajib diisi");
+            isValid = false;
+        } else {
+            tilNama.setError(null);
+        }
+
+        if (etWhatsapp.getText().toString().trim().isEmpty()) {
+            tilWhatsapp.setError("Nomor WA wajib diisi");
+            isValid = false;
+        } else {
+            tilWhatsapp.setError(null);
+        }
+
+        if (etJenisKelamin.getText().toString().trim().isEmpty()) {
+            tilJenisKelamin.setError("Jenis kelamin wajib diisi");
+            isValid = false;
+        } else {
+            etJenisKelamin.setError(null);
+        }
+
+        if (etJenisUnit.getText().toString().trim().isEmpty()) {
+            tilJenisUnit.setError("Pilih jenis unit");
+            isValid = false;
+        } else {
+            tilJenisUnit.setError(null);
+        }
+
+        if (etNoUnit.getText().toString().trim().isEmpty()) {
+            tilNoUnit.setError("Pilih nomor unit");
+            isValid = false;
+        } else {
+            tilNoUnit.setError(null);
+        }
+
+        // Cek apakah kamar (jenis dan nomor unit) sudah dipilih sebagai idKamar pada tabel penyewa
+        if (selectedKamarId == -1) {
+            Toast.makeText(this, "Silakan lengkapi datanya terlebih dahulu!", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
     // save logic
     private void simpanPenyewa() {
-        if (etNamaPenyewa.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Nama wajib diisi", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (selectedKamarId == -1) {
-            Toast.makeText(this, "Pilih Kamar terlebih dahulu", Toast.LENGTH_SHORT).show();
+        // Validasi Input terlebih dahulu
+        if (!validateInputs()) {
             return;
         }
 

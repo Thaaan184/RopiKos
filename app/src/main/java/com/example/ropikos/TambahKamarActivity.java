@@ -174,20 +174,13 @@ public class TambahKamarActivity extends AppCompatActivity {
 
     private void simpanKamar() {
         if (!validateInputs()) {
-            Toast.makeText(this, "Mohon lengkapi data yang merah!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Silakan lengkapi datanya terlebih dahulu!", Toast.LENGTH_SHORT).show();
             return; // Berhenti, jangan simpan ke database
         }
 
-        try {
-            String jenis = actvJenis.getText().toString();
-            // Validasi: Pastikan jenis unit dipilih
-            if(jenis.isEmpty()) {
-                Toast.makeText(this, "Mohon lengkapi data yang merah!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
             String nomorFull = etAwalan.getText().toString() + etNomor.getText().toString();
             String ket = etKeterangan.getText().toString();
+            String jenis = actvJenis.getText().toString();
 
             String h1Str = etHarga1.getText().toString();
             String h3Str = etHarga3.getText().toString();
@@ -209,8 +202,5 @@ public class TambahKamarActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Gagal menambah kamar", Toast.LENGTH_SHORT).show();
             }
-        } catch (Exception e) {
-            Toast.makeText(this, "Error input: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
     }
 }
