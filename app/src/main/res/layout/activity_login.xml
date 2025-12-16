@@ -120,13 +120,27 @@
                 android:layout_marginTop="16dp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_register_link"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Belum punya akun? Daftar sekarang"
-            android:textColor="#111111"
-            android:textSize="14sp"
-            android:layout_marginBottom="24dp" />
+            android:orientation="horizontal"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Belum punya akun? "
+                android:textColor="#111111"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_register_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Daftar sekarang"
+                android:textStyle="bold"
+                android:textColor="#2196F3"
+                android:textSize="14sp" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
