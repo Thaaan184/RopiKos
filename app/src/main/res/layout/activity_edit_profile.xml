@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
-    tools:context=".EditProfileActivity">
+    android:background="@color/background_color">
 
     <!-- Header -->
     <LinearLayout
@@ -166,6 +165,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Password Lama"
+                        app:errorEnabled="true"
                         app:endIconMode="password_toggle">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -181,6 +181,7 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:errorEnabled="true"
                         android:hint="Password Baru"
                         app:endIconMode="password_toggle">
 

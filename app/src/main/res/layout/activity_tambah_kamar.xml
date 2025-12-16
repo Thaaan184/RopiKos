@@ -17,6 +17,7 @@
         android:paddingEnd="16dp">
 
         <ImageView
+            android:id="@+id/btn_back"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_back"
@@ -78,7 +79,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
-                            android:text="Kamar AC"/>
+                            android:text="--- Pilih Jenis Unit ---"/>
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -121,19 +122,21 @@
 
                         <!-- Kolom 1: Awalan Unit -->
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_awalan_unit"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:hint="Awalan (contoh: A, B, KK, #)">
+                            app:errorEnabled="true"
+                            android:hint="Awalan(contoh: A)">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/et_awalan_unit"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="textCapCharacters"
-                                android:maxLines="1"
-                                android:text="A"/>
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                android:maxLines="1" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <!-- Spacer -->
@@ -143,63 +146,49 @@
 
                         <!-- Kolom 2: Nomor Unit -->
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_nomor_unit"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:hint="Nomor (contoh: 01, 2, 20)">
+                            app:errorEnabled="true"
+                            android:hint="Nomor(contoh: 01)">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/et_nomor_unit"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="number"
-                                android:text="01"/>
+                                android:inputType="number" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
-                    <!-- Jumlah Unit -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:hint="Jumlah Unit">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_jumlah_unit"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:text="5"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-
                     <!-- Keterangan -->
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_keterangan"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
+                        app:errorEnabled="true"
                         android:hint="Keterangan">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_keterangan"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:minLines="3"
-                            android:gravity="top"
-                            android:text="Kamar dengan view taman, AC, dan kamar mandi dalam."/>
+                            android:minLines="2"
+                            android:gravity="top" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Maksimal Penyewa -->
+                    <!-- Maksimal Penghuni -->
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Maksimal Penyewa">
+                        android:hint="Maksimal Penghuni">
 
                         <AutoCompleteTextView
-                            android:id="@+id/actv_maksimal_penyewa"
+                            android:id="@+id/actv_maksimal_penghuni"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
@@ -231,10 +220,12 @@
                         android:layout_marginBottom="16dp"/>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_harga_1_bulan"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
+                        app:errorEnabled="true"
                         android:hint="Harga per Bulan">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -242,14 +233,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="numberDecimal"
-                            android:text="1500000"/>
+                            android:text=""/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_harga_3_bulan"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
+                        app:errorEnabled="true"
                         android:hint="Harga per 3 Bulan">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -257,13 +250,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="numberDecimal"
-                            android:text="4200000"/>
+                            android:text=""/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_harga_6_bulan"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:errorEnabled="true"
                         android:hint="Harga per 6 Bulan">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -271,7 +266,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="numberDecimal"
-                            android:text="8000000"/>
+                            android:text=""/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>

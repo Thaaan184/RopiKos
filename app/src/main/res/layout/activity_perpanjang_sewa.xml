@@ -1,47 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
-    tools:context=".TambahPerawatanActivity">
+    android:orientation="vertical"
+    android:background="@color/background_color">
 
     <LinearLayout
-        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:background="@color/primary_color"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
-
+        android:paddingStart="16dp">
         <ImageView
             android:id="@+id/btn_back"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_back"
-            android:layout_marginStart="7dp"
-            android:contentDescription="icon back"
-            app:tint="@color/background_color" />
-
+            app:tint="@android:color/white"/>
         <TextView
-            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
-            android:text="Tambah Perawatan"
+            android:layout_marginStart="16dp"
+            android:text="Perpanjang Sewa"
             android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
+            android:textSize="20sp"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/header">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,8 +41,8 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp">
+                app:cardCornerRadius="8dp"
+                android:layout_marginBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -64,133 +53,74 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Informasi Perawatan"
+                        android:text="Detail Sewa"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="16dp" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:hint="Nama Perawatan">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_nama_perawatan"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textPersonName" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Tanggal Perawatan">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_tanggal"
+                        android:hint="Kosan">
+                        <AutoCompleteTextView
+                            android:id="@+id/et_jenis_unit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
                             android:focusable="false"
-                            android:clickable="true" />
+                            android:clickable="false"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Biaya Perawatan"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="16dp" />
-
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:hint="Biaya Pokok (Rp)">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_biaya_pokok"
+                        android:hint="Nomor Unit">
+                        <AutoCompleteTextView
+                            android:id="@+id/et_nomor_unit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal" />
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:clickable="false"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="8dp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="0dp"
+                        android:layout_marginBottom="8dp"
+                        android:hint="Durasi Perpanjangan">
+                        <AutoCompleteTextView
+                            android:id="@+id/et_durasi_sewa"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="4dp"
-                            android:hint="Biaya Lain (Nama)">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_biaya_lain"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="120dp"
-                            android:layout_height="wrap_content"
-                            android:hint="Harga (Rp)">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_harga_lain"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="numberDecimal" />
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </LinearLayout>
+                            android:inputType="none"
+                            android:text="1 Bulan"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Catatan">
-
+                        android:hint="Jatuh Tempo Baru">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_catatan"
+                            android:id="@+id/et_tgl_pembayaran_berikutnya"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:minLines="3"
-                            android:gravity="top" />
+                            android:focusable="false"/>
                     </com.google.android.material.textfield.TextInputLayout>
-
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp">
+                app:cardCornerRadius="8dp"
+                android:layout_marginBottom="16dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -206,29 +136,28 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tv_perawatan_summary"
+                        android:id="@+id/tv_unit_sewa_summary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_ringkasan_title"
                         android:layout_marginTop="8dp"
-                        android:text="-" />
+                        android:layout_below="@id/tv_ringkasan_title"
+                        android:text="" />
 
                     <TextView
-                        android:id="@+id/tv_total_biaya"
+                        android:id="@+id/tv_harga_sewa_summary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignBaseline="@id/tv_perawatan_summary"
-                        android:text="Rp 0"
-                        android:textStyle="bold" />
+                        android:layout_alignBaseline="@id/tv_unit_sewa_summary"
+                        android:text="Rp 0" />
 
                     <View
                         android:id="@+id/divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_below="@id/tv_perawatan_summary"
-                        android:layout_marginTop="8dp"
-                        android:background="?android:attr/listDivider" />
+                        android:layout_below="@id/tv_unit_sewa_summary"
+                        android:background="?android:attr/listDivider"
+                        android:layout_marginTop="8dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -240,16 +169,15 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tv_total_ringkasan"
+                        android:id="@+id/tv_total_harga"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_below="@id/divider"
+                        android:layout_alignTop="@id/divider"
                         android:layout_marginTop="8dp"
                         android:text="Rp 0"
                         android:textSize="16sp"
                         android:textStyle="bold" />
-
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
@@ -257,12 +185,10 @@
                 android:id="@+id/btn_simpan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:text="Konfirmasi Perpanjangan"
                 android:backgroundTint="@color/primary_color"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:text="Simpan"
-                android:textColor="@android:color/white" />
+                android:padding="12dp"/>
+
         </LinearLayout>
     </ScrollView>
-</RelativeLayout>
+</LinearLayout>

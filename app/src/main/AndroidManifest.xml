@@ -11,15 +11,37 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RopiKos">
+
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".LoginActivity" />
+
+        <activity android:name=".MainActivity" />
+        <activity android:name=".RegistrasiActivity" />
+        <activity android:name=".ProfilActivity" />
+        <activity android:name=".EditProfilActivity" />
+        <activity android:name=".TambahKamarActivity" />
+        <activity android:name=".ListKamarActivity" />
+        <activity android:name=".DetailKamarActivity" />
+        <activity android:name=".EditKamarActivity" />
+        <activity android:name=".TambahPenyewaActivity" />
+        <activity android:name=".ListPenyewaActivity" />
+        <activity android:name=".DetailPenyewaActivity" />
+        <activity android:name=".EditPenyewaActivity" />
+        <activity android:name=".PindahKamarActivity" />
+        <activity android:name=".PerpanjangSewaActivity" />
+        <activity android:name=".KeuanganActivity" />
+        <activity android:name=".EditKeuanganActivity" />
+        <activity android:name=".TambahPerawatanActivity" />
+        <activity android:name=".AboutActivity" />
+        <activity android:name=".FaqActivity" />
     </application>
 
 </manifest>

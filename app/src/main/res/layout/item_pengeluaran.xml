@@ -33,7 +33,7 @@
                 android:id="@+id/tv_pengeluaran_deskripsi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Perbaikan Kamar"
+                android:text="Placeholder Nama Pengeluaran"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -41,7 +41,7 @@
                 android:id="@+id/tv_pengeluaran_tanggal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="07/10/2025"
+                android:text="dd/mm/yyyy"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -49,7 +49,7 @@
             android:id="@+id/tv_pengeluaran_nominal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rp 500.000"
+            android:text="Rp 000.000"
             android:textSize="16sp"
             android:textColor="@color/red_color"
             android:layout_gravity="center_vertical" />

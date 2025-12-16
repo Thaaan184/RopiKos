@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">ropikost</string>
     <!-- Navigation Tab Titles -->
-    <string name="tab_dashboard">Dashboard</string>
+    <string name="tab_dashboard">Home</string>
     <string name="tab_kamar">Kamar</string>
     <string name="tab_penyewa">Penyewa</string>
     <string name="tab_keuangan">Pendapatan</string>

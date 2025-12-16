@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/primary_color"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+        <ImageView android:id="@+id/btn_back" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_back" app:tint="#FFF"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pindah Kamar" android:textColor="#FFF" android:textSize="20sp" android:textStyle="bold" android:layout_marginStart="16dp"/>
+    </LinearLayout>
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+
+            <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="8dp" android:layout_marginBottom="16dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pilih Kamar Baru" android:textStyle="bold" android:textSize="18sp" android:layout_marginBottom="16dp"/>
+
+                    <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Jenis Unit">
+                        <AutoCompleteTextView android:id="@+id/et_jenis_unit" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="none"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:hint="Nomor Unit">
+                        <AutoCompleteTextView android:id="@+id/et_nomor_unit" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="none"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="8dp" android:layout_marginBottom="16dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                    <CheckBox android:id="@+id/cb_ada_biaya" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ada Biaya Tambahan / Transaksi?" android:textSize="16sp"/>
+
+                    <LinearLayout android:id="@+id/layout_biaya_container" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone">
+
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tipe Transaksi" android:layout_marginTop="8dp" android:textStyle="bold"/>
+                        <RadioGroup android:id="@+id/rg_tipe_transaksi" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                            <RadioButton android:id="@+id/rb_pemasukan" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pemasukan" android:checked="true" android:layout_marginEnd="16dp"/>
+                            <RadioButton android:id="@+id/rb_pengeluaran" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pengeluaran"/>
+                        </RadioGroup>
+
+                        <com.google.android.material.textfield.TextInputLayout android:id="@+id/layout_biaya" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Nominal (Rp)" android:layout_marginTop="8dp">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/et_biaya" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="number"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout android:id="@+id/layout_catatan" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Catatan (Misal: Biaya Admin)" android:layout_marginTop="8dp">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/et_catatan" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                android:layout_marginBottom="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tv_ringkasan_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ringkasan Pindah"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_pindah"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_below="@id/tv_ringkasan_title"
+                        android:text="Pilih kamar baru..." />
+
+                    <TextView
+                        android:id="@+id/tv_nominal_biaya"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignBaseline="@id/tv_detail_pindah"
+                        android:text="Rp 0" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <Button android:id="@+id/btn_simpan" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Proses Pindah Kamar" android:backgroundTint="@color/primary_color"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
