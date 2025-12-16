@@ -548,4 +548,38 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_PERAWATAN, null, v);
     }
 
+    // Method untuk mengecek apakah Username sudah ada (untuk Registrasi)
+    public boolean checkUsernameExists(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USER + " WHERE " + COLUMN_USER_USERNAME + "=?", new String[]{username});
+        boolean exists = (cursor.getCount() > 0);
+        cursor.close();
+        return exists;
+    }
+
+    // Method untuk Menambahkan User Baru (untuk Registrasi)
+    public boolean addUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_FULLNAME, user.getFullname());
+        values.put(COLUMN_USER_USERNAME, user.getUsername());
+        values.put(COLUMN_USER_PASSWORD, user.getPassword());
+
+        // Simpan data kosong/null dulu jika tidak diisi saat registrasi awal
+        values.put(COLUMN_USER_PHONE, user.getPhoneNumber() != null ? user.getPhoneNumber() : "");
+        values.put(COLUMN_USER_ADDRESS, user.getAddress() != null ? user.getAddress() : "");
+
+        long result = db.insert(TABLE_USER, null, values);
+        return result != -1; // Jika result -1 berarti gagal
+    }
+
+    // Method untuk Cek Login (Username & Password cocok)
+    public boolean checkUser(String username, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USER + " WHERE " + COLUMN_USER_USERNAME + "=? AND " + COLUMN_USER_PASSWORD + "=?", new String[]{username, password});
+        boolean exists = (cursor.getCount() > 0);
+        cursor.close();
+        return exists;
+    }
+
 }
