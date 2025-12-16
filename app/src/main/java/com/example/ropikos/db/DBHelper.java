@@ -342,6 +342,14 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues v = new ContentValues();
         v.put(COLUMN_PENYEWA_NAMA, p.getNama());
         v.put(COLUMN_PENYEWA_WHATSAPP, p.getWhatsapp());
+        v.put(COLUMN_PENYEWA_JENIS_KELAMIN, p.getJenisKelamin());
+        v.put(COLUMN_PENYEWA_DESKRIPSI, p.getDeskripsi());
+        v.put(COLUMN_PENYEWA_FOTO_PROFIL, p.getFotoProfil());
+        v.put(COLUMN_PENYEWA_KTP, p.getKtp());
+        // Update ID Kamar juga (PENTING untuk fitur Pindah Kamar)
+        v.put(COLUMN_PENYEWA_ID_KAMAR, p.getIdKamar());
+        v.put(COLUMN_PENYEWA_TGL_PEMBAYARAN_BERIKUTNYA, p.getTglPembayaranBerikutnya());
+
         return db.update(TABLE_PENYEWA, v, COLUMN_PENYEWA_ID + "=?",
                 new String[]{String.valueOf(p.getId())});
     }

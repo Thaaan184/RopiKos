@@ -19,6 +19,8 @@
         <activity android:name=".ListPenyewaActivity" />
         <activity android:name=".DetailPenyewaActivity" />
         <activity android:name=".EditPenyewaActivity" />
+        <activity android:name=".PindahKamarActivity" />
+        <activity android:name=".PerpanjangSewaActivity" />
         <activity android:name=".KeuanganActivity" />
         <activity android:name=".EditKeuanganActivity" />
         <activity

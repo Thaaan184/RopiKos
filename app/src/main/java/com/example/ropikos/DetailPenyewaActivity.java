@@ -13,7 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.ropikos.db.DBHelper;
 import com.example.ropikos.model.Kamar;
 import com.example.ropikos.model.Keuangan;
@@ -42,7 +44,7 @@ public class DetailPenyewaActivity extends AppCompatActivity {
 
         dbHelper = new DBHelper(this);
 
-        // Ambil ID dari Intent
+        // Ambil ID Penyewa
         penyewaId = getIntent().getIntExtra("PENYEWA_ID", -1);
         if (penyewaId == -1) {
             Toast.makeText(this, "Data penyewa tidak valid", Toast.LENGTH_SHORT).show();
@@ -50,27 +52,22 @@ public class DetailPenyewaActivity extends AppCompatActivity {
             return;
         }
 
-        // Inisialisasi Views
         initViews();
-
-        // Load Data
-        loadData();
-
-        // Setup Listeners
         setupListeners();
+        loadData();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Reload data saat kembali dari Edit atau lainnya
-        loadData();
+        loadData(); // Refresh data setelah edit / pindah kamar / perpanjang
     }
 
     private void initViews() {
         tvNama = findViewById(R.id.tv_nama_penyewa);
         tvKamarInfo = findViewById(R.id.tv_kamar_info);
         tvDurasiInfo = findViewById(R.id.tv_durasi_info);
+
         ivProfile = findViewById(R.id.iv_profile);
         ivWhatsapp = findViewById(R.id.iv_whatsapp);
         ivFotoIdentitas = findViewById(R.id.iv_foto_identitas);
@@ -80,28 +77,37 @@ public class DetailPenyewaActivity extends AppCompatActivity {
         btnLainnya = findViewById(R.id.btn_lainnya);
         btnPerpanjang = findViewById(R.id.btn_perpanjang);
 
-        // Container untuk list transaksi
         llListTransaksi = findViewById(R.id.ll_list_transaksi);
     }
 
+    // =========================
+    // SETUP LISTENER (REVISI)
+    // =========================
     private void setupListeners() {
+
         btnBack.setOnClickListener(v -> finish());
 
-        // Edit Button (Use Case 7)
+        // USE CASE: EDIT PENYEWA
         btnEdit.setOnClickListener(v -> {
-            // Pastikan EditPenyewaActivity sudah dibuat. Jika belum, komen baris ini dulu.
-            // Intent intent = new Intent(this, EditPenyewaActivity.class);
-            // intent.putExtra("PENYEWA_ID", penyewaId);
-            // startActivity(intent);
-            Toast.makeText(this, "Fitur Edit akan segera hadir", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, EditPenyewaActivity.class);
+            intent.putExtra("PENYEWA_ID", penyewaId);
+            startActivity(intent);
         });
 
-        // Hapus (Use Case 8)
+        // USE CASE: PINDAH KAMAR & HAPUS
         btnLainnya.setOnClickListener(v -> {
-            PopupMenu popup = new PopupMenu(DetailPenyewaActivity.this, btnLainnya);
-            popup.getMenu().add(0, 1, 0, "Hapus Penyewa");
+            PopupMenu popup = new PopupMenu(this, btnLainnya);
+            popup.getMenu().add(0, 1, 0, "Pindah Kamar");
+            popup.getMenu().add(0, 2, 0, "Hapus Penyewa");
+
             popup.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 1) {
+                    Intent intent = new Intent(this, PindahKamarActivity.class);
+                    intent.putExtra("PENYEWA_ID", penyewaId);
+                    startActivity(intent);
+                    return true;
+                }
+                else if (item.getItemId() == 2) {
                     confirmDelete();
                     return true;
                 }
@@ -110,26 +116,27 @@ public class DetailPenyewaActivity extends AppCompatActivity {
             popup.show();
         });
 
+        // USE CASE: PERPANJANG SEWA
         btnPerpanjang.setOnClickListener(v -> {
-            Toast.makeText(this, "Fitur Perpanjang Sewa", Toast.LENGTH_SHORT).show();
-            // Nanti bisa diarahkan ke activity pembayaran
+            Intent intent = new Intent(this, PerpanjangSewaActivity.class);
+            intent.putExtra("PENYEWA_ID", penyewaId);
+            startActivity(intent);
         });
     }
 
     private void loadData() {
         Penyewa p = dbHelper.getPenyewa(penyewaId);
-
         if (p == null) {
             Toast.makeText(this, "Penyewa tidak ditemukan", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
-        // 1. Set Info Dasar
+        // Info Dasar
         tvNama.setText(p.getNama());
         tvDurasiInfo.setText("Durasi Sewa: " + p.getDurasiSewa() + " Bulan");
 
-        // 2. Set Info Kamar
+        // Info Kamar
         Kamar k = dbHelper.getKamar(p.getIdKamar());
         if (k != null) {
             tvKamarInfo.setText(k.getJenisUnit() + " - " + k.getNomorUnit());
@@ -137,57 +144,45 @@ public class DetailPenyewaActivity extends AppCompatActivity {
             tvKamarInfo.setText("Kamar tidak ditemukan");
         }
 
-        // 3. Set Foto Profil
+        // Foto Profil
         if (p.getFotoProfil() != null && !p.getFotoProfil().isEmpty()) {
             File imgFile = new File(p.getFotoProfil());
             if (imgFile.exists()) {
                 ivProfile.setImageURI(Uri.fromFile(imgFile));
             } else {
-                ivProfile.setImageResource(R.drawable.ic_person); // Default
+                ivProfile.setImageResource(R.drawable.ic_person);
             }
         }
 
-        // 4. Set Foto KTP
-        if (p.getKtp() != null && !p.getKtp().isEmpty()) {
-            // Cek apakah p.getKtp() berisi path file gambar atau hanya nomor KTP string
-            // Asumsi: Jika panjang string > 20 dan berisi "/", kemungkinan path file
-            if (p.getKtp().contains("/")) {
-                File ktpFile = new File(p.getKtp());
-                if (ktpFile.exists()) {
-                    ivFotoIdentitas.setImageURI(Uri.fromFile(ktpFile));
-                }
-            } else {
-                // Jika hanya nomor, biarkan default atau tampilkan nomornya di TextView lain jika mau
+        // Foto KTP
+        if (p.getKtp() != null && p.getKtp().contains("/")) {
+            File ktpFile = new File(p.getKtp());
+            if (ktpFile.exists()) {
+                ivFotoIdentitas.setImageURI(Uri.fromFile(ktpFile));
             }
         }
 
-        // 5. Logic WhatsApp Click
+        // WhatsApp
         ivWhatsapp.setOnClickListener(v -> {
             String phone = p.getWhatsapp();
             if (phone != null && !phone.isEmpty()) {
-                // Normalisasi nomor (jika user input 08..., ubah ke 628...)
                 if (phone.startsWith("0")) {
                     phone = "62" + phone.substring(1);
                 }
-                String url = "https://api.whatsapp.com/send?phone=" + phone;
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                try {
-                    startActivity(i);
-                } catch (Exception e) {
-                    Toast.makeText(this, "WhatsApp tidak terinstall", Toast.LENGTH_SHORT).show();
-                }
+                Intent intent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://api.whatsapp.com/send?phone=" + phone));
+                startActivity(intent);
             } else {
                 Toast.makeText(this, "Nomor WhatsApp tidak tersedia", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // 6. Load Riwayat Transaksi (Dinamis)
-        loadTransactionHistory(p.getId());
+        // Riwayat Transaksi
+        loadTransactionHistory(penyewaId);
     }
 
     private void loadTransactionHistory(int idPenyewa) {
-        llListTransaksi.removeAllViews(); // Bersihkan view lama
+        llListTransaksi.removeAllViews();
 
         List<Keuangan> listKeuangan = dbHelper.getKeuanganByPenyewa(idPenyewa);
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -201,34 +196,23 @@ public class DetailPenyewaActivity extends AppCompatActivity {
         }
 
         for (Keuangan k : listKeuangan) {
-            View itemView;
+            View view;
 
-            // Pilih layout berdasarkan tipe (Pemasukan/Pengeluaran)
             if ("Pengeluaran".equalsIgnoreCase(k.getTipe())) {
-                itemView = inflater.inflate(R.layout.item_pengeluaran, llListTransaksi, false);
-
-                TextView tvDesc = itemView.findViewById(R.id.tv_pengeluaran_deskripsi);
-                TextView tvDate = itemView.findViewById(R.id.tv_pengeluaran_tanggal);
-                TextView tvNominal = itemView.findViewById(R.id.tv_pengeluaran_nominal);
-
-                tvDesc.setText(k.getDeskripsi());
-                tvDate.setText(k.getTanggal());
-                tvNominal.setText(formatRupiah(k.getNominal()));
-
+                view = inflater.inflate(R.layout.item_pengeluaran, llListTransaksi, false);
+                ((TextView) view.findViewById(R.id.tv_pengeluaran_deskripsi)).setText(k.getDeskripsi());
+                ((TextView) view.findViewById(R.id.tv_pengeluaran_tanggal)).setText(k.getTanggal());
+                ((TextView) view.findViewById(R.id.tv_pengeluaran_nominal))
+                        .setText(formatRupiah(k.getNominal()));
             } else {
-                // Default Pemasukan
-                itemView = inflater.inflate(R.layout.item_pemasukan, llListTransaksi, false);
-
-                TextView tvDesc = itemView.findViewById(R.id.tv_pemasukan_deskripsi);
-                TextView tvDate = itemView.findViewById(R.id.tv_pemasukan_tanggal);
-                TextView tvNominal = itemView.findViewById(R.id.tv_pemasukan_nominal);
-
-                tvDesc.setText(k.getDeskripsi());
-                tvDate.setText(k.getTanggal());
-                tvNominal.setText(formatRupiah(k.getNominal()));
+                view = inflater.inflate(R.layout.item_pemasukan, llListTransaksi, false);
+                ((TextView) view.findViewById(R.id.tv_pemasukan_deskripsi)).setText(k.getDeskripsi());
+                ((TextView) view.findViewById(R.id.tv_pemasukan_tanggal)).setText(k.getTanggal());
+                ((TextView) view.findViewById(R.id.tv_pemasukan_nominal))
+                        .setText(formatRupiah(k.getNominal()));
             }
 
-            llListTransaksi.addView(itemView);
+            llListTransaksi.addView(view);
         }
     }
 
@@ -239,13 +223,11 @@ public class DetailPenyewaActivity extends AppCompatActivity {
     private void confirmDelete() {
         new AlertDialog.Builder(this)
                 .setTitle("Hapus Penyewa")
-                .setMessage("Data penyewa dan riwayat kamar akan dihapus. Kamar akan menjadi 'Kosong'. Lanjutkan?")
+                .setMessage("Data penyewa akan dihapus dan kamar menjadi kosong. Lanjutkan?")
                 .setPositiveButton("Ya", (dialog, which) -> {
-                    // Logic Hapus:
-                    // 1. Ambil data penyewa untuk tahu ID Kamar
+
                     Penyewa p = dbHelper.getPenyewa(penyewaId);
                     if (p != null) {
-                        // 2. Update status kamar jadi 0 (Kosong)
                         Kamar k = dbHelper.getKamar(p.getIdKamar());
                         if (k != null) {
                             k.setStatus(0);
@@ -253,10 +235,8 @@ public class DetailPenyewaActivity extends AppCompatActivity {
                         }
                     }
 
-                    // 3. Hapus Penyewa
                     dbHelper.deletePenyewa(penyewaId);
-
-                    Toast.makeText(this, "Data dihapus", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Data berhasil dihapus", Toast.LENGTH_SHORT).show();
                     finish();
                 })
                 .setNegativeButton("Batal", null)
