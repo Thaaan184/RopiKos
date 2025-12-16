@@ -15,6 +15,11 @@ import com.example.ropikos.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "ropikos.db";
@@ -413,7 +418,39 @@ public class DBHelper extends SQLiteOpenHelper {
         return count;
     }
 
+    // ================= STATISTIK =================
     public double getPendapatanBulanIni() {
-        return 0; // belum diimplementasikan
+        double totalPendapatan = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Format tanggal di DB: dd-MM-yyyy
+        // Ambil bulan & tahun saat ini -> "-MM-yyyy"
+        SimpleDateFormat sdf = new SimpleDateFormat("-MM-yyyy", Locale.US);
+        String currentMonthYear = sdf.format(new Date());
+
+        String query = "SELECT " + COLUMN_KEUANGAN_NOMINAL + ", " + COLUMN_KEUANGAN_TANGGAL +
+                " FROM " + TABLE_KEUANGAN +
+                " WHERE " + COLUMN_KEUANGAN_TIPE + " = 'Pemasukan'";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String tanggalDB = cursor.getString(
+                        cursor.getColumnIndexOrThrow(COLUMN_KEUANGAN_TANGGAL)
+                );
+                double nominal = cursor.getDouble(
+                        cursor.getColumnIndexOrThrow(COLUMN_KEUANGAN_NOMINAL)
+                );
+
+                // Cek apakah tanggal termasuk bulan ini
+                if (tanggalDB != null && tanggalDB.endsWith(currentMonthYear)) {
+                    totalPendapatan += nominal;
+                }
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return totalPendapatan;
     }
 }

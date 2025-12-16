@@ -47,10 +47,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // Memuat ulang data setiap kali activity ini tampil (termasuk setelah tambah penyewa)
         loadDashboardData();
     }
 
     private void loadDashboardData() {
+        // Ambil statistik dari database
         int totalKamar = dbHelper.getTotalKamar();
         int totalPenyewa = dbHelper.getTotalPenyewa();
         int totalPerbaikan = dbHelper.getTotalPerbaikan();
@@ -61,13 +63,23 @@ public class MainActivity extends AppCompatActivity {
         tvTotalLunas.setText(String.valueOf(totalLunas));
         tvTotalPerbaikan.setText(String.valueOf(totalPerbaikan));
 
+        // LOGIKA BARU: Progress Bar Pendapatan
         double pendapatan = dbHelper.getPendapatanBulanIni();
+
+        // Target pendapatan hardcoded (bisa diubah sesuai keinginan, misal 10juta)
         double target = 5000000;
-        int progress = (int) ((pendapatan / target) * 100);
+
+        int progress = 0;
+        if (target > 0) {
+            progress = (int) ((pendapatan / target) * 100);
+        }
+
+        // Batasi progress max 100 agar UI tidak aneh
+        if (progress > 100) progress = 100;
 
         tvPendapatanValue.setText(formatRupiah(pendapatan));
         pbPendapatan.setProgress(progress);
-        tvPendapatanDesc.setText(progress + "% dari target bulan ini");
+        tvPendapatanDesc.setText(progress + "% dari target Rp " + formatAngka(target));
     }
 
     private void setupBottomNavigation() {
@@ -102,5 +114,10 @@ public class MainActivity extends AppCompatActivity {
         Locale localeID = new Locale("in", "ID");
         NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
         return formatRupiah.format(number);
+    }
+
+    // Helper kecil agar tampilan target di teks deskripsi lebih rapi (tanpa ,00)
+    private String formatAngka(double number) {
+        return String.format(Locale.US, "%,.0f", number);
     }
 }
