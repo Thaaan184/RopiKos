@@ -7,7 +7,6 @@
     android:background="@color/background_color"
     tools:context=".TambahPerawatanActivity">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -50,7 +49,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Informasi Perawatan -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,8 +80,7 @@
                             android:id="@+id/et_nama_perawatan"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textPersonName"
-                            android:text="Service AC" />
+                            android:inputType="textPersonName" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -96,14 +93,14 @@
                             android:id="@+id/et_tanggal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="date"
-                            android:text="09-10-2025" />
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:clickable="true" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Biaya Perawatan -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,14 +126,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:hint="Biaya Pokok">
+                        android:hint="Biaya Pokok (Rp)">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_biaya_pokok"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
-                            android:text="150000" />
+                            android:inputType="numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <LinearLayout
@@ -151,27 +147,25 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginEnd="4dp"
-                            android:hint="Biaya Lain-lain">
+                            android:hint="Biaya Lain (Nama)">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/et_biaya_lain"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Ongkir Sparepart" />
+                                android:layout_height="wrap_content" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
-                            android:hint="Harga">
+                            android:hint="Harga (Rp)">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/et_harga_lain"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="numberDecimal"
-                                android:text="25000" />
+                                android:inputType="numberDecimal" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
@@ -186,14 +180,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:minLines="3"
-                            android:gravity="top"
-                            android:text="Ganti filter dan isi freon." />
+                            android:gravity="top" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Ringkasan -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -219,7 +211,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv_ringkasan_title"
                         android:layout_marginTop="8dp"
-                        android:text="Service AC dan Ongkir Sparepart" />
+                        android:text="-" />
 
                     <TextView
                         android:id="@+id/tv_total_biaya"
@@ -227,7 +219,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignBaseline="@id/tv_perawatan_summary"
-                        android:text="Rp 175.000"
+                        android:text="Rp 0"
                         android:textStyle="bold" />
 
                     <View
@@ -254,14 +246,13 @@
                         android:layout_alignParentEnd="true"
                         android:layout_below="@id/divider"
                         android:layout_marginTop="8dp"
-                        android:text="Rp 175.000"
+                        android:text="Rp 0"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Tombol Simpan -->
             <Button
                 android:id="@+id/btn_simpan"
                 android:layout_width="match_parent"

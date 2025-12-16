@@ -58,13 +58,10 @@ public class DetailKamarActivity extends AppCompatActivity {
         });
 
         // Trigger Perawatan (Use Case 6)
-        // TODO: Belum dicek lebih lanjut intent ini
         btnPerawatanKamar.setOnClickListener(v -> {
-            /*
             Intent intent = new Intent(this, TambahPerawatanActivity.class);
             intent.putExtra("KAMAR_ID", kamarId);
             startActivity(intent);
-             */
         });
 
         // Trigger Hapus (Use Case 5)

@@ -534,4 +534,18 @@ public class DBHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(id)});
     }
 
+    // --- TAMBAHAN BARU: METHOD INSERT PERAWATAN ---
+    public long insertPerawatan(Perawatan p) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues v = new ContentValues();
+        v.put(COLUMN_PERAWATAN_NAMA, p.getNamaPerawatan());
+        v.put(COLUMN_PERAWATAN_TANGGAL, p.getTanggal());
+        v.put(COLUMN_PERAWATAN_ID_KAMAR, p.getIdKamar());
+        v.put(COLUMN_PERAWATAN_BIAYA_SPAREPART, p.getBiayaSparepart());
+        v.put(COLUMN_PERAWATAN_BIAYA_JASA, p.getBiayaJasa());
+        v.put(COLUMN_PERAWATAN_ONGKIR, p.getOngkir());
+        v.put(COLUMN_PERAWATAN_CATATAN, p.getCatatan());
+        return db.insert(TABLE_PERAWATAN, null, v);
+    }
+
 }

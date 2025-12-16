@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/background_color">
 
-    <!-- Header with Back Button and Title -->
     <LinearLayout
         android:id="@+id/header_detail_kamar"
         android:layout_width="match_parent"
@@ -48,7 +47,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Card for Basic Info -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,7 +80,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Card for Description -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,7 +104,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Card for Pricing -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -125,7 +121,6 @@
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp"/>
-                    <!-- Price rows -->
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -174,42 +169,43 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Bottom Buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_marginTop="16dp">
 
                 <Button
-                    android:id="@+id/btn_hapus_kamar"
-                    android:layout_width="0dp"
+                    android:id="@+id/btn_edit_kamar"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Hapus Kamar"
-                    android:backgroundTint="@color/red_color"
+                    android:text="Edit Kamar"
+                    android:backgroundTint="@color/primary_color"
                     android:textColor="@android:color/white"
-                    android:layout_marginEnd="8dp"/>
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"/>
 
                 <Button
                     android:id="@+id/btn_perawatan_kamar"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="Perawatan Kamar"
                     android:backgroundTint="@color/green_color"
                     android:textColor="@android:color/white"
-                    android:layout_marginEnd="8dp"/>
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"/>
 
                 <Button
-                    android:id="@+id/btn_edit_kamar"
-                    android:layout_width="0dp"
+                    android:id="@+id/btn_hapus_kamar"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Edit\nKamar"
-                    android:backgroundTint="@color/primary_color"
+                    android:text="Hapus Kamar"
+                    android:backgroundTint="@color/red_color"
                     android:textColor="@android:color/white"
-                    android:layout_marginStart="0dp"/>
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:layout_marginBottom="24dp"/>
+
             </LinearLayout>
 
         </LinearLayout>
