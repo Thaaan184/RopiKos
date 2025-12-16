@@ -453,4 +453,34 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return totalPendapatan;
     }
+    
+    // Mengambil daftar keuangan berdasarkan ID Penyewa (untuk halaman Detail Penyewa)
+    public List<Keuangan> getKeuanganByPenyewa(int idPenyewa) {
+        List<Keuangan> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Urutkan dari data terbaru
+        String query = "SELECT * FROM " + TABLE_KEUANGAN +
+                " WHERE " + COLUMN_KEUANGAN_ID_PENYEWA + " = ?" +
+                " ORDER BY " + COLUMN_KEUANGAN_ID + " DESC";
+
+        Cursor c = db.rawQuery(query, new String[]{String.valueOf(idPenyewa)});
+
+        if (c.moveToFirst()) {
+            do {
+                Keuangan k = new Keuangan();
+                k.setId(c.getInt(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_ID)));
+                k.setIdPenyewa(c.getInt(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_ID_PENYEWA)));
+                k.setTipe(c.getString(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_TIPE)));
+                k.setDeskripsi(c.getString(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_DESKRIPSI)));
+                k.setNominal(c.getDouble(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_NOMINAL)));
+                k.setTanggal(c.getString(c.getColumnIndexOrThrow(COLUMN_KEUANGAN_TANGGAL)));
+                list.add(k);
+            } while (c.moveToNext());
+        }
+
+        c.close();
+        return list;
+    }
+
 }
