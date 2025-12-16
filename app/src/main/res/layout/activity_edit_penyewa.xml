@@ -7,7 +7,6 @@
     android:background="@color/background_color"
     tools:context=".EditPenyewaActivity">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -38,7 +37,6 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Scrollable Content -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -50,7 +48,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Informasi Penyewa -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,7 +68,6 @@
                         android:textStyle="bold"
                         android:layout_marginBottom="16dp" />
 
-                    <!-- Foto Profil -->
                     <ImageView
                         android:id="@+id/iv_profile_pic"
                         android:layout_width="match_parent"
@@ -91,9 +87,10 @@
                         android:hint="Nama Penyewa">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_nama_penyewa"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Budi Santoso" />
+                            android:text="" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -104,10 +101,11 @@
                         android:hint="Whatsapp">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_whatsapp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="phone"
-                            android:text="081234567890" />
+                            android:text="" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -118,13 +116,13 @@
                         android:hint="Pilih Jenis Kelamin">
 
                         <AutoCompleteTextView
+                            android:id="@+id/et_jenis_kelamin"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
-                            android:text="Laki-laki" />
+                            android:text="" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Tombol Upload KTP -->
                     <Button
                         android:id="@+id/btn_upload_ktp"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -139,7 +137,6 @@
                         android:textColor="#2196F3"
                         app:iconPadding="8dp" />
 
-                    <!-- Preview KTP -->
                     <ImageView
                         android:id="@+id/iv_ktp_preview"
                         android:layout_width="match_parent"
@@ -158,16 +155,16 @@
                         android:hint="Deskripsi">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_deskripsi"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:minLines="1"
                             android:gravity="top"
-                            android:text="Pekerja kantoran, butuh ketenangan." />
+                            android:text="" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Tombol Simpan -->
             <Button
                 android:id="@+id/btn_simpan"
                 android:layout_width="match_parent"
