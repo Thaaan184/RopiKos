@@ -3,5 +3,7 @@
     <style name="Theme.RopiKos" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:statusBarColor">@color/secondary_color</item>
         <item name="android:windowBackground">@color/nav_item_color</item>
+
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 </resources>
