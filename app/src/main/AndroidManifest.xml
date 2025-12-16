@@ -40,6 +40,8 @@
         <activity android:name=".KeuanganActivity" />
         <activity android:name=".EditKeuanganActivity" />
         <activity android:name=".TambahPerawatanActivity" />
+        <activity android:name=".AboutActivity" />
+        <activity android:name=".FaqActivity" />
     </application>
 
 </manifest>

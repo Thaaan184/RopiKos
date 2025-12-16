@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/background_color">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header_profile"
         android:layout_width="match_parent"
@@ -17,17 +16,24 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
 
+        <ImageView
+            android:id="@+id/btn_back_profile"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_back"
+            app:tint="@android:color/white"
+            android:layout_marginEnd="16dp"/>
+
         <TextView
             android:id="@+id/tv_profile_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Profil"
             android:textColor="@android:color/white"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Konten Scrollable -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,7 +45,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Profil Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -70,7 +75,7 @@
                             android:id="@+id/tv_nama"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="SabilGemink"
+                            android:text="User"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -78,12 +83,11 @@
                             android:id="@+id/tv_alamat"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Jl. Kweni No.83, RT.1/RW.3, Balekambang, Kec. Kramat jati, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13530" />
+                            android:text="-" />
                     </LinearLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Informasi Aplikasi -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,6 +97,7 @@
                 android:layout_marginBottom="8dp" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_faq"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="8dp"
@@ -120,6 +125,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="8dp"
@@ -146,7 +152,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Akun -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -155,7 +160,6 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
 
-            <!-- Pengaturan Akun -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_pengaturan_akun"
                 android:layout_width="match_parent"
@@ -184,7 +188,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Logout -->
             <Button
                 android:id="@+id/btn_logout"
                 android:layout_width="match_parent"
