@@ -548,6 +548,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_PERAWATAN, null, v);
     }
 
+    // ---------------- USER -------------------
     // Method untuk mengecek apakah Username sudah ada (untuk Registrasi)
     public boolean checkUsernameExists(String username) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -580,6 +581,20 @@ public class DBHelper extends SQLiteOpenHelper {
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
         return exists;
+    }
+
+    public boolean updateUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_FULLNAME, user.getFullname());
+        values.put(COLUMN_USER_USERNAME, user.getUsername());
+        values.put(COLUMN_USER_PHONE, user.getPhoneNumber());
+        values.put(COLUMN_USER_ADDRESS, user.getAddress());
+        values.put(COLUMN_USER_PASSWORD, user.getPassword());
+
+        int rows = db.update(TABLE_USER, values, COLUMN_USER_ID + "=?",
+                new String[]{String.valueOf(user.getId())});
+        return rows > 0;
     }
 
 }
