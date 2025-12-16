@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton; // Import ImageButton ditambahkan
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,9 @@ public class ListKamarActivity extends AppCompatActivity {
     private FloatingActionButton fabAddRoom;
     private KamarAdapter adapter;
 
+    // 1. Variabel btnProfile ditambahkan
+    private ImageButton btnProfile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,12 +41,23 @@ public class ListKamarActivity extends AppCompatActivity {
         rvKamar = findViewById(R.id.rv_kamar);
         fabAddRoom = findViewById(R.id.fab_add_room);
 
+        // 2. Inisialisasi ID dari XML (Pastikan di activity_list_kamar.xml ada id: btn_profile)
+        btnProfile = findViewById(R.id.btn_profile);
+
         rvKamar.setLayoutManager(new LinearLayoutManager(this));
 
         // Use Case 3: Tombol Tambah -> Pindah ke Activity Tambah
         fabAddRoom.setOnClickListener(v -> {
             startActivity(new Intent(ListKamarActivity.this, TambahKamarActivity.class));
         });
+
+        // 3. Logic Klik Profile
+        if (btnProfile != null) {
+            btnProfile.setOnClickListener(v -> {
+                // Pindah ke ProfilActivity saat tombol diklik
+                startActivity(new Intent(ListKamarActivity.this, ProfilActivity.class));
+            });
+        }
 
         setupBottomNavigation();
     }
@@ -123,8 +138,6 @@ public class ListKamarActivity extends AppCompatActivity {
                 intent.putExtra("KAMAR_ID", k.getId());
                 startActivity(intent);
             });
-
-
         }
 
         @Override
@@ -141,7 +154,6 @@ public class ListKamarActivity extends AppCompatActivity {
                 tvNama = itemView.findViewById(R.id.tv_nama_kamar);
                 tvNomor = itemView.findViewById(R.id.tv_nomor_kamar);
                 // Pastikan di item_kamar.xml, ImageView icon add penyewa diberi ID iv_add_penyewa_shortcut
-                // Jika belum ada ID, tambahkan android:id="@+id/iv_add_penyewa_shortcut" di XML item_kamar
                 btnAddPenyewa = itemView.findViewById(R.id.iv_add_penyewa_shortcut);
             }
         }

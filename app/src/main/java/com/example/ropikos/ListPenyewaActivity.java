@@ -49,7 +49,7 @@ public class ListPenyewaActivity extends AppCompatActivity {
 
         // TODO: Buat dan arahkan ke ProfilActivity nanti
         btnProfil.setOnClickListener(v -> {
-            // startActivity(new Intent(ListPenyewaActivity.this, ProfilActivity.class));
+             startActivity(new Intent(ListPenyewaActivity.this, ProfilActivity.class));
         });
 
         setupBottomNavigation();

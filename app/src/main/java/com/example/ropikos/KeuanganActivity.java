@@ -55,7 +55,9 @@ public class KeuanganActivity extends AppCompatActivity {
         rvTransaksi.setLayoutManager(new LinearLayoutManager(this));
 
         tvFilterDate.setOnClickListener(v -> showFilterDialog());
-        btnProfile.setOnClickListener(v -> {});
+        btnProfile.setOnClickListener(v -> {
+            startActivity(new Intent(KeuanganActivity.this, ProfilActivity.class));
+        });
 
         setupBottomNavigation();
     }
